@@ -27,6 +27,7 @@ You can use `withBaseUrl` method to change evironment.
 | -------- | -------- |
 | *Production* `DEFAULT` | https://openapi-v2.kucoin.com |
 | *Sandbox* | https://openapi-sandbox.kucoin.com |
+
 If you only need to use the public web socket client or REST client public method, you can igonre `withApiKey` method. To customize your own API implementation, you may use the `with*API` method we provided for you.
 
 ## Example
