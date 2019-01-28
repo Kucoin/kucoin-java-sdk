@@ -1,3 +1,6 @@
+/**
+ * Copyright 2019 Mek Global Limited.
+ */
 package com.kucoin.sdk.rest.interfaces.retrofit;
 
 import com.kucoin.sdk.rest.request.OrderCreateApiRequest;

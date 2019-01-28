@@ -1,5 +1,6 @@
-
-
+/**
+ * Copyright 2019 Mek Global Limited.
+ */
 package com.kucoin.sdk.model.enums;
 
 
