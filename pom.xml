@@ -15,7 +15,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <com.squareup.retrofit2.version>2.4.0</com.squareup.retrofit2.version>
+        <com.squareup.retrofit2.version>2.5.0</com.squareup.retrofit2.version>
     </properties>
 
     <dependencies>

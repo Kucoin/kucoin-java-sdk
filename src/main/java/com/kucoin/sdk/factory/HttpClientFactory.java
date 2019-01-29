@@ -1,3 +1,6 @@
+/**
+ * Copyright 2019 Mek Global Limited.
+ */
 package com.kucoin.sdk.factory;
 
 import com.kucoin.sdk.rest.interceptor.AuthenticationInterceptor;

@@ -1,3 +1,6 @@
+/**
+ * Copyright 2019 Mek Global Limited.
+ */
 package com.kucoin.sdk.websocket.event;
 
 import com.kucoin.sdk.rest.response.TickerResponse;

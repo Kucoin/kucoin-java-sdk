@@ -1,3 +1,6 @@
+/**
+ * Copyright 2019 Mek Global Limited.
+ */
 package com.kucoin.sdk.rest.interfaces;
 
 import com.kucoin.sdk.rest.response.DepositAddressResponse;

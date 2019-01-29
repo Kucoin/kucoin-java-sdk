@@ -1,3 +1,6 @@
+/**
+ * Copyright 2019 Mek Global Limited.
+ */
 package com.kucoin.sdk.rest.request;
 
 import lombok.Builder;
@@ -77,19 +80,16 @@ public class OrderCreateApiRequest {
     /**
      * [optional] ** Post only flag
      */
-    @Builder.Default
     private boolean postOnly = false;
 
     /**
      * [optional] Orders not displayed in order book
      */
-    @Builder.Default
     private boolean hidden = false;
 
     /**
      * [optional] Only visible portion of the order is displayed in the order book
      */
-    @Builder.Default
     private boolean iceberge = false;
 
     /**
