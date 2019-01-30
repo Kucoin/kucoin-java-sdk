@@ -23,6 +23,8 @@ public class WithdrawQuotaResponse {
 
     private BigDecimal limitBTCAmount;
 
+    private BigDecimal limitAmount;
+
     private BigDecimal innerWithdrawMinFee;
 
     private BigDecimal usedBTCAmount;

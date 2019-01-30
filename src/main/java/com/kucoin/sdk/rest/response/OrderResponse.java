@@ -62,7 +62,7 @@ public class OrderResponse {
 
     private boolean hidden;
 
-    private boolean iceberge;
+    private boolean iceberg;
 
     private BigDecimal visibleSize;
 

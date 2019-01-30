@@ -17,6 +17,8 @@ public class SymbolResponse {
 
     private String name;
 
+    private String market;
+
     private String baseCurrency;
 
     private String quoteCurrency;
