@@ -1,6 +1,10 @@
 # JAVA SDK for KuCoin API
 The detailed document [https://docs.kucoin.com](https://docs.kucoin.com).
 
+[![Latest Version](https://img.shields.io/github/release/Kucoin/kucoin-java-sdk.svg?style=flat-square)](https://github.com/Kucoin/kucoin-java-sdk/releases)
+
+[![Build Status](https://travis-ci.org/Kucoin/kucoin-java-sdk.svg?branch=master)](https://travis-ci.org/Kucoin/kucoin-java-sdk)
+
 ## Installation
 1. Install library into your Maven's local repository by running `mvn install`
 2. Add the following **Maven dependency** to your project's pom.xml:
