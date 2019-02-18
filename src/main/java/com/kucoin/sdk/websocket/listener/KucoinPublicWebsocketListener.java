@@ -10,11 +10,13 @@ import static com.kucoin.sdk.constants.APIConstants.API_TICKER_TOPIC_PREFIX;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kucoin.sdk.exception.KucoinApiException;
 import com.kucoin.sdk.rest.response.TickerResponse;
 import com.kucoin.sdk.websocket.KucoinAPICallback;
 import com.kucoin.sdk.websocket.PrintCallback;
@@ -40,6 +42,8 @@ public class KucoinPublicWebsocketListener extends WebSocketListener {
         OBJECTMAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(KucoinPublicWebsocketListener.class);
+
     private KucoinAPICallback<KucoinEvent<TickerChangeEvent>> tickerCallback = new PrintCallback();
     private KucoinAPICallback<KucoinEvent<Level2ChangeEvent>> level2Callback = new PrintCallback();
     private KucoinAPICallback<KucoinEvent<MatchExcutionChangeEvent>> matchDataCallback = new PrintCallback();
@@ -47,37 +51,40 @@ public class KucoinPublicWebsocketListener extends WebSocketListener {
 
     @Override
     public void onOpen(WebSocket webSocket, Response response) {
-        System.out.println("web socket open");
+       LOGGER.debug("web socket open");
     }
 
     @Override
     public void onMessage(WebSocket webSocket, String text) {
-      JsonNode jsonObject = tree(text);
-        String type = jsonObject.get("type").textValue();
-        String topic = jsonObject.get("topic").textValue();
+        LOGGER.debug("Got message: {}", text);
+        JsonNode jsonObject = tree(text);
+        LOGGER.debug("Parsed message OK");
 
+        String type = jsonObject.get("type").asText();
         if (!type.equals("message")) {
-            System.out.println(text);
-        } else {
-            if (topic.contains(API_TICKER_TOPIC_PREFIX)) {
-                KucoinEvent kucoinEvent = deserialize(text, new TypeReference<KucoinEvent<TickerResponse>>() {});
-                tickerCallback.onResponse(kucoinEvent);
-            } else if (topic.contains(API_LEVEL2_TOPIC_PREFIX)) {
-                KucoinEvent kucoinEvent = deserialize(text, new TypeReference<KucoinEvent<Level2ChangeEvent>>() {});
-                level2Callback.onResponse(kucoinEvent);
-            } else if (topic.contains(API_MATCH_TOPIC_PREFIX)) {
-                KucoinEvent kucoinEvent = deserialize(text, new TypeReference<KucoinEvent<MatchExcutionChangeEvent>>() {});
-                matchDataCallback.onResponse(kucoinEvent);
-            } else if (topic.contains(API_LEVEL3_TOPIC_PREFIX)) {
-                KucoinEvent kucoinEvent = deserialize(text, new TypeReference<KucoinEvent<Level3ChangeEvent>>() {});
-                level3Callback.onResponse(kucoinEvent);
-            }
+            LOGGER.debug("Ignoring message type ({})", type);
+            return;
+        }
+
+        String topic = jsonObject.get("topic").asText();
+        if (topic.contains(API_TICKER_TOPIC_PREFIX)) {
+            KucoinEvent kucoinEvent = deserialize(text, new TypeReference<KucoinEvent<TickerResponse>>() {});
+            tickerCallback.onResponse(kucoinEvent);
+        } else if (topic.contains(API_LEVEL2_TOPIC_PREFIX)) {
+            KucoinEvent kucoinEvent = deserialize(text, new TypeReference<KucoinEvent<Level2ChangeEvent>>() {});
+            level2Callback.onResponse(kucoinEvent);
+        } else if (topic.contains(API_MATCH_TOPIC_PREFIX)) {
+            KucoinEvent kucoinEvent = deserialize(text, new TypeReference<KucoinEvent<MatchExcutionChangeEvent>>() {});
+            matchDataCallback.onResponse(kucoinEvent);
+        } else if (topic.contains(API_LEVEL3_TOPIC_PREFIX)) {
+            KucoinEvent kucoinEvent = deserialize(text, new TypeReference<KucoinEvent<Level3ChangeEvent>>() {});
+            level3Callback.onResponse(kucoinEvent);
         }
     }
 
     @Override
     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-        throw new KucoinApiException(t.getMessage());
+        LOGGER.error("Error on private socket", t);
     }
 
     private JsonNode tree(String text) {

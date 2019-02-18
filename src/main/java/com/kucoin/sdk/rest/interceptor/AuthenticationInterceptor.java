@@ -3,9 +3,19 @@
  */
 package com.kucoin.sdk.rest.interceptor;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.HmacUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Strings;
 import com.kucoin.sdk.constants.APIConstants;
 import com.kucoin.sdk.exception.KucoinApiException;
+
 import lombok.Getter;
 import lombok.Setter;
 import okhttp3.Interceptor;
@@ -13,12 +23,6 @@ import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.Response;
 import okio.Buffer;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.digest.HmacUtils;
-import org.apache.commons.lang3.StringUtils;
-
-import java.io.IOException;
-import java.nio.charset.Charset;
 
 /**
  * Created by zicong.lu on 2018/12/14.
@@ -26,6 +30,8 @@ import java.nio.charset.Charset;
 @Getter
 @Setter
 public class AuthenticationInterceptor implements Interceptor {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationInterceptor.class);
 
     public String apiKey;
     public String secret;
@@ -101,9 +107,9 @@ public class AuthenticationInterceptor implements Interceptor {
 
         String signature = Base64.encodeBase64String(HmacUtils.hmacSha256(apiSecret, originToSign));
 
-        System.out.println("originToSign=" + originToSign);
-        System.out.println("method=" + request.method() + ",endpoint=" + endpoint);
-        System.out.println("signature=" + signature);
+        LOGGER.debug("originToSign={}", originToSign);
+        LOGGER.debug("method={},endpoint={}", request.method(), endpoint);
+        LOGGER.debug("signature={}", signature);
 
         return signature;
     }

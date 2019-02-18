@@ -5,12 +5,14 @@ package com.kucoin.sdk.websocket.listener;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kucoin.sdk.constants.APIConstants;
-import com.kucoin.sdk.exception.KucoinApiException;
 import com.kucoin.sdk.websocket.KucoinAPICallback;
 import com.kucoin.sdk.websocket.PrintCallback;
 import com.kucoin.sdk.websocket.event.AccountChangeEvent;
@@ -33,22 +35,30 @@ public class KucoinPrivateWebsocketListener extends WebSocketListener {
         OBJECTMAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(KucoinPrivateWebsocketListener.class);
+
     private KucoinAPICallback<KucoinEvent<OrderActivateEvent>> orderActivateCallback = new PrintCallback();
     private KucoinAPICallback<KucoinEvent<AccountChangeEvent>> accountChangeCallback = new PrintCallback();
 
     @Override
     public void onOpen(WebSocket webSocket, Response response) {
-        System.out.println("web socket open");
+        LOGGER.debug("web socket open");
     }
 
     @Override
     public void onMessage(WebSocket webSocket, String text) {
+        LOGGER.debug("Got message: {}", text);
         JsonNode jsonObject = tree(text);
+        LOGGER.debug("Parsed message: ", text);
+
         String type = jsonObject.get("type").asText();
-        String topic = jsonObject.get("topic").asText();
         if (!type.equals("message")) {
-            System.out.println(text);
-        } else if (topic.contains(APIConstants.API_ACTIVATE_TOPIC_PREFIX)) {
+            LOGGER.debug("Ignoring message type ({})", type);
+            return;
+        }
+
+        String topic = jsonObject.get("topic").asText();
+        if (topic.contains(APIConstants.API_ACTIVATE_TOPIC_PREFIX)) {
             KucoinEvent kucoinEvent = deserialize(text, new TypeReference<KucoinEvent<OrderActivateEvent>>() {});
             orderActivateCallback.onResponse(kucoinEvent);
         } else if (topic.contains(APIConstants.API_BALANCE_TOPIC_PREFIX)) {
@@ -59,7 +69,7 @@ public class KucoinPrivateWebsocketListener extends WebSocketListener {
 
     @Override
     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-        throw new KucoinApiException(t.getMessage());
+        LOGGER.error("Error on private socket", t);
     }
 
     private JsonNode tree(String text) {

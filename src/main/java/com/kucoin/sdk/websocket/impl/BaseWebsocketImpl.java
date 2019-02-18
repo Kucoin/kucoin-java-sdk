@@ -7,6 +7,9 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,6 +32,8 @@ public class BaseWebsocketImpl implements Closeable {
     {
       OBJECTMAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseWebsocketImpl.class);
 
     protected ChooseServerStrategy chooseServerStrategy;
 
@@ -88,7 +93,7 @@ public class BaseWebsocketImpl implements Closeable {
 
     @Override
     public void close() throws IOException {
-        System.out.println("Web Socket Close");
+        LOGGER.debug("Web Socket Close");
         client.dispatcher().executorService().shutdown();
     }
 

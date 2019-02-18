@@ -14,6 +14,10 @@ public class KucoinApiException extends RuntimeException {
         super(message);
     }
 
+    public KucoinApiException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
     public KucoinApiException(String code, String message) {
         super(message);
         this.code = code;
