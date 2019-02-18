@@ -3,16 +3,7 @@
  */
 package com.kucoin.sdk;
 
-import com.alibaba.fastjson.JSONObject;
-import com.kucoin.sdk.model.enums.PrivateChannelEnum;
-import com.kucoin.sdk.rest.request.OrderCreateApiRequest;
-import com.kucoin.sdk.rest.response.AccountBalancesResponse;
-import com.kucoin.sdk.rest.response.OrderCreateResponse;
-import org.hamcrest.Matchers;
-import org.hamcrest.core.Is;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
@@ -21,12 +12,28 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import org.hamcrest.Matchers;
+import org.hamcrest.core.Is;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kucoin.sdk.model.enums.PrivateChannelEnum;
+import com.kucoin.sdk.rest.request.OrderCreateApiRequest;
+import com.kucoin.sdk.rest.response.AccountBalancesResponse;
+import com.kucoin.sdk.rest.response.OrderCreateResponse;
 
 /**
  * Created by chenshiwei on 2019/1/23.
  */
 public class KucoinPrivateWSClientTest {
+
+    private static final ObjectMapper OBJECTMAPPER = new ObjectMapper();
+    {
+        OBJECTMAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
 
     private static KucoinRestClient kucoinRestClient;
 
@@ -63,7 +70,7 @@ public class KucoinPrivateWSClientTest {
         kucoinPrivateWSClient.onOrderActivate(response -> {
             if (response.getData() != null) {
                 try {
-                    pipedOutputStream.write(JSONObject.toJSONBytes(response.getData()));
+                    pipedOutputStream.write(OBJECTMAPPER.writeValueAsBytes(response.getData()));
                     pipedOutputStream.flush();
                 } catch (Exception e) {
 
@@ -90,7 +97,7 @@ public class KucoinPrivateWSClientTest {
         kucoinPrivateWSClient.onAccountBalance(response -> {
             if (response.getData() != null) {
                 try {
-                    pipedOutputStream.write(JSONObject.toJSONBytes(response.getData()));
+                    pipedOutputStream.write(OBJECTMAPPER.writeValueAsBytes(response.getData()));
                     pipedOutputStream.flush();
                 } catch (Exception e) {
 

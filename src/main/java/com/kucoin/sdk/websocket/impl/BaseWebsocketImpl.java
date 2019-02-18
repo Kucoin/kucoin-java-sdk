@@ -3,24 +3,32 @@
  */
 package com.kucoin.sdk.websocket.impl;
 
-import com.alibaba.fastjson.JSONObject;
+import java.io.Closeable;
+import java.io.IOException;
+import java.util.UUID;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kucoin.sdk.model.InstanceServer;
 import com.kucoin.sdk.rest.response.WebsocketTokenResponse;
 import com.kucoin.sdk.websocket.ChooseServerStrategy;
 import com.kucoin.sdk.websocket.event.KucoinEvent;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.util.UUID;
-
 /**
  * Created by chenshiwei on 2019/1/18.
  */
 public class BaseWebsocketImpl implements Closeable {
+
+    private static final ObjectMapper OBJECTMAPPER = new ObjectMapper();
+    {
+      OBJECTMAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
 
     protected ChooseServerStrategy chooseServerStrategy;
 
@@ -44,7 +52,7 @@ public class BaseWebsocketImpl implements Closeable {
         KucoinEvent ping = new KucoinEvent();
         ping.setId(requestId);
         ping.setType("ping");
-        if (webSocket.send(JSONObject.toJSONString(ping))) {
+        if (webSocket.send(serialize(ping))) {
             return requestId;
         }
         return null;
@@ -58,7 +66,7 @@ public class BaseWebsocketImpl implements Closeable {
         subscribe.setTopic(topic);
         subscribe.setPrivateChannel(privateChannel);
         subscribe.setResponse(response);
-        if (webSocket.send(JSONObject.toJSONString(subscribe))) {
+        if (webSocket.send(serialize(subscribe))) {
             return uuid;
         }
         return null;
@@ -72,7 +80,7 @@ public class BaseWebsocketImpl implements Closeable {
         subscribe.setTopic(topic);
         subscribe.setPrivateChannel(privateChannel);
         subscribe.setResponse(response);
-        if (webSocket.send(JSONObject.toJSONString(subscribe))) {
+        if (webSocket.send(serialize(subscribe))) {
             return uuid;
         }
         return null;
@@ -86,5 +94,13 @@ public class BaseWebsocketImpl implements Closeable {
 
     public InstanceServer getInstanceServer() {
         return instanceServer;
+    }
+
+    private String serialize(Object o) {
+      try {
+        return OBJECTMAPPER.writeValueAsString(o);
+      } catch (JsonProcessingException e) {
+        throw new RuntimeException("Failure serializing object", e);
+      }
     }
 }

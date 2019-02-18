@@ -3,23 +3,30 @@
  */
 package com.kucoin.sdk;
 
-import com.alibaba.fastjson.JSONObject;
-import com.kucoin.sdk.model.enums.PublicChannelEnum;
+import static org.hamcrest.MatcherAssert.assertThat;
+
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-
-import static org.hamcrest.MatcherAssert.assertThat;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kucoin.sdk.model.enums.PublicChannelEnum;
 
 /**
  * Created by chenshiwei on 2019/1/22.
  */
 public class KucoinPublicWSClientTest {
+
+    private static final ObjectMapper OBJECTMAPPER = new ObjectMapper();
+    {
+        OBJECTMAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
 
     private static KucoinPublicWSClient kucoinPublicWSClient;
 
@@ -48,7 +55,7 @@ public class KucoinPublicWSClientTest {
         kucoinPublicWSClient.onTicker(response -> {
             if (response.getData() != null) {
                 try {
-                    pipedOutputStream.write(JSONObject.toJSONBytes(response.getData()));
+                    pipedOutputStream.write(OBJECTMAPPER.writeValueAsBytes(response.getData()));
                     pipedOutputStream.flush();
                 } catch (Exception e) {
 
@@ -66,7 +73,7 @@ public class KucoinPublicWSClientTest {
         kucoinPublicWSClient.onLevel2Data(response -> {
             if (response.getData() != null) {
                 try {
-                    pipedOutputStream.write(JSONObject.toJSONBytes(response.getData()));
+                    pipedOutputStream.write(OBJECTMAPPER.writeValueAsBytes(response.getData()));
                     pipedOutputStream.flush();
                 } catch (Exception e) {
 
@@ -84,7 +91,7 @@ public class KucoinPublicWSClientTest {
         kucoinPublicWSClient.onMatchExecutionData(response -> {
             if (response.getData() != null) {
                 try {
-                    pipedOutputStream.write(JSONObject.toJSONBytes(response.getData()));
+                    pipedOutputStream.write(OBJECTMAPPER.writeValueAsBytes(response.getData()));
                     pipedOutputStream.flush();
                 } catch (Exception e) {
 
@@ -102,7 +109,7 @@ public class KucoinPublicWSClientTest {
         kucoinPublicWSClient.onLevel3Data(response -> {
             if (response.getData() != null) {
                 try {
-                    pipedOutputStream.write(JSONObject.toJSONBytes(response.getData()));
+                    pipedOutputStream.write(OBJECTMAPPER.writeValueAsBytes(response.getData()));
                     pipedOutputStream.flush();
                 } catch (Exception e) {
 
