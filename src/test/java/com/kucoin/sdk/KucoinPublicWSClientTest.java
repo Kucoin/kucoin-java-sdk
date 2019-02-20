@@ -15,6 +15,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.hamcrest.core.Is;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.kucoin.sdk.model.enums.PublicChannelEnum;
@@ -50,6 +51,7 @@ public class KucoinPublicWSClientTest {
     }
 
     @Test
+    @Ignore
     public void onTicker() throws Exception {
         AtomicReference<TickerResponse> event = new AtomicReference<>();
         CountDownLatch gotEvent = new CountDownLatch(1);
@@ -86,6 +88,7 @@ public class KucoinPublicWSClientTest {
     }
 
     @Test
+    @Ignore
     public void onMatchExecutionData() throws Exception {
         AtomicReference<MatchExcutionChangeEvent> event = new AtomicReference<>();
         CountDownLatch gotEvent = new CountDownLatch(1);
