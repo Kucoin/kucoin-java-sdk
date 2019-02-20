@@ -40,6 +40,9 @@ public class AuthenticationInterceptor implements Interceptor {
     /**
      * Constructor of API - keys are loaded from VM options, environment variables, resource files
      *
+     * @param apiKey The API key.
+     * @param secret The API secret.
+     * @param passPhrase The API passphrase.
      * @throws KucoinApiException in case of any error
      */
     public AuthenticationInterceptor(String apiKey, String secret, String passPhrase) {
@@ -84,12 +87,12 @@ public class AuthenticationInterceptor implements Interceptor {
     }
 
     /**
-     * generate sign info
+     * Generates signature info.
      *
-     * @param request
-     * @param apiSecret
-     * @param timestamp
-     * @return
+     * @param request The HTTP request.
+     * @param apiSecret API secret.
+     * @param timestamp Timestamp.
+     * @return THe signature.
      */
     public static String genSignature(Request request, String apiSecret, String timestamp) {
         String endpoint = request.url().encodedPath();
@@ -115,10 +118,10 @@ public class AuthenticationInterceptor implements Interceptor {
     }
 
     /**
-     * Get http request body info
+     * Get http request body info.
      *
-     * @param request
-     * @return
+     * @param request The request
+     * @return The request body.
      */
     public static String getRequestBody(Request request) {
         if (request.body() == null) {
