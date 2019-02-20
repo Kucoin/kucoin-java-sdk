@@ -18,8 +18,13 @@ import java.lang.annotation.Annotation;
  * Created by chenshiwei on 2019/1/10.
  */
 public abstract class AbstractRetrofitAPIImpl<T> {
+    
+    private static final ObjectMapper OBJECTMAPPER = new ObjectMapper();
+    {
+        OBJECTMAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
 
-    private static final Converter.Factory jacksonConverterFactory = JacksonConverterFactory.create();
+    private static final Converter.Factory jacksonConverterFactory = JacksonConverterFactory.create(OBJECTMAPPER);
 
     @SuppressWarnings("unchecked")
     private static final Converter<ResponseBody, KucoinResponse> errorBodyConverter =
