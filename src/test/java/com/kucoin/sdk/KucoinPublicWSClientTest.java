@@ -60,9 +60,10 @@ public class KucoinPublicWSClientTest {
             gotEvent.countDown();
         }, "ETH-BTC", "KCS-BTC");
 
+        // Make some actual executions
         buyAndSell();
 
-        assertTrue(gotEvent.await(60, TimeUnit.SECONDS));
+        assertTrue(gotEvent.await(20, TimeUnit.SECONDS));
         System.out.println(event.get());
     }
 
@@ -80,7 +81,7 @@ public class KucoinPublicWSClientTest {
         // Trigger a market change
         placeOrderAndCancelOrder();
 
-        assertTrue(gotEvent.await(60, TimeUnit.SECONDS));
+        assertTrue(gotEvent.await(20, TimeUnit.SECONDS));
         System.out.println(event.get());
     }
 
@@ -95,9 +96,10 @@ public class KucoinPublicWSClientTest {
             gotEvent.countDown();
         }, "ETH-BTC", "KCS-BTC");
 
+        // Make some actual executions
         buyAndSell();
 
-        assertTrue(gotEvent.await(60, TimeUnit.SECONDS));
+        assertTrue(gotEvent.await(20, TimeUnit.SECONDS));
         System.out.println(event.get());
     }
 
@@ -115,7 +117,7 @@ public class KucoinPublicWSClientTest {
         // Trigger a market change
         placeOrderAndCancelOrder();
 
-        assertTrue(gotEvent.await(60, TimeUnit.SECONDS));
+        assertTrue(gotEvent.await(20, TimeUnit.SECONDS));
         System.out.println(event.get());
     }
 
@@ -126,7 +128,8 @@ public class KucoinPublicWSClientTest {
         assertThat(ping, Is.is(requestId));
     }
 
-    private void placeOrderAndCancelOrder() {
+    private void placeOrderAndCancelOrder() throws InterruptedException {
+      Thread.sleep(1000);
       OrderCreateApiRequest request = OrderCreateApiRequest.builder()
               .price(BigDecimal.valueOf(0.000001)).size(BigDecimal.ONE).side("buy")
               .symbol("ETH-BTC").type("limit").clientOid(UUID.randomUUID().toString()).build();
@@ -134,7 +137,8 @@ public class KucoinPublicWSClientTest {
       kucoinPrivateWSClient.orderAPI().cancelOrder(order.getOrderId());
     }
 
-    private void buyAndSell() {
+    private void buyAndSell() throws InterruptedException {
+      Thread.sleep(1000);
       OrderCreateApiRequest request1 = OrderCreateApiRequest.builder()
               .size(new BigDecimal("0.001"))
               .side("buy")
