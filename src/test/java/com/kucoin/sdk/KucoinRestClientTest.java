@@ -65,6 +65,16 @@ public class KucoinRestClientTest {
         endAt = LocalDateTime.of(2019, 1, 21, 0, 0, 0).toEpochSecond(ZoneOffset.of("+8"));
     }
 
+    /**
+     * Check that we can get all account balances.
+     */
+    @Test
+    public void accountAPIMulti() throws Exception {
+        List<AccountBalancesResponse> accountBalancesResponses
+          = kucoinRestClient.accountAPI().listAccounts(null, null);
+        assertThat(accountBalancesResponses.size(), Is.is(6));
+    }
+
     @Test
     public void accountAPI() throws Exception {
         List<AccountBalancesResponse> accountBalancesResponses = kucoinRestClient.accountAPI().listAccounts("BTC", null);
