@@ -3,6 +3,8 @@
  */
 package com.kucoin.sdk.rest.impl.retrofit;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kucoin.sdk.exception.KucoinApiException;
 import com.kucoin.sdk.rest.response.KucoinResponse;
 import okhttp3.ResponseBody;
