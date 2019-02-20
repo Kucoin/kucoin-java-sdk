@@ -3,24 +3,25 @@
  */
 package com.kucoin.sdk.rest.impl.retrofit;
 
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kucoin.sdk.exception.KucoinApiException;
 import com.kucoin.sdk.rest.response.KucoinResponse;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Converter;
 import retrofit2.Response;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-
 /**
  * Created by chenshiwei on 2019/1/10.
  */
 public abstract class AbstractRetrofitAPIImpl<T> {
-    
+
     private static final ObjectMapper OBJECTMAPPER = new ObjectMapper();
     {
         OBJECTMAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -61,8 +62,7 @@ public abstract class AbstractRetrofitAPIImpl<T> {
                 throw new KucoinApiException(errorResponse.getCode(), errorResponse.getMsg());
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException("I/O error", e);
         }
     }
 

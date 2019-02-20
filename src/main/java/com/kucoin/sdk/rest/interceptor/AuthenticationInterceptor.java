@@ -33,9 +33,9 @@ public class AuthenticationInterceptor implements Interceptor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationInterceptor.class);
 
-    public String apiKey;
-    public String secret;
-    public String passPhrase;
+    private String apiKey;
+    private String secret;
+    private String passPhrase;
 
     /**
      * Constructor of API - keys are loaded from VM options, environment variables, resource files
@@ -131,7 +131,7 @@ public class AuthenticationInterceptor implements Interceptor {
         try {
             request.body().writeTo(buffer);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("I/O error fetching request body", e);
         }
 
         //编码设为UTF-8
