@@ -3,9 +3,9 @@
  */
 package com.kucoin.sdk.rest.response;
 
-import lombok.Data;
-
 import java.math.BigDecimal;
+
+import lombok.Data;
 
 /**
  * Created by chenshiwei on 2019/1/10.
@@ -26,5 +26,7 @@ public class TickerResponse {
     private BigDecimal bestAskSize;
 
     private BigDecimal bestBidSize;
+
+    private long time;
 
 }

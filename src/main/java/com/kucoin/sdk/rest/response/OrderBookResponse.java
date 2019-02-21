@@ -4,6 +4,7 @@
 package com.kucoin.sdk.rest.response;
 
 import com.kucoin.sdk.model.OrderBook;
+
 import lombok.Data;
 
 /**
@@ -13,5 +14,7 @@ import lombok.Data;
 public class OrderBookResponse extends OrderBook {
 
     private String sequence;
+
+    private long time;
 
 }

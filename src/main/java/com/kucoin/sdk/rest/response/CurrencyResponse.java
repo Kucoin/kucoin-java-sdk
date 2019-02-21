@@ -3,6 +3,8 @@
  */
 package com.kucoin.sdk.rest.response;
 
+import java.math.BigDecimal;
+
 import lombok.Data;
 
 /**
@@ -17,4 +19,12 @@ public class CurrencyResponse {
     private String name;
 
     private int precision;
+
+    private BigDecimal withdrawalMinFee;
+
+    private BigDecimal withdrawalMinSize;
+
+    private boolean isIsWithdrawEnabled;
+
+    private boolean isIsDepositEnabled;
 }

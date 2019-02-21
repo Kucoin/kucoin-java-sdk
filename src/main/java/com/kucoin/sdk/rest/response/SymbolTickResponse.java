@@ -39,6 +39,6 @@ public class SymbolTickResponse {
 
     private BigDecimal sell;
 
-    private String time;
+    private long time;
 
 }
