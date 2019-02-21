@@ -14,36 +14,45 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
  */
 public class RetrofitFactory {
 
-    private static volatile Retrofit publicRetorfit;
+    private static volatile boolean publicInited;
+    private static Retrofit publicRetrofit;
 
-    private static volatile Retrofit authRetorfit;
+    private static volatile boolean authInited;
+    private static Retrofit authRetrofit;
 
-    private static final Converter.Factory jacksonConverterFactory = JacksonConverterFactory.create(KucoinObjectMapper.INSTANCE);
+    private static final Converter.Factory CONVERTER_FACTORY = JacksonConverterFactory.create(KucoinObjectMapper.INSTANCE);
 
     public static Retrofit getPublicRetorfit(String baseUrl) {
+        if (publicInited)
+            return publicRetrofit;
         synchronized (RetrofitFactory.class) {
-            if (publicRetorfit == null) {
-                publicRetorfit = new Retrofit.Builder()
-                        .baseUrl(baseUrl)
-                        .addConverterFactory(jacksonConverterFactory)
-                        .client(HttpClientFactory.getPublicClient())
-                        .build();
-            }
-            return publicRetorfit;
+            if (publicInited)
+                return publicRetrofit;
+            publicInited = true;
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(baseUrl)
+                    .addConverterFactory(CONVERTER_FACTORY)
+                    .client(HttpClientFactory.getPublicClient())
+                    .build();
+            publicRetrofit = retrofit;
+            return retrofit;
         }
     }
 
     public static Retrofit getAuthRetorfit(String baseUrl, String apiKey, String secret, String passPhrase) {
+        if (authInited)
+            return authRetrofit;
         synchronized (RetrofitFactory.class) {
-            if (authRetorfit == null) {
-                authRetorfit = new Retrofit.Builder()
-                        .baseUrl(baseUrl)
-                        .addConverterFactory(jacksonConverterFactory)
-                        .client(HttpClientFactory.getAuthClient(apiKey, secret, passPhrase))
-                        .build();
-            }
-            return authRetorfit;
+            if (authInited)
+                return authRetrofit;
+            authInited = true;
+            Retrofit retrofit =  new Retrofit.Builder()
+                    .baseUrl(baseUrl)
+                    .addConverterFactory(CONVERTER_FACTORY)
+                    .client(HttpClientFactory.getAuthClient(apiKey, secret, passPhrase))
+                    .build();
+            authRetrofit = retrofit;
+            return retrofit;
         }
     }
-
 }

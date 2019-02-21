@@ -24,8 +24,8 @@ public abstract class AbstractRetrofitAPIImpl<T> {
     private static final Converter.Factory jacksonConverterFactory = JacksonConverterFactory.create(KucoinObjectMapper.INSTANCE);
 
     @SuppressWarnings("unchecked")
-    private static final Converter<ResponseBody, KucoinResponse> errorBodyConverter =
-            (Converter<ResponseBody, KucoinResponse>) jacksonConverterFactory.responseBodyConverter(
+    private static final Converter<ResponseBody, KucoinResponse<?>> errorBodyConverter =
+            (Converter<ResponseBody, KucoinResponse<?>>) jacksonConverterFactory.responseBodyConverter(
                     KucoinResponse.class, new Annotation[0], null);
 
     protected String baseUrl;
@@ -47,7 +47,7 @@ public abstract class AbstractRetrofitAPIImpl<T> {
             if (response.isSuccessful() && response.body().isSuccessful()) {
                 return response.body().getData();
             } else {
-                KucoinResponse errorResponse;
+                KucoinResponse<?> errorResponse;
                 if (response.isSuccessful()) {
                     errorResponse = response.body();
                 } else {
@@ -63,7 +63,7 @@ public abstract class AbstractRetrofitAPIImpl<T> {
     /**
      * Extracts and converts the response error body into an object.
      */
-    public KucoinResponse getErrorResponse(Response<?> response) throws IOException, KucoinApiException {
+    public KucoinResponse<?> getErrorResponse(Response<?> response) throws IOException, KucoinApiException {
         return errorBodyConverter.convert(response.errorBody());
     }
 
