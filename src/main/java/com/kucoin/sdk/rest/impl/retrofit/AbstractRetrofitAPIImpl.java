@@ -6,8 +6,7 @@ package com.kucoin.sdk.rest.impl.retrofit;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kucoin.sdk.KucoinObjectMapper;
 import com.kucoin.sdk.exception.KucoinApiException;
 import com.kucoin.sdk.rest.response.KucoinResponse;
 
@@ -22,12 +21,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
  */
 public abstract class AbstractRetrofitAPIImpl<T> {
 
-    private static final ObjectMapper OBJECTMAPPER = new ObjectMapper();
-    {
-        OBJECTMAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    }
-
-    private static final Converter.Factory jacksonConverterFactory = JacksonConverterFactory.create(OBJECTMAPPER);
+    private static final Converter.Factory jacksonConverterFactory = JacksonConverterFactory.create(KucoinObjectMapper.INSTANCE);
 
     @SuppressWarnings("unchecked")
     private static final Converter<ResponseBody, KucoinResponse> errorBodyConverter =
@@ -62,7 +56,7 @@ public abstract class AbstractRetrofitAPIImpl<T> {
                 throw new KucoinApiException(errorResponse.getCode(), errorResponse.getMsg());
             }
         } catch (IOException e) {
-            throw new RuntimeException("I/O error", e);
+            throw new RuntimeException("I/O error: " + e.getMessage(), e);
         }
     }
 

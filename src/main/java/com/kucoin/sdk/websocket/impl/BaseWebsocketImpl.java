@@ -11,8 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kucoin.sdk.KucoinObjectMapper;
 import com.kucoin.sdk.model.InstanceServer;
 import com.kucoin.sdk.rest.response.WebsocketTokenResponse;
 import com.kucoin.sdk.websocket.ChooseServerStrategy;
@@ -27,11 +26,6 @@ import okhttp3.WebSocketListener;
  * Created by chenshiwei on 2019/1/18.
  */
 public class BaseWebsocketImpl implements Closeable {
-
-    private static final ObjectMapper OBJECTMAPPER = new ObjectMapper();
-    {
-      OBJECTMAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseWebsocketImpl.class);
 
@@ -103,7 +97,7 @@ public class BaseWebsocketImpl implements Closeable {
 
     private String serialize(Object o) {
       try {
-        return OBJECTMAPPER.writeValueAsString(o);
+        return KucoinObjectMapper.INSTANCE.writeValueAsString(o);
       } catch (JsonProcessingException e) {
         throw new RuntimeException("Failure serializing object", e);
       }

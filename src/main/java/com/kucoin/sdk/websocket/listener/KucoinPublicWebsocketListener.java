@@ -14,9 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kucoin.sdk.KucoinObjectMapper;
 import com.kucoin.sdk.rest.response.TickerResponse;
 import com.kucoin.sdk.websocket.KucoinAPICallback;
 import com.kucoin.sdk.websocket.PrintCallback;
@@ -36,11 +35,6 @@ import okhttp3.WebSocketListener;
  */
 @Data
 public class KucoinPublicWebsocketListener extends WebSocketListener {
-
-    private static final ObjectMapper OBJECTMAPPER = new ObjectMapper();
-    {
-        OBJECTMAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KucoinPublicWebsocketListener.class);
 
@@ -89,7 +83,7 @@ public class KucoinPublicWebsocketListener extends WebSocketListener {
 
     private JsonNode tree(String text) {
       try {
-        return OBJECTMAPPER.readTree(text);
+        return KucoinObjectMapper.INSTANCE.readTree(text);
       } catch (IOException e) {
         throw new RuntimeException("Failed to deserialise message: " + text, e);
       }
@@ -97,7 +91,7 @@ public class KucoinPublicWebsocketListener extends WebSocketListener {
 
     private <T> T deserialize(String text, TypeReference<T> typeReference) {
       try {
-        return OBJECTMAPPER.readValue(text, typeReference);
+        return KucoinObjectMapper.INSTANCE.readValue(text, typeReference);
       } catch (IOException e) {
         throw new RuntimeException("Failed to deserialise message: " + text, e);
       }
