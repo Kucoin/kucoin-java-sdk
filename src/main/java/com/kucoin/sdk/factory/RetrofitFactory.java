@@ -3,6 +3,8 @@
  */
 package com.kucoin.sdk.factory;
 
+import com.kucoin.sdk.KucoinObjectMapper;
+
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
@@ -16,7 +18,7 @@ public class RetrofitFactory {
 
     private static volatile Retrofit authRetorfit;
 
-    private static final Converter.Factory jacksonConverterFactory = JacksonConverterFactory.create();
+    private static final Converter.Factory jacksonConverterFactory = JacksonConverterFactory.create(KucoinObjectMapper.INSTANCE);
 
     public static Retrofit getPublicRetorfit(String baseUrl) {
         synchronized (RetrofitFactory.class) {
