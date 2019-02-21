@@ -3,15 +3,18 @@
  */
 package com.kucoin.sdk.rest.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-import lombok.ToString;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.Data;
+import lombok.ToString;
+
 @Data
 @ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TradeResponse {
 
     private String symbol;

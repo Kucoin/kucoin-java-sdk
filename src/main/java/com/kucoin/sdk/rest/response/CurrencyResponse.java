@@ -5,12 +5,15 @@ package com.kucoin.sdk.rest.response;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
 
 /**
  * Created by devin@kucoin.com on 2018-12-27.
  */
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CurrencyResponse {
     private String fullName;
 

@@ -4,16 +4,19 @@
 
 package com.kucoin.sdk.rest.response;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 /**
  * Created by zicong.lu on 2018/12/21.
  */
 @Data
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Pagination<T> {
 
     private Integer currentPage;

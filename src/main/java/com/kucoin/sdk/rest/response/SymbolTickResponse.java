@@ -5,6 +5,8 @@ package com.kucoin.sdk.rest.response;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
 
 /**
@@ -13,6 +15,7 @@ import lombok.Data;
  * @Description:
  */
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SymbolTickResponse {
 
     private String symbol;
