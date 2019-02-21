@@ -3,9 +3,9 @@
  */
 package com.kucoin.sdk.rest.response;
 
-import lombok.Data;
-
 import java.math.BigDecimal;
+
+import lombok.Data;
 
 /**
  * @author: yi.yang
@@ -32,5 +32,13 @@ public class SymbolTickResponse {
     private BigDecimal vol;
 
     private BigDecimal volValue;
+
+    private BigDecimal last;
+
+    private BigDecimal buy;
+
+    private BigDecimal sell;
+
+    private String time;
 
 }
