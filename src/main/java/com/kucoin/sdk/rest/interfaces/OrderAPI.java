@@ -8,7 +8,6 @@ import com.kucoin.sdk.rest.response.OrderCancelResponse;
 import com.kucoin.sdk.rest.response.OrderCreateResponse;
 import com.kucoin.sdk.rest.response.OrderResponse;
 import com.kucoin.sdk.rest.response.Pagination;
-import retrofit2.http.Query;
 
 /**
  * Created by chenshiwei on 2019/1/9.

@@ -48,7 +48,7 @@ public class BaseWebsocketImpl implements Closeable {
     }
 
     protected String ping(String requestId) {
-        KucoinEvent ping = new KucoinEvent();
+        KucoinEvent<Void> ping = new KucoinEvent<>();
         ping.setId(requestId);
         ping.setType("ping");
         if (webSocket.send(serialize(ping))) {
@@ -59,7 +59,7 @@ public class BaseWebsocketImpl implements Closeable {
 
     protected String subscribe(String topic, boolean privateChannel, boolean response) {
         String uuid = UUID.randomUUID().toString();
-        KucoinEvent subscribe = new KucoinEvent();
+        KucoinEvent<Void> subscribe = new KucoinEvent<>();
         subscribe.setId(uuid);
         subscribe.setType("subscribe");
         subscribe.setTopic(topic);
@@ -73,7 +73,7 @@ public class BaseWebsocketImpl implements Closeable {
 
     protected String unsubscribe(String topic, boolean privateChannel, boolean response) {
         String uuid = UUID.randomUUID().toString();
-        KucoinEvent subscribe = new KucoinEvent();
+        KucoinEvent<Void> subscribe = new KucoinEvent<>();
         subscribe.setId(uuid);
         subscribe.setType("unsubscribe");
         subscribe.setTopic(topic);

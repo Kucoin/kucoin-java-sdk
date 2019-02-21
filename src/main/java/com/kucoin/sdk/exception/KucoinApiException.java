@@ -8,6 +8,8 @@ package com.kucoin.sdk.exception;
  */
 public class KucoinApiException extends RuntimeException {
 
+    private static final long serialVersionUID = 8592824166988095909L;
+
     private String code;
 
     public KucoinApiException(String message) {
