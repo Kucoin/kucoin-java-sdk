@@ -3,6 +3,7 @@
  */
 package com.kucoin.sdk.rest.interfaces;
 
+import com.kucoin.sdk.rest.response.AllTickersResponse;
 import com.kucoin.sdk.rest.response.SymbolResponse;
 import com.kucoin.sdk.rest.response.SymbolTickResponse;
 import com.kucoin.sdk.rest.response.TickerResponse;
@@ -30,6 +31,13 @@ public interface SymbolAPI {
     TickerResponse getTicker(String symbol);
 
     /**
+     * Require market ticker for all trading pairs in the market (including 24h volume).
+     *
+     * @return
+     */
+    AllTickersResponse getAllTickers();
+
+    /**
      * Get 24 hr stats for the symbol.
      * volume is in base currency units. open, high, low are in quote currency units.
      *
@@ -38,4 +46,10 @@ public interface SymbolAPI {
      */
     SymbolTickResponse get24hrStats(String symbol);
 
+    /**
+     * Get the transaction currency for the entire trading market.
+     *
+     * @return
+     */
+    List<String> getMarketList();
 }

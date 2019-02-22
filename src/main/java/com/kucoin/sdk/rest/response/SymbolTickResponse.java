@@ -33,4 +33,12 @@ public class SymbolTickResponse {
 
     private BigDecimal volValue;
 
+    private BigDecimal last;
+
+    private BigDecimal buy;
+
+    private BigDecimal sell;
+
+    private Long time;
+
 }

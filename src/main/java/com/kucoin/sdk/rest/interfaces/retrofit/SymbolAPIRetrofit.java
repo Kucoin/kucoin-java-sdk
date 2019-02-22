@@ -3,6 +3,7 @@
  */
 package com.kucoin.sdk.rest.interfaces.retrofit;
 
+import com.kucoin.sdk.rest.response.AllTickersResponse;
 import com.kucoin.sdk.rest.response.KucoinResponse;
 import com.kucoin.sdk.rest.response.SymbolResponse;
 import com.kucoin.sdk.rest.response.SymbolTickResponse;
@@ -26,4 +27,10 @@ public interface SymbolAPIRetrofit {
 
     @GET("api/v1/market/stats")
     Call<KucoinResponse<SymbolTickResponse>> getMarketStats(@Query("symbol") String symbol);
+
+    @GET("api/v1/market/allTickers")
+    Call<KucoinResponse<AllTickersResponse>> getAllTickers();
+
+    @GET("api/v1/markets")
+    Call<KucoinResponse<List<String>>> getMarketList();
 }

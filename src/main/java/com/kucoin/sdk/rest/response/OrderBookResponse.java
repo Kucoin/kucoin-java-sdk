@@ -14,4 +14,6 @@ public class OrderBookResponse extends OrderBook {
 
     private String sequence;
 
+    private Long time;
+
 }

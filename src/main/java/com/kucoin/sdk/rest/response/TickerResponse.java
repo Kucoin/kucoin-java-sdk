@@ -23,6 +23,8 @@ public class TickerResponse {
 
     private BigDecimal price;
 
+    private Long time;
+
     private BigDecimal bestAskSize;
 
     private BigDecimal bestBidSize;

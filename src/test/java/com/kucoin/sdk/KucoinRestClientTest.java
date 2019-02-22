@@ -10,6 +10,7 @@ import com.kucoin.sdk.rest.response.AccountBalanceResponse;
 import com.kucoin.sdk.rest.response.AccountBalancesResponse;
 import com.kucoin.sdk.rest.response.AccountDetailResponse;
 import com.kucoin.sdk.rest.response.AccountHoldsResponse;
+import com.kucoin.sdk.rest.response.AllTickersResponse;
 import com.kucoin.sdk.rest.response.CurrencyDetailResponse;
 import com.kucoin.sdk.rest.response.CurrencyResponse;
 import com.kucoin.sdk.rest.response.OrderBookResponse;
@@ -170,6 +171,14 @@ public class KucoinRestClientTest {
 
         SymbolTickResponse hrStats = kucoinRestClient.symbolAPI().get24hrStats("ETH-BTC");
         assertThat(hrStats, notNullValue());
+
+        List<String> marketList = kucoinRestClient.symbolAPI().getMarketList();
+        assertThat(marketList.size(), greaterThan(1));
+
+        AllTickersResponse allTickers = kucoinRestClient.symbolAPI().getAllTickers();
+        assertThat(allTickers, notNullValue());
+        assertThat(allTickers.getTicker().size(), greaterThan(1));
+
     }
 
     @Test
@@ -203,6 +212,10 @@ public class KucoinRestClientTest {
 
         CurrencyDetailResponse kcs = kucoinRestClient.currencyAPI().getCurrencyDetail("KCS");
         assertThat(kcs, notNullValue());
+
+        Map<String, BigDecimal> fiatPrice = kucoinRestClient.currencyAPI().getFiatPrice("USD", "KCS, BTC");
+        assertThat(fiatPrice, notNullValue());
+        assertThat(fiatPrice.keySet().size(), greaterThan(1));
     }
 
     @Test

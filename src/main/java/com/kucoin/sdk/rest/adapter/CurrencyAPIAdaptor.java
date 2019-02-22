@@ -9,7 +9,9 @@ import com.kucoin.sdk.rest.interfaces.CurrencyAPI;
 import com.kucoin.sdk.rest.response.CurrencyDetailResponse;
 import com.kucoin.sdk.rest.response.CurrencyResponse;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chenshiwei on 2019/1/15.
@@ -28,5 +30,10 @@ public class CurrencyAPIAdaptor extends PublicRetrofitAPIImpl<CurrencyAPIRetrofi
     @Override
     public CurrencyDetailResponse getCurrencyDetail(String currency) {
         return super.executeSync(getAPIImpl().getCurrencyDetail(currency));
+    }
+
+    @Override
+    public Map<String, BigDecimal> getFiatPrice(String base, String currencies) {
+        return super.executeSync(getAPIImpl().getFiatPrice(base, currencies));
     }
 }
