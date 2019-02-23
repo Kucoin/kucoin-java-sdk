@@ -24,7 +24,7 @@ public interface OrderAPI {
      * The maximum matching orders for a single trading pair in one account is 50 (stop limit order included).
      *
      * @param opsRequest
-     * @return
+     * @return A response containing the order id.
      */
     OrderCreateResponse createOrder(OrderCreateApiRequest opsRequest);
 
@@ -34,7 +34,7 @@ public interface OrderAPI {
      * Cancel a previously placed order.
      *
      * @param orderId
-     * @return
+     * @return A response containing the id of the cancelled order.
      */
     OrderCancelResponse cancelOrder(String orderId);
 
@@ -42,7 +42,7 @@ public interface OrderAPI {
      * With best effort, cancel all open orders. The response is a list of ids of the canceled orders.
      *
      * @param symbol
-     * @return
+     * @return A response containing the ids of all open orders.
      */
     OrderCancelResponse cancelAllOrders(String symbol);
 
@@ -50,7 +50,7 @@ public interface OrderAPI {
      * Get a single order by order id.
      *
      * @param orderId
-     * @return
+     * @return The requested order.
      */
     OrderResponse getOrder(String orderId);
 
@@ -65,7 +65,7 @@ public interface OrderAPI {
      * @param endAt       [optional] End time. unix timestamp calculated in milliseconds, the creation time queried shall prior to the end time.
      * @param pageSize
      * @param currentPage
-     * @return
+     * @return A page of orders.
      */
     Pagination<OrderResponse> listOrders(String symbol, String side, String type, String status,
                                          Long startAt, Long endAt, int currentPage, int pageSize);

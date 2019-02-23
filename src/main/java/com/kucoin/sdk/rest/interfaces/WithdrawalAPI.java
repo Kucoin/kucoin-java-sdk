@@ -18,7 +18,7 @@ public interface WithdrawalAPI {
      * get withdrawal quotas
      *
      * @param currency currency. e.g. BTC
-     * @return
+     * @return The withdrawal quotas.
      */
     WithdrawQuotaResponse getWithdrawQuotas(String currency);
 
@@ -26,7 +26,7 @@ public interface WithdrawalAPI {
      * apply withdraw
      *
      * @param request
-     * @return
+     * @return A response containing the withdrawal id.
      */
     WithdrawApplyResponse applyWithdraw(WithdrawApplyRequest request);
 
@@ -46,7 +46,7 @@ public interface WithdrawalAPI {
      * @param endAt       End time. unix timestamp calculated in milliseconds, the creation time queried shall prior to the end time.
      * @param currentPage
      * @param pageSize
-     * @return
+     * @return A page of withdrawals.
      */
     Pagination<WithdrawResponse> getWithdrawList(String currency, String status, long startAt,
                                                  long endAt, int currentPage, int pageSize);

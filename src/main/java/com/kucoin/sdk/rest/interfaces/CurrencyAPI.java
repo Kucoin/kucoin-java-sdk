@@ -3,10 +3,10 @@
  */
 package com.kucoin.sdk.rest.interfaces;
 
+import java.util.List;
+
 import com.kucoin.sdk.rest.response.CurrencyDetailResponse;
 import com.kucoin.sdk.rest.response.CurrencyResponse;
-
-import java.util.List;
 
 /**
  * Created by chenshiwei on 2019/1/11.
@@ -16,7 +16,7 @@ public interface CurrencyAPI {
     /**
      * List known currencies.
      *
-     * @return
+     * @return Currencies.
      */
     List<CurrencyResponse> getCurrencies();
 
@@ -24,7 +24,7 @@ public interface CurrencyAPI {
      * Get single currency detail
      *
      * @param currency the code of the currency
-     * @return
+     * @return Currency detail.
      */
     CurrencyDetailResponse getCurrencyDetail(String currency);
 }

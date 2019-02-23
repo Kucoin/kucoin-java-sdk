@@ -13,7 +13,7 @@ public interface WebsocketPrivateAPI {
     /**
      * apply for a private token to create a websocket connection
      *
-     * @return
+     * @return A new private API token.
      */
     WebsocketTokenResponse getPrivateToken();
 

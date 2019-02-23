@@ -11,7 +11,7 @@ public interface TimeAPI {
     /**
      * Get the API server time.
      *
-     * @return
+     * @return The current server time.
      */
     Long getServerTimeStamp();
 

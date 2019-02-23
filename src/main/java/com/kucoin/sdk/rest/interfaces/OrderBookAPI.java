@@ -18,7 +18,7 @@ public interface OrderBookAPI {
      * To maintain up-to-date Order Book in real time, please use it with Websocket Feed.
      *
      * @param symbol
-     * @return
+     * @return The aggregated part order book.
      */
     OrderBookResponse getPartOrderBookAggregated(String symbol);
 
@@ -30,7 +30,7 @@ public interface OrderBookAPI {
      * To maintain up-to-date Order Book in real time, please use it with Websocket Feed.
      *
      * @param symbol
-     * @return
+     * @return The aggregated full order book.
      */
     OrderBookResponse getFullOrderBookAggregated(String symbol);
 
@@ -41,7 +41,7 @@ public interface OrderBookAPI {
      * To Maintain up-to-date Order Book in real time, please use it with Websocket Feed.
      *
      * @param symbol
-     * @return
+     * @return The full atomic order book.
      */
     OrderBookResponse getFullOrderBookAtomic(String symbol);
 

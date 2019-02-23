@@ -3,11 +3,11 @@
  */
 package com.kucoin.sdk.rest.interfaces;
 
+import java.util.List;
+
 import com.kucoin.sdk.rest.response.SymbolResponse;
 import com.kucoin.sdk.rest.response.SymbolTickResponse;
 import com.kucoin.sdk.rest.response.TickerResponse;
-
-import java.util.List;
 
 /**
  * Created by chenshiwei on 2019/1/11.
@@ -17,7 +17,7 @@ public interface SymbolAPI {
     /**
      * Get a list of available currency pairs for trading.
      *
-     * @return
+     * @return The available symbols.
      */
     List<SymbolResponse> getSymbols();
 
@@ -25,7 +25,7 @@ public interface SymbolAPI {
      * Ticker include only the inside (i.e. best) bid and ask data , last price and last trade size.
      *
      * @param symbol
-     * @return
+     * @return The ticker.
      */
     TickerResponse getTicker(String symbol);
 
@@ -34,7 +34,7 @@ public interface SymbolAPI {
      * volume is in base currency units. open, high, low are in quote currency units.
      *
      * @param symbol
-     * @return
+     * @return The 24hr stats for the symbol.
      */
     SymbolTickResponse get24hrStats(String symbol);
 

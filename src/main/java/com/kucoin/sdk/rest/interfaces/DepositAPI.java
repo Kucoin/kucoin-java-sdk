@@ -16,7 +16,7 @@ public interface DepositAPI {
      * Create deposit address of currency for deposit. You can just create one deposit address.
      *
      * @param currency the code of the currency
-     * @return
+     * @return Details of a deposit address.
      */
     DepositAddressResponse createDepositAddress(String currency);
 
@@ -25,7 +25,7 @@ public interface DepositAPI {
      * If return data is null , you may need create a deposit address first.
      *
      * @param currency the code of the currency
-     * @return
+     * @return Details of a deposit address.
      */
     DepositAddressResponse getDepositAddress(String currency);
 
@@ -38,7 +38,7 @@ public interface DepositAPI {
      * @param status      Status. Available value: PROCESSING, SUCCESS, and FAILURE
      * @param currentPage
      * @param pageSize
-     * @return
+     * @return A page of deposits.
      */
     Pagination<DepositResponse> getDepositPageList(String currency, long startAt, long endAt,
                                                    String status, int currentPage,int pageSize);

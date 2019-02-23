@@ -3,6 +3,8 @@
  */
 package com.kucoin.sdk;
 
+import java.io.IOException;
+
 import com.kucoin.sdk.model.enums.PublicChannelEnum;
 import com.kucoin.sdk.websocket.KucoinAPICallback;
 import com.kucoin.sdk.websocket.event.KucoinEvent;
@@ -10,8 +12,6 @@ import com.kucoin.sdk.websocket.event.Level2ChangeEvent;
 import com.kucoin.sdk.websocket.event.Level3ChangeEvent;
 import com.kucoin.sdk.websocket.event.MatchExcutionChangeEvent;
 import com.kucoin.sdk.websocket.event.TickerChangeEvent;
-
-import java.io.IOException;
 
 /**
  * Created by chenshiwei on 2019/1/10.
@@ -25,7 +25,7 @@ public interface KucoinPublicWSClient {
      *
      * @param callback
      * @param symbols
-     * @return
+     * @return The subscription UUID, or null if sending failed.
      */
     String onTicker(KucoinAPICallback<KucoinEvent<TickerChangeEvent>> callback, String... symbols);
 
@@ -35,7 +35,7 @@ public interface KucoinPublicWSClient {
      *
      * @param callback
      * @param symbols
-     * @return
+     * @return The subscription UUID, or null if sending failed.
      */
     String onLevel2Data(KucoinAPICallback<KucoinEvent<Level2ChangeEvent>> callback, String... symbols);
 
@@ -46,7 +46,7 @@ public interface KucoinPublicWSClient {
      *
      * @param callback
      * @param symbols
-     * @return
+     * @return The subscription UUID, or null if sending failed.
      */
     String onMatchExecutionData(KucoinAPICallback<KucoinEvent<MatchExcutionChangeEvent>> callback, String... symbols);
 
@@ -57,7 +57,7 @@ public interface KucoinPublicWSClient {
      *
      * @param callback
      * @param symbols
-     * @return
+     * @return The subscription UUID, or null if sending failed.
      */
     String onLevel3Data(KucoinAPICallback<KucoinEvent<Level3ChangeEvent>> callback, String... symbols);
 
@@ -66,7 +66,7 @@ public interface KucoinPublicWSClient {
      * After the ping message is sent to the server, the system would return a pong message to the client side.
      *
      * @param requestId
-     * @return
+     * @return The original request id, or null if sending failed.
      */
     String ping(String requestId);
 
@@ -75,7 +75,7 @@ public interface KucoinPublicWSClient {
      *
      * @param channelEnum
      * @param symbols
-     * @return
+     * @return The unsubscribe request UUID, or null if sending failed.
      */
     String unsubscribe(PublicChannelEnum channelEnum, String... symbols);
 
