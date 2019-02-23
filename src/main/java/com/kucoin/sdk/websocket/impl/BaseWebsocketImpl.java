@@ -25,24 +25,33 @@ import okhttp3.WebSocketListener;
 /**
  * Created by chenshiwei on 2019/1/18.
  */
-public class BaseWebsocketImpl implements Closeable {
+public abstract class BaseWebsocketImpl implements Closeable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseWebsocketImpl.class);
 
-    protected ChooseServerStrategy chooseServerStrategy;
+    private final ChooseServerStrategy chooseServerStrategy;
+    private final OkHttpClient client;
+    private final WebSocketListener listener;
 
-    protected OkHttpClient client;
+    private WebSocket webSocket;
 
-    protected InstanceServer instanceServer;
+    protected BaseWebsocketImpl(OkHttpClient client, WebSocketListener listener, ChooseServerStrategy chooseServerStrategy) {
+      this.client = client;
+      this.listener = listener;
+      this.chooseServerStrategy = chooseServerStrategy;
+    }
 
-    protected WebsocketTokenResponse websocketToken;
+    public void connect() throws IOException {
+      this.webSocket = createNewWebSocket();
+    }
 
-    protected WebSocket webSocket;
+    protected abstract WebsocketTokenResponse requestToken() throws IOException;
 
-    protected WebSocket createNewWebSocket(WebSocketListener listener) {
-        this.instanceServer = chooseServerStrategy.choose(websocketToken.getInstanceServers());
+    private WebSocket createNewWebSocket() throws IOException {
+        WebsocketTokenResponse websocketToken = requestToken();
+        InstanceServer instanceServer = chooseServerStrategy.choose(websocketToken.getInstanceServers());
         String streamingUrl = String.format("%s", instanceServer.getEndpoint()
-                + "?token=" + this.websocketToken.getToken());
+                + "?token=" + websocketToken.getToken());
         Request request = new Request.Builder().url(streamingUrl).build();
         return client.newWebSocket(request, listener);
     }
@@ -89,10 +98,6 @@ public class BaseWebsocketImpl implements Closeable {
     public void close() throws IOException {
         LOGGER.debug("Web Socket Close");
         client.dispatcher().executorService().shutdown();
-    }
-
-    public InstanceServer getInstanceServer() {
-        return instanceServer;
     }
 
     private String serialize(Object o) {

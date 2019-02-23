@@ -3,6 +3,8 @@
  */
 package com.kucoin.sdk.rest.interfaces;
 
+import java.io.IOException;
+
 import com.kucoin.sdk.rest.response.OrderBookResponse;
 
 /**
@@ -20,7 +22,7 @@ public interface OrderBookAPI {
      * @param symbol
      * @return The aggregated part order book.
      */
-    OrderBookResponse getPartOrderBookAggregated(String symbol);
+    OrderBookResponse getPartOrderBookAggregated(String symbol) throws IOException;
 
     /**
      * Get a list of open orders for a symbol.
@@ -32,7 +34,7 @@ public interface OrderBookAPI {
      * @param symbol
      * @return The aggregated full order book.
      */
-    OrderBookResponse getFullOrderBookAggregated(String symbol);
+    OrderBookResponse getFullOrderBookAggregated(String symbol) throws IOException;
 
     /**
      * Get a list of open orders for a symbol. Level-3 order book includes all bids and asks (non-aggregated, each item in Level-3 means a single order).
@@ -43,6 +45,6 @@ public interface OrderBookAPI {
      * @param symbol
      * @return The full atomic order book.
      */
-    OrderBookResponse getFullOrderBookAtomic(String symbol);
+    OrderBookResponse getFullOrderBookAtomic(String symbol) throws IOException;
 
 }

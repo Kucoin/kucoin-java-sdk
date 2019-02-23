@@ -6,6 +6,7 @@ package com.kucoin.sdk;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -71,7 +72,11 @@ public class KucoinPrivateWSClientTest {
 
         new Thread(() -> {
             while (event.get() == null) {
-                placeOrderAndCancelOrder();
+                try {
+                  placeOrderAndCancelOrder();
+                } catch (IOException e) {
+                  throw new RuntimeException(e);
+                }
             }
         }).start();
 
@@ -97,7 +102,11 @@ public class KucoinPrivateWSClientTest {
 
         new Thread(() -> {
             while (event.get() == null) {
-                innerTransfer();
+                try {
+                  innerTransfer();
+                } catch (IOException e) {
+                  throw new RuntimeException(e);
+                }
             }
         }).start();
 
@@ -113,7 +122,7 @@ public class KucoinPrivateWSClientTest {
         assertThat(ping, Is.is(requestId));
     }
 
-    private void placeOrderAndCancelOrder() {
+    private void placeOrderAndCancelOrder() throws IOException {
         OrderCreateApiRequest request = OrderCreateApiRequest.builder()
                 .price(BigDecimal.valueOf(0.000001)).size(BigDecimal.ONE).side("buy")
                 .symbol("ETH-BTC").type("limit").clientOid(UUID.randomUUID().toString()).build();
@@ -121,7 +130,7 @@ public class KucoinPrivateWSClientTest {
         kucoinRestClient.orderAPI().cancelOrder(order.getOrderId());
     }
 
-    private void innerTransfer() {
+    private void innerTransfer() throws IOException {
         List<AccountBalancesResponse> accountBalancesResponses = kucoinRestClient.accountAPI().listAccounts("BTC", null);
         assertThat(accountBalancesResponses.size(), Is.is(2));
         Optional<AccountBalancesResponse> main = accountBalancesResponses.stream()

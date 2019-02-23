@@ -3,6 +3,8 @@
  */
 package com.kucoin.sdk.rest.interfaces;
 
+import java.io.IOException;
+
 import com.kucoin.sdk.rest.response.WebsocketTokenResponse;
 
 /**
@@ -15,6 +17,6 @@ public interface WebsocketPrivateAPI {
      *
      * @return A new private API token.
      */
-    WebsocketTokenResponse getPrivateToken();
+    WebsocketTokenResponse getPrivateToken() throws IOException;
 
 }

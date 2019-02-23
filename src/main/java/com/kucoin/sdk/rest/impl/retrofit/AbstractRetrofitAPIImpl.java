@@ -40,23 +40,20 @@ public abstract class AbstractRetrofitAPIImpl<T> {
 
     /**
      * Execute a REST call and block until the response is received.
+     * @throws IOException On socket related errors.
      */
-    public <R> R executeSync(Call<KucoinResponse<R>> call) {
-        try {
-            Response<KucoinResponse<R>> response = call.execute();
-            if (response.isSuccessful() && response.body().isSuccessful()) {
-                return response.body().getData();
+    public <R> R executeSync(Call<KucoinResponse<R>> call) throws IOException {
+        Response<KucoinResponse<R>> response = call.execute();
+        if (response.isSuccessful() && response.body().isSuccessful()) {
+            return response.body().getData();
+        } else {
+            KucoinResponse<?> errorResponse;
+            if (response.isSuccessful()) {
+                errorResponse = response.body();
             } else {
-                KucoinResponse<?> errorResponse;
-                if (response.isSuccessful()) {
-                    errorResponse = response.body();
-                } else {
-                    errorResponse = getErrorResponse(response);
-                }
-                throw new KucoinApiException(errorResponse.getCode(), errorResponse.getMsg());
+                errorResponse = getErrorResponse(response);
             }
-        } catch (IOException e) {
-            throw new RuntimeException("I/O error: " + e.getMessage(), e);
+            throw new KucoinApiException(errorResponse.getCode(), errorResponse.getMsg());
         }
     }
 

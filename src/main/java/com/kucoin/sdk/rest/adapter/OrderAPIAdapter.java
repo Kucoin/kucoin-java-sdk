@@ -3,6 +3,8 @@
  */
 package com.kucoin.sdk.rest.adapter;
 
+import java.io.IOException;
+
 import com.kucoin.sdk.rest.impl.retrofit.AuthRetrofitAPIImpl;
 import com.kucoin.sdk.rest.interfaces.OrderAPI;
 import com.kucoin.sdk.rest.interfaces.retrofit.OrderAPIRetrofit;
@@ -25,29 +27,29 @@ public class OrderAPIAdapter extends AuthRetrofitAPIImpl<OrderAPIRetrofit> imple
     }
 
     @Override
-    public OrderCreateResponse createOrder(OrderCreateApiRequest opsRequest) {
+    public OrderCreateResponse createOrder(OrderCreateApiRequest opsRequest) throws IOException {
         return executeSync(getAPIImpl().createOrder(opsRequest));
     }
 
     @Override
-    public OrderCancelResponse cancelOrder(String orderId) {
+    public OrderCancelResponse cancelOrder(String orderId) throws IOException {
         return executeSync(getAPIImpl().cancelOrder(orderId));
     }
 
     @Override
-    public OrderCancelResponse cancelAllOrders(String symbol) {
+    public OrderCancelResponse cancelAllOrders(String symbol) throws IOException {
         return executeSync(getAPIImpl().cancelOrders(symbol));
     }
 
     @Override
-    public OrderResponse getOrder(String orderId) {
+    public OrderResponse getOrder(String orderId) throws IOException {
         return executeSync(getAPIImpl().getOrder(orderId));
     }
 
     @Override
     public Pagination<OrderResponse> listOrders(String symbol, String side, String type,
                                                 String status, Long start,
-                                                Long end, int pageSize, int currentPage) {
+                                                Long end, int pageSize, int currentPage) throws IOException {
         return executeSync(getAPIImpl().queryOrders(symbol, side, type, status,
                 start, end, pageSize, currentPage));
     }

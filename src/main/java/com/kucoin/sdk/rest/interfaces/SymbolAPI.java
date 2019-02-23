@@ -3,6 +3,7 @@
  */
 package com.kucoin.sdk.rest.interfaces;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.kucoin.sdk.rest.response.SymbolResponse;
@@ -19,7 +20,7 @@ public interface SymbolAPI {
      *
      * @return The available symbols.
      */
-    List<SymbolResponse> getSymbols();
+    List<SymbolResponse> getSymbols() throws IOException;
 
     /**
      * Ticker include only the inside (i.e. best) bid and ask data , last price and last trade size.
@@ -27,7 +28,7 @@ public interface SymbolAPI {
      * @param symbol
      * @return The ticker.
      */
-    TickerResponse getTicker(String symbol);
+    TickerResponse getTicker(String symbol) throws IOException;
 
     /**
      * Get 24 hr stats for the symbol.
@@ -36,6 +37,6 @@ public interface SymbolAPI {
      * @param symbol
      * @return The 24hr stats for the symbol.
      */
-    SymbolTickResponse get24hrStats(String symbol);
+    SymbolTickResponse get24hrStats(String symbol) throws IOException;
 
 }

@@ -3,6 +3,8 @@
  */
 package com.kucoin.sdk.rest.interfaces;
 
+import java.io.IOException;
+
 import com.kucoin.sdk.rest.response.DepositAddressResponse;
 import com.kucoin.sdk.rest.response.DepositResponse;
 import com.kucoin.sdk.rest.response.Pagination;
@@ -18,7 +20,7 @@ public interface DepositAPI {
      * @param currency the code of the currency
      * @return Details of a deposit address.
      */
-    DepositAddressResponse createDepositAddress(String currency);
+    DepositAddressResponse createDepositAddress(String currency) throws IOException;
 
     /**
      * Get deposit address of currency for deposit.
@@ -27,7 +29,7 @@ public interface DepositAPI {
      * @param currency the code of the currency
      * @return Details of a deposit address.
      */
-    DepositAddressResponse getDepositAddress(String currency);
+    DepositAddressResponse getDepositAddress(String currency) throws IOException;
 
     /**
      * Get deposit page list.
@@ -41,6 +43,6 @@ public interface DepositAPI {
      * @return A page of deposits.
      */
     Pagination<DepositResponse> getDepositPageList(String currency, long startAt, long endAt,
-                                                   String status, int currentPage,int pageSize);
+                                                   String status, int currentPage,int pageSize) throws IOException;
 
 }

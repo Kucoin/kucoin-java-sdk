@@ -3,12 +3,13 @@
  */
 package com.kucoin.sdk.rest.adapter;
 
+import java.io.IOException;
+import java.util.List;
+
 import com.kucoin.sdk.rest.impl.retrofit.PublicRetrofitAPIImpl;
 import com.kucoin.sdk.rest.interfaces.HistoryAPI;
 import com.kucoin.sdk.rest.interfaces.retrofit.HistoryAPIRetrofit;
 import com.kucoin.sdk.rest.response.TradeHistoryResponse;
-
-import java.util.List;
 
 /**
  * Created by chenshiwei on 2019/1/22.
@@ -20,12 +21,14 @@ public class HistoryAPIAdapter extends PublicRetrofitAPIImpl<HistoryAPIRetrofit>
     }
 
     @Override
-    public List<TradeHistoryResponse> getTradeHistories(String symbol) {
-        return super.executeSync(getAPIImpl().getTradeHistories(symbol));
+    public List<TradeHistoryResponse> getTradeHistories(String symbol) throws IOException {
+        List<TradeHistoryResponse> executeSync = super.executeSync(getAPIImpl().getTradeHistories(symbol));
+        return executeSync;
     }
 
     @Override
-    public List<List<String>> getHistoricRates(String symbol, long startAt, long endAt, String type) {
-        return super.executeSync(getAPIImpl().getHistoricRates(symbol, startAt, endAt, type));
+    public List<List<String>> getHistoricRates(String symbol, long startAt, long endAt, String type) throws IOException {
+        List<List<String>> executeSync = super.executeSync(getAPIImpl().getHistoricRates(symbol, startAt, endAt, type));
+        return executeSync;
     }
 }

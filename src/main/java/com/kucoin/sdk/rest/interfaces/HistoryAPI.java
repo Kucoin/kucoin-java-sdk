@@ -3,6 +3,7 @@
  */
 package com.kucoin.sdk.rest.interfaces;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.kucoin.sdk.rest.response.TradeHistoryResponse;
@@ -18,7 +19,7 @@ public interface HistoryAPI {
      * @param symbol
      * @return The trades for the symbol.
      */
-    List<TradeHistoryResponse> getTradeHistories(String symbol);
+    List<TradeHistoryResponse> getTradeHistories(String symbol) throws IOException;
 
     /**
      * Historic rates for a symbol. Rates are returned in grouped buckets based on requested type.
@@ -40,7 +41,7 @@ public interface HistoryAPI {
      *           The turnover is the sum of the transaction volumes of all orders (Turnover of each order=price*quantity).
      * ]
      */
-    List<List<String>> getHistoricRates(String symbol, long startAt, long endAt, String type);
+    List<List<String>> getHistoricRates(String symbol, long startAt, long endAt, String type) throws IOException;
 
 
 }

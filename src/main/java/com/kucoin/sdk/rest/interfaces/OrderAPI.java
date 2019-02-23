@@ -3,6 +3,8 @@
  */
 package com.kucoin.sdk.rest.interfaces;
 
+import java.io.IOException;
+
 import com.kucoin.sdk.rest.request.OrderCreateApiRequest;
 import com.kucoin.sdk.rest.response.OrderCancelResponse;
 import com.kucoin.sdk.rest.response.OrderCreateResponse;
@@ -26,7 +28,7 @@ public interface OrderAPI {
      * @param opsRequest
      * @return A response containing the order id.
      */
-    OrderCreateResponse createOrder(OrderCreateApiRequest opsRequest);
+    OrderCreateResponse createOrder(OrderCreateApiRequest opsRequest) throws IOException;
 
     /**
      * Cancel an order
@@ -36,7 +38,7 @@ public interface OrderAPI {
      * @param orderId
      * @return A response containing the id of the cancelled order.
      */
-    OrderCancelResponse cancelOrder(String orderId);
+    OrderCancelResponse cancelOrder(String orderId) throws IOException;
 
     /**
      * With best effort, cancel all open orders. The response is a list of ids of the canceled orders.
@@ -44,7 +46,7 @@ public interface OrderAPI {
      * @param symbol
      * @return A response containing the ids of all open orders.
      */
-    OrderCancelResponse cancelAllOrders(String symbol);
+    OrderCancelResponse cancelAllOrders(String symbol) throws IOException;
 
     /**
      * Get a single order by order id.
@@ -52,7 +54,7 @@ public interface OrderAPI {
      * @param orderId
      * @return The requested order.
      */
-    OrderResponse getOrder(String orderId);
+    OrderResponse getOrder(String orderId) throws IOException;
 
     /**
      * List your current orders.
@@ -68,6 +70,6 @@ public interface OrderAPI {
      * @return A page of orders.
      */
     Pagination<OrderResponse> listOrders(String symbol, String side, String type, String status,
-                                         Long startAt, Long endAt, int currentPage, int pageSize);
+                                         Long startAt, Long endAt, int currentPage, int pageSize) throws IOException;
 
 }

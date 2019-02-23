@@ -6,6 +6,7 @@ package com.kucoin.sdk;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
@@ -133,7 +134,7 @@ public class KucoinPublicWSClientTest {
         assertThat(ping, Is.is(requestId));
     }
 
-    private void placeOrderAndCancelOrder() throws InterruptedException {
+    private void placeOrderAndCancelOrder() throws InterruptedException, IOException {
       Thread.sleep(1000);
       OrderCreateApiRequest request = OrderCreateApiRequest.builder()
               .price(BigDecimal.valueOf(0.000001)).size(BigDecimal.ONE).side("buy")
@@ -142,7 +143,7 @@ public class KucoinPublicWSClientTest {
       kucoinPrivateWSClient.orderAPI().cancelOrder(order.getOrderId());
     }
 
-    private void buyAndSell() throws InterruptedException {
+    private void buyAndSell() throws InterruptedException, IOException {
       Thread.sleep(1000);
       OrderCreateApiRequest request1 = OrderCreateApiRequest.builder()
               .size(new BigDecimal("0.001"))

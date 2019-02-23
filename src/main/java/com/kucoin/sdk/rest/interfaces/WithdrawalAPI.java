@@ -3,6 +3,8 @@
  */
 package com.kucoin.sdk.rest.interfaces;
 
+import java.io.IOException;
+
 import com.kucoin.sdk.rest.request.WithdrawApplyRequest;
 import com.kucoin.sdk.rest.response.Pagination;
 import com.kucoin.sdk.rest.response.WithdrawApplyResponse;
@@ -20,7 +22,7 @@ public interface WithdrawalAPI {
      * @param currency currency. e.g. BTC
      * @return The withdrawal quotas.
      */
-    WithdrawQuotaResponse getWithdrawQuotas(String currency);
+    WithdrawQuotaResponse getWithdrawQuotas(String currency) throws IOException;
 
     /**
      * apply withdraw
@@ -28,14 +30,14 @@ public interface WithdrawalAPI {
      * @param request
      * @return A response containing the withdrawal id.
      */
-    WithdrawApplyResponse applyWithdraw(WithdrawApplyRequest request);
+    WithdrawApplyResponse applyWithdraw(WithdrawApplyRequest request) throws IOException;
 
     /**
      * Only withdrawals in processing status could be cancelled.
      *
      * @param withdrawalId unique identity for withdrawal order
      */
-    void cancelWithdraw(String  withdrawalId);
+    void cancelWithdraw(String withdrawalId) throws IOException;
 
     /**
      * check withdrawals list
@@ -49,6 +51,6 @@ public interface WithdrawalAPI {
      * @return A page of withdrawals.
      */
     Pagination<WithdrawResponse> getWithdrawList(String currency, String status, long startAt,
-                                                 long endAt, int currentPage, int pageSize);
+                                                 long endAt, int currentPage, int pageSize) throws IOException;
 
 }

@@ -3,10 +3,12 @@
  */
 package com.kucoin.sdk.rest.interfaces;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+import com.kucoin.sdk.exception.KucoinApiException;
 import com.kucoin.sdk.rest.response.AccountBalanceResponse;
 import com.kucoin.sdk.rest.response.AccountBalancesResponse;
 import com.kucoin.sdk.rest.response.AccountDetailResponse;
@@ -27,16 +29,20 @@ public interface AccountAPI {
      * @param currency The code of the currency
      * @param type Account type:，"main" or "trade"
      * @return The accounts.
+     * @throws IOException on socket errors.
+     * @throws KucoinApiException when errors are returned from the exchange.
      */
-    List<AccountBalancesResponse> listAccounts(String currency, String type);
+    List<AccountBalancesResponse> listAccounts(String currency, String type) throws IOException;
 
     /**
      * Information for a single account. Use this endpoint when you know the accountId.
      *
      * @param accountId id of the account
      * @return The account balance.
+     * @throws IOException on socket errors.
+     * @throws KucoinApiException when errors are returned from the exchange.
      */
-    AccountBalanceResponse getAccount(String accountId);
+    AccountBalanceResponse getAccount(String accountId) throws IOException;
 
     /**
      * Create an account.
@@ -44,8 +50,10 @@ public interface AccountAPI {
      * @param currency the code of the currency
      * @param type Account type ，"main" or "trade"
      * @return The account id.
+     * @throws IOException on socket errors.
+     * @throws KucoinApiException when errors are returned from the exchange.
      */
-    Map<String, String> createAccount(String currency, String type);
+    Map<String, String> createAccount(String currency, String type) throws IOException;
 
     /**
      * List account activity. Account activity either increases or decreases your account balance.
@@ -58,8 +66,10 @@ public interface AccountAPI {
      * @param currentPage The page to fetch
      * @param pageSize    The page size.
      * @return The account activity.
+     * @throws IOException on socket errors.
+     * @throws KucoinApiException when errors are returned from the exchange.
      */
-    Pagination<AccountDetailResponse> getAccountHistory(String accountId, long startAt, long endAt, int currentPage, int pageSize);
+    Pagination<AccountDetailResponse> getAccountHistory(String accountId, long startAt, long endAt, int currentPage, int pageSize) throws IOException;
 
     /**
      * Holds are placed on an account for any active orders or pending withdraw requests.
@@ -71,8 +81,10 @@ public interface AccountAPI {
      * @param currentPage The page to fetch
      * @param pageSize The page size
      * @return The account holds.
+     * @throws IOException on socket errors.
+     * @throws KucoinApiException when errors are returned from the exchange.
      */
-    Pagination<AccountHoldsResponse> getHolds(String accountId, int currentPage, int pageSize);
+    Pagination<AccountHoldsResponse> getHolds(String accountId, int currentPage, int pageSize) throws IOException;
 
     /**
      * The inner transfer interface is used for assets transfer among the accounts of a user and is free of charges on the platform.
@@ -83,7 +95,9 @@ public interface AccountAPI {
      * @param recAccountId Account id of receiver
      * @param amount       Transfer amount, a multiple and positive number of the amount precision.
      * @return The order id.
+     * @throws IOException on socket errors.
+     * @throws KucoinApiException when errors are returned from the exchange.
      */
-    Map<String, String> innerTransfer(String clientOid, String payAccountId, BigDecimal amount, String recAccountId);
+    Map<String, String> innerTransfer(String clientOid, String payAccountId, BigDecimal amount, String recAccountId) throws IOException;
 
 }
