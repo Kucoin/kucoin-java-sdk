@@ -70,6 +70,6 @@ public interface OrderAPI {
      * @return A page of orders.
      */
     Pagination<OrderResponse> listOrders(String symbol, String side, String type, String status,
-                                         Long startAt, Long endAt, int currentPage, int pageSize) throws IOException;
+                                         Long startAt, Long endAt, int pageSize, int currentPage) throws IOException;
 
 }
