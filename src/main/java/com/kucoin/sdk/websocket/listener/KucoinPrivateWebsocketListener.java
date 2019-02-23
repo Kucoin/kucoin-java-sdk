@@ -19,6 +19,7 @@ import com.kucoin.sdk.websocket.event.KucoinEvent;
 import com.kucoin.sdk.websocket.event.OrderActivateEvent;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
@@ -27,12 +28,13 @@ import okhttp3.WebSocketListener;
  * Created by chenshiwei on 2019/1/19.
  */
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class KucoinPrivateWebsocketListener extends WebSocketListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KucoinPrivateWebsocketListener.class);
 
-    private KucoinAPICallback<KucoinEvent<OrderActivateEvent>> orderActivateCallback = new PrintCallback();
-    private KucoinAPICallback<KucoinEvent<AccountChangeEvent>> accountChangeCallback = new PrintCallback();
+    private KucoinAPICallback<KucoinEvent<OrderActivateEvent>> orderActivateCallback = new PrintCallback<>();
+    private KucoinAPICallback<KucoinEvent<AccountChangeEvent>> accountChangeCallback = new PrintCallback<>();
 
     @Override
     public void onOpen(WebSocket webSocket, Response response) {
@@ -53,10 +55,10 @@ public class KucoinPrivateWebsocketListener extends WebSocketListener {
 
         String topic = jsonObject.get("topic").asText();
         if (topic.contains(APIConstants.API_ACTIVATE_TOPIC_PREFIX)) {
-            KucoinEvent kucoinEvent = deserialize(text, new TypeReference<KucoinEvent<OrderActivateEvent>>() {});
+            KucoinEvent<OrderActivateEvent> kucoinEvent = deserialize(text, new TypeReference<KucoinEvent<OrderActivateEvent>>() {});
             orderActivateCallback.onResponse(kucoinEvent);
         } else if (topic.contains(APIConstants.API_BALANCE_TOPIC_PREFIX)) {
-            KucoinEvent kucoinEvent = deserialize(text, new TypeReference<KucoinEvent<AccountChangeEvent>>() {});
+            KucoinEvent<AccountChangeEvent> kucoinEvent = deserialize(text, new TypeReference<KucoinEvent<AccountChangeEvent>>() {});
             accountChangeCallback.onResponse(kucoinEvent);
         }
     }
