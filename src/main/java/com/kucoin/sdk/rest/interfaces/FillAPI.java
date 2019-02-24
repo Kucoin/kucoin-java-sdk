@@ -27,5 +27,5 @@ public interface FillAPI {
      * @return Trades.
      */
     Pagination<TradeResponse> listFills(String symbol, String orderId, String side, String type,
-                                        Long startAt, Long endAt, int currentPage, int pageSize) throws IOException;
+                                        Long startAt, Long endAt, int pageSize, int currentPage) throws IOException;
 }
