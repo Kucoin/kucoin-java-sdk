@@ -3,6 +3,8 @@
  */
 package com.kucoin.sdk.rest.adapter;
 
+import java.io.IOException;
+
 import com.kucoin.sdk.rest.impl.retrofit.AuthRetrofitAPIImpl;
 import com.kucoin.sdk.rest.interfaces.WebsocketPrivateAPI;
 import com.kucoin.sdk.rest.interfaces.retrofit.WebsocketAuthAPIRetrofit;
@@ -22,7 +24,7 @@ public class WebsocketPrivateAPIAdaptor extends AuthRetrofitAPIImpl<WebsocketAut
     }
 
     @Override
-    public WebsocketTokenResponse getPrivateToken() {
+    public WebsocketTokenResponse getPrivateToken() throws IOException {
         return super.executeSync(getAPIImpl().getPrivateToken());
     }
 }

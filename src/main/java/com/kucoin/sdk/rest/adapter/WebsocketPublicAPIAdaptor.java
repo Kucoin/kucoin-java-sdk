@@ -3,6 +3,8 @@
  */
 package com.kucoin.sdk.rest.adapter;
 
+import java.io.IOException;
+
 import com.kucoin.sdk.rest.impl.retrofit.PublicRetrofitAPIImpl;
 import com.kucoin.sdk.rest.interfaces.WebsocketPublicAPI;
 import com.kucoin.sdk.rest.interfaces.retrofit.WebsocketPublicAPIRetrofit;
@@ -19,7 +21,7 @@ public class WebsocketPublicAPIAdaptor extends PublicRetrofitAPIImpl<WebsocketPu
     }
 
     @Override
-    public WebsocketTokenResponse getPublicToken() {
+    public WebsocketTokenResponse getPublicToken() throws IOException {
         return super.executeSync(getAPIImpl().getPublicToken());
     }
 }

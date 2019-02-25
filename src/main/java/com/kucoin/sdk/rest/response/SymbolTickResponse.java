@@ -3,16 +3,18 @@
  */
 package com.kucoin.sdk.rest.response;
 
-import lombok.Data;
-
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import lombok.Data;
+
 /**
- * @author: yi.yang
- * @date: Created by yi.yang on 2018/12/26.
- * @Description:
+ * @author yi.yang
+ * @since 2018/12/26.
  */
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SymbolTickResponse {
 
     private String symbol;
@@ -32,5 +34,13 @@ public class SymbolTickResponse {
     private BigDecimal vol;
 
     private BigDecimal volValue;
+
+    private BigDecimal last;
+
+    private BigDecimal buy;
+
+    private BigDecimal sell;
+
+    private long time;
 
 }

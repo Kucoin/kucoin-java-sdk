@@ -3,9 +3,19 @@
  */
 package com.kucoin.sdk.rest.interceptor;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.HmacUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Strings;
 import com.kucoin.sdk.constants.APIConstants;
 import com.kucoin.sdk.exception.KucoinApiException;
+
 import lombok.Getter;
 import lombok.Setter;
 import okhttp3.Interceptor;
@@ -13,12 +23,6 @@ import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.Response;
 import okio.Buffer;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.digest.HmacUtils;
-import org.apache.commons.lang3.StringUtils;
-
-import java.io.IOException;
-import java.nio.charset.Charset;
 
 /**
  * Created by zicong.lu on 2018/12/14.
@@ -27,13 +31,18 @@ import java.nio.charset.Charset;
 @Setter
 public class AuthenticationInterceptor implements Interceptor {
 
-    public String apiKey;
-    public String secret;
-    public String passPhrase;
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationInterceptor.class);
+
+    private String apiKey;
+    private String secret;
+    private String passPhrase;
 
     /**
      * Constructor of API - keys are loaded from VM options, environment variables, resource files
      *
+     * @param apiKey The API key.
+     * @param secret The API secret.
+     * @param passPhrase The API passphrase.
      * @throws KucoinApiException in case of any error
      */
     public AuthenticationInterceptor(String apiKey, String secret, String passPhrase) {
@@ -78,12 +87,12 @@ public class AuthenticationInterceptor implements Interceptor {
     }
 
     /**
-     * generate sign info
+     * Generates signature info.
      *
-     * @param request
-     * @param apiSecret
-     * @param timestamp
-     * @return
+     * @param request The HTTP request.
+     * @param apiSecret API secret.
+     * @param timestamp Timestamp.
+     * @return THe signature.
      */
     public static String genSignature(Request request, String apiSecret, String timestamp) {
         String endpoint = request.url().encodedPath();
@@ -101,18 +110,18 @@ public class AuthenticationInterceptor implements Interceptor {
 
         String signature = Base64.encodeBase64String(HmacUtils.hmacSha256(apiSecret, originToSign));
 
-        System.out.println("originToSign=" + originToSign);
-        System.out.println("method=" + request.method() + ",endpoint=" + endpoint);
-        System.out.println("signature=" + signature);
+        LOGGER.debug("originToSign={}", originToSign);
+        LOGGER.debug("method={},endpoint={}", request.method(), endpoint);
+        LOGGER.debug("signature={}", signature);
 
         return signature;
     }
 
     /**
-     * Get http request body info
+     * Get http request body info.
      *
-     * @param request
-     * @return
+     * @param request The request
+     * @return The request body.
      */
     public static String getRequestBody(Request request) {
         if (request.body() == null) {
@@ -122,7 +131,7 @@ public class AuthenticationInterceptor implements Interceptor {
         try {
             request.body().writeTo(buffer);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("I/O error fetching request body", e);
         }
 
         //编码设为UTF-8

@@ -3,6 +3,14 @@
  */
 package com.kucoin.sdk;
 
+import java.io.IOException;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.kucoin.sdk.constants.APIConstants;
+import com.kucoin.sdk.impl.KucoinPrivateWSClientImpl;
+import com.kucoin.sdk.impl.KucoinPublicWSClientImpl;
+import com.kucoin.sdk.impl.KucoinRestClientImpl;
 import com.kucoin.sdk.rest.adapter.AccountAPIAdapter;
 import com.kucoin.sdk.rest.adapter.CurrencyAPIAdaptor;
 import com.kucoin.sdk.rest.adapter.DepositAPIAdapter;
@@ -13,10 +21,6 @@ import com.kucoin.sdk.rest.adapter.OrderBookAPIAdapter;
 import com.kucoin.sdk.rest.adapter.SymbolAPIAdaptor;
 import com.kucoin.sdk.rest.adapter.TimeAPIAdapter;
 import com.kucoin.sdk.rest.adapter.WithdrawalAPIAdapter;
-import com.kucoin.sdk.constants.APIConstants;
-import com.kucoin.sdk.impl.KucoinPrivateWSClientImpl;
-import com.kucoin.sdk.impl.KucoinPublicWSClientImpl;
-import com.kucoin.sdk.impl.KucoinRestClientImpl;
 import com.kucoin.sdk.rest.interfaces.AccountAPI;
 import com.kucoin.sdk.rest.interfaces.CurrencyAPI;
 import com.kucoin.sdk.rest.interfaces.DepositAPI;
@@ -29,8 +33,8 @@ import com.kucoin.sdk.rest.interfaces.TimeAPI;
 import com.kucoin.sdk.rest.interfaces.WithdrawalAPI;
 import com.kucoin.sdk.websocket.ChooseServerStrategy;
 import com.kucoin.sdk.websocket.RandomChooseStrategy;
+
 import lombok.Getter;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by chenshiwei on 2019/1/9.
@@ -83,16 +87,20 @@ public class KucoinClientBuilder {
         return new KucoinRestClientImpl(this);
     }
 
-    public KucoinPublicWSClient buildPublicWSClient() {
+    public KucoinPublicWSClient buildPublicWSClient() throws IOException {
         if (StringUtils.isBlank(baseUrl)) baseUrl = APIConstants.API_BASE_URL;
         if (chooseServerStrategy == null) chooseServerStrategy = new RandomChooseStrategy();
-        return new KucoinPublicWSClientImpl(this);
+        KucoinPublicWSClientImpl client = new KucoinPublicWSClientImpl(this);
+        client.connect();
+        return client;
     }
 
-    public KucoinPrivateWSClient buildPrivateWSClient() {
+    public KucoinPrivateWSClient buildPrivateWSClient() throws IOException {
         if (StringUtils.isBlank(baseUrl)) baseUrl = APIConstants.API_BASE_URL;
         if (chooseServerStrategy == null) chooseServerStrategy = new RandomChooseStrategy();
-        return new KucoinPrivateWSClientImpl(this);
+        KucoinPrivateWSClientImpl client = new KucoinPrivateWSClientImpl(this);
+        client.connect();
+        return client;
     }
 
     public KucoinClientBuilder withApiKey(String apiKey, String secret, String passPhrase) {

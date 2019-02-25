@@ -3,9 +3,11 @@
  */
 package com.kucoin.sdk.rest.adapter;
 
+import java.io.IOException;
+
 import com.kucoin.sdk.rest.impl.retrofit.AuthRetrofitAPIImpl;
-import com.kucoin.sdk.rest.interfaces.retrofit.DepositAPIRetrofit;
 import com.kucoin.sdk.rest.interfaces.DepositAPI;
+import com.kucoin.sdk.rest.interfaces.retrofit.DepositAPIRetrofit;
 import com.kucoin.sdk.rest.request.DepositAddressCreateRequest;
 import com.kucoin.sdk.rest.response.DepositAddressResponse;
 import com.kucoin.sdk.rest.response.DepositResponse;
@@ -24,20 +26,20 @@ public class DepositAPIAdapter extends AuthRetrofitAPIImpl<DepositAPIRetrofit> i
     }
 
     @Override
-    public DepositAddressResponse createDepositAddress(String currency) {
+    public DepositAddressResponse createDepositAddress(String currency) throws IOException {
         DepositAddressCreateRequest request = new DepositAddressCreateRequest();
         request.setCurrency(currency);
         return super.executeSync(getAPIImpl().createDepositAddress(request));
     }
 
     @Override
-    public DepositAddressResponse getDepositAddress(String currency) {
+    public DepositAddressResponse getDepositAddress(String currency) throws IOException {
         return super.executeSync(getAPIImpl().getDepositAddress(currency));
     }
 
     @Override
     public Pagination<DepositResponse> getDepositPageList(String currency, long startAt, long endAt, String status,
-                                                          int currentPage, int pageSize) {
+                                                          int currentPage, int pageSize) throws IOException {
         return super.executeSync(getAPIImpl().getDepositPageList(currentPage, pageSize, currency, status, startAt, endAt));
     }
 }

@@ -3,16 +3,19 @@
  */
 package com.kucoin.sdk.rest.response;
 
-import com.kucoin.sdk.model.enums.WithdrawStatusEnum;
-import lombok.Data;
-
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.kucoin.sdk.model.enums.WithdrawStatusEnum;
+
+import lombok.Data;
 
 /**
  * Created by zicong.lu on 2018/12/21.
  */
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class WithdrawResponse {
 
     private String id;

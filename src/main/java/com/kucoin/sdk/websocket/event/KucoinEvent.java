@@ -23,4 +23,6 @@ public class KucoinEvent<T> {
 
     private T data;
 
+    private String subject;
+
 }

@@ -3,13 +3,19 @@
  */
 package com.kucoin.sdk.impl;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 import com.kucoin.sdk.KucoinClientBuilder;
 import com.kucoin.sdk.KucoinPublicWSClient;
-import com.kucoin.sdk.rest.adapter.WebsocketPublicAPIAdaptor;
 import com.kucoin.sdk.constants.APIConstants;
 import com.kucoin.sdk.factory.HttpClientFactory;
 import com.kucoin.sdk.model.enums.PublicChannelEnum;
+import com.kucoin.sdk.rest.adapter.WebsocketPublicAPIAdaptor;
 import com.kucoin.sdk.rest.interfaces.WebsocketPublicAPI;
+import com.kucoin.sdk.rest.response.WebsocketTokenResponse;
+import com.kucoin.sdk.websocket.ChooseServerStrategy;
 import com.kucoin.sdk.websocket.KucoinAPICallback;
 import com.kucoin.sdk.websocket.event.KucoinEvent;
 import com.kucoin.sdk.websocket.event.Level2ChangeEvent;
@@ -19,25 +25,36 @@ import com.kucoin.sdk.websocket.event.TickerChangeEvent;
 import com.kucoin.sdk.websocket.impl.BaseWebsocketImpl;
 import com.kucoin.sdk.websocket.listener.KucoinPublicWebsocketListener;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
+import okhttp3.OkHttpClient;
 
 /**
  * Created by chenshiwei on 2019/1/17.
  */
 public class KucoinPublicWSClientImpl extends BaseWebsocketImpl implements KucoinPublicWSClient {
 
-    private WebsocketPublicAPI websocketPublicAPI;
-
-    private KucoinPublicWebsocketListener listener;
+    private final WebsocketPublicAPI websocketPublicAPI;
+    private final KucoinPublicWebsocketListener listener;
 
     public KucoinPublicWSClientImpl(KucoinClientBuilder kucoinClientBuilder) {
-        this.chooseServerStrategy = kucoinClientBuilder.getChooseServerStrategy();
-        this.client = HttpClientFactory.getPublicClient();
-        this.websocketPublicAPI = new WebsocketPublicAPIAdaptor(kucoinClientBuilder.getBaseUrl());
-        this.websocketToken = this.websocketPublicAPI.getPublicToken();
-        this.listener = new KucoinPublicWebsocketListener();
-        this.webSocket = createNewWebSocket(this.listener);
+        this(
+            HttpClientFactory.getPublicClient(),
+            new KucoinPublicWebsocketListener(),
+            kucoinClientBuilder.getChooseServerStrategy(),
+            new WebsocketPublicAPIAdaptor(kucoinClientBuilder.getBaseUrl()));
+    }
+
+    private KucoinPublicWSClientImpl(OkHttpClient client,
+                                     KucoinPublicWebsocketListener listener,
+                                     ChooseServerStrategy chooseServerStrategy,
+                                     WebsocketPublicAPI websocketPublicAPI) {
+        super(client, listener, chooseServerStrategy);
+        this.listener = listener;
+        this.websocketPublicAPI = websocketPublicAPI;
+    }
+
+    @Override
+    protected WebsocketTokenResponse requestToken() throws IOException {
+        return this.websocketPublicAPI.getPublicToken();
     }
 
     @Override

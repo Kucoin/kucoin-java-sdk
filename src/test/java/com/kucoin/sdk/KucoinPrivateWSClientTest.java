@@ -3,42 +3,44 @@
  */
 package com.kucoin.sdk;
 
-import com.alibaba.fastjson.JSONObject;
-import com.kucoin.sdk.model.enums.PrivateChannelEnum;
-import com.kucoin.sdk.rest.request.OrderCreateApiRequest;
-import com.kucoin.sdk.rest.response.AccountBalancesResponse;
-import com.kucoin.sdk.rest.response.OrderCreateResponse;
-import org.hamcrest.Matchers;
-import org.hamcrest.core.Is;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
 
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import org.hamcrest.core.Is;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.kucoin.sdk.model.enums.PrivateChannelEnum;
+import com.kucoin.sdk.rest.request.OrderCreateApiRequest;
+import com.kucoin.sdk.rest.response.AccountBalancesResponse;
+import com.kucoin.sdk.rest.response.OrderCreateResponse;
+import com.kucoin.sdk.websocket.event.AccountChangeEvent;
+import com.kucoin.sdk.websocket.event.OrderActivateEvent;
 
 /**
  * Created by chenshiwei on 2019/1/23.
+ *
+ * Run with -Dorg.slf4j.simpleLogger.defaultLogLevel=debug for debug logging
  */
 public class KucoinPrivateWSClientTest {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(KucoinPrivateWSClientTest.class);
+
     private static KucoinRestClient kucoinRestClient;
-
     private static KucoinPrivateWSClient kucoinPrivateWSClient;
-
-    private static PipedInputStream pipedInputStream;
-
-    private static PipedOutputStream pipedOutputStream;
-
-    private static volatile boolean placeOrderSwitch = true;
-
-    private static volatile boolean innerTransferSwitch = true;
 
     @BeforeClass
     public static void setupClass() throws Exception {
@@ -46,70 +48,71 @@ public class KucoinPrivateWSClientTest {
                 .withApiKey("5c42a37bef83c73aa68e43c4", "7df80b16-1b95-4739-9b03-3d987599c332", "asd123456");
         kucoinRestClient = builder.buildRestClient();
         kucoinPrivateWSClient = builder.buildPrivateWSClient();
-        pipedInputStream = new PipedInputStream();
-        pipedOutputStream = new PipedOutputStream();
-        pipedOutputStream.connect(pipedInputStream);
     }
 
     @AfterClass
     public static void afterClass() throws Exception {
         kucoinPrivateWSClient.close();
-        pipedOutputStream.close();
-        pipedInputStream.close();
     }
 
     @Test
+    @Ignore // TODO broken
     public void onOrderActivate() throws Exception {
-        kucoinPrivateWSClient.onOrderActivate(response -> {
-            if (response.getData() != null) {
-                try {
-                    pipedOutputStream.write(JSONObject.toJSONBytes(response.getData()));
-                    pipedOutputStream.flush();
-                } catch (Exception e) {
+        AtomicReference<OrderActivateEvent> event = new AtomicReference<>();
+        CountDownLatch gotEvent = new CountDownLatch(1);
 
-                }
-            }
+        kucoinPrivateWSClient.onOrderActivate(response -> {
+            LOGGER.info("Got response");
+            event.set(response.getData());
             kucoinPrivateWSClient.unsubscribe(PrivateChannelEnum.ORDER, "ETH-BTC", "KCS-BTC");
+            gotEvent.countDown();
         }, "ETH-BTC", "KCS-BTC");
 
-        Runnable runnable = () -> {
-            while (placeOrderSwitch) {
-                placeOrderAndCancelOrder();
-            }
-        };
-        new Thread(runnable).start();
+        Thread.sleep(1000);
 
-        byte[] bytes = new byte[1024];
-        pipedInputStream.read(bytes);
-        assertThat(bytes.length, Matchers.greaterThan(0));
-        placeOrderSwitch = false;
+        new Thread(() -> {
+            while (event.get() == null) {
+                try {
+                  placeOrderAndCancelOrder();
+                } catch (IOException e) {
+                  throw new RuntimeException(e);
+                }
+            }
+        }).start();
+
+        LOGGER.info("Waiting...");
+        assertTrue(gotEvent.await(20, TimeUnit.SECONDS));
+        System.out.println(event.get());
     }
 
     @Test
+    @Ignore // TODO broken
     public void onAccountBalance() throws Exception {
-        kucoinPrivateWSClient.onAccountBalance(response -> {
-            if (response.getData() != null) {
-                try {
-                    pipedOutputStream.write(JSONObject.toJSONBytes(response.getData()));
-                    pipedOutputStream.flush();
-                } catch (Exception e) {
+        AtomicReference<AccountChangeEvent> event = new AtomicReference<>();
+        CountDownLatch gotEvent = new CountDownLatch(1);
 
-                }
-            }
+        kucoinPrivateWSClient.onAccountBalance(response -> {
+            LOGGER.info("Got response");
+            event.set(response.getData());
             kucoinPrivateWSClient.unsubscribe(PrivateChannelEnum.ACCOUNT);
+            gotEvent.countDown();
         });
 
-        Runnable runnable = () -> {
-            while (innerTransferSwitch) {
-                innerTransfer();
-            }
-        };
-        new Thread(runnable).start();
+        Thread.sleep(1000);
 
-        byte[] bytes = new byte[1024];
-        pipedInputStream.read(bytes);
-        assertThat(bytes.length, Matchers.greaterThan(0));
-        innerTransferSwitch = false;
+        new Thread(() -> {
+            while (event.get() == null) {
+                try {
+                  innerTransfer();
+                } catch (IOException e) {
+                  throw new RuntimeException(e);
+                }
+            }
+        }).start();
+
+        LOGGER.info("Waiting...");
+        assertTrue(gotEvent.await(20, TimeUnit.SECONDS));
+        System.out.println(event.get());
     }
 
     @Test
@@ -119,7 +122,7 @@ public class KucoinPrivateWSClientTest {
         assertThat(ping, Is.is(requestId));
     }
 
-    private void placeOrderAndCancelOrder() {
+    private void placeOrderAndCancelOrder() throws IOException {
         OrderCreateApiRequest request = OrderCreateApiRequest.builder()
                 .price(BigDecimal.valueOf(0.000001)).size(BigDecimal.ONE).side("buy")
                 .symbol("ETH-BTC").type("limit").clientOid(UUID.randomUUID().toString()).build();
@@ -127,7 +130,7 @@ public class KucoinPrivateWSClientTest {
         kucoinRestClient.orderAPI().cancelOrder(order.getOrderId());
     }
 
-    private void innerTransfer() {
+    private void innerTransfer() throws IOException {
         List<AccountBalancesResponse> accountBalancesResponses = kucoinRestClient.accountAPI().listAccounts("BTC", null);
         assertThat(accountBalancesResponses.size(), Is.is(2));
         Optional<AccountBalancesResponse> main = accountBalancesResponses.stream()
