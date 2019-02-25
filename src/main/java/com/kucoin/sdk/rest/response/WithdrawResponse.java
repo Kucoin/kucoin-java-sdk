@@ -3,13 +3,13 @@
  */
 package com.kucoin.sdk.rest.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.kucoin.sdk.model.enums.WithdrawStatusEnum;
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.util.Date;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.kucoin.sdk.model.enums.WithdrawStatusEnum;
-
-import lombok.Data;
 
 /**
  * Created by zicong.lu on 2018/12/21.
@@ -28,6 +28,7 @@ public class WithdrawResponse {
 
     private String memo;
 
+    @JsonProperty("isInner")
     private Boolean isInner;
 
     private BigDecimal amount;
