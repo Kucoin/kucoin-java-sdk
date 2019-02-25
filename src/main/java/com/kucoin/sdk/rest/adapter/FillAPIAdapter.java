@@ -9,6 +9,8 @@ import com.kucoin.sdk.rest.interfaces.retrofit.FillAPIRetrofit;
 import com.kucoin.sdk.rest.response.Pagination;
 import com.kucoin.sdk.rest.response.TradeResponse;
 
+import java.io.IOException;
+
 /**
  * Created by chenshiwei on 2019/1/18.
  */
@@ -24,7 +26,7 @@ public class FillAPIAdapter extends AuthRetrofitAPIImpl<FillAPIRetrofit> impleme
     @Override
     public Pagination<TradeResponse> listFills(String symbol, String orderId, String side,
                                                String type, Long start, Long end,
-                                               int pageSize, int currentPage) {
+                                               int pageSize, int currentPage) throws IOException {
         return executeSync(getAPIImpl().queryTrades(symbol, orderId, side, type, start, end, pageSize, currentPage));
     }
 }

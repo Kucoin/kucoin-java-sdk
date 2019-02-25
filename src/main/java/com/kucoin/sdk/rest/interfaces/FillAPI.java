@@ -3,6 +3,8 @@
  */
 package com.kucoin.sdk.rest.interfaces;
 
+import java.io.IOException;
+
 import com.kucoin.sdk.rest.response.Pagination;
 import com.kucoin.sdk.rest.response.TradeResponse;
 
@@ -22,8 +24,8 @@ public interface FillAPI {
      * @param endAt       [optional] End time. unix timestamp calculated in milliseconds, the creation time queried shall prior to the end time.
      * @param pageSize
      * @param currentPage
-     * @return
+     * @return Trades.
      */
     Pagination<TradeResponse> listFills(String symbol, String orderId, String side, String type,
-                                        Long startAt, Long endAt, int currentPage, int pageSize);
+                                        Long startAt, Long endAt, int pageSize, int currentPage) throws IOException;
 }

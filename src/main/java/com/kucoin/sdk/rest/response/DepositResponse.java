@@ -3,15 +3,18 @@
  */
 package com.kucoin.sdk.rest.response;
 
-import com.kucoin.sdk.model.enums.DepositStatusEnum;
-import lombok.Data;
-
 import java.math.BigDecimal;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.kucoin.sdk.model.enums.DepositStatusEnum;
+
+import lombok.Data;
 
 /**
  * Created by zicong.lu on 2018/12/21.
  */
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DepositResponse {
 
     private String currency;

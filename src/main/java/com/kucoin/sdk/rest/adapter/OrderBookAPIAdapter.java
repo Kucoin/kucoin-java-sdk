@@ -3,6 +3,8 @@
  */
 package com.kucoin.sdk.rest.adapter;
 
+import java.io.IOException;
+
 import com.kucoin.sdk.rest.impl.retrofit.PublicRetrofitAPIImpl;
 import com.kucoin.sdk.rest.interfaces.OrderBookAPI;
 import com.kucoin.sdk.rest.interfaces.retrofit.OrderBookAPIRetrofit;
@@ -18,17 +20,17 @@ public class OrderBookAPIAdapter extends PublicRetrofitAPIImpl<OrderBookAPIRetro
     }
 
     @Override
-    public OrderBookResponse getPartOrderBookAggregated(String symbol) {
+    public OrderBookResponse getPartOrderBookAggregated(String symbol) throws IOException {
         return super.executeSync(getAPIImpl().getPartOrderBookAggregated(symbol));
     }
 
     @Override
-    public OrderBookResponse getFullOrderBookAggregated(String symbol) {
+    public OrderBookResponse getFullOrderBookAggregated(String symbol) throws IOException {
         return super.executeSync(getAPIImpl().getFullOrderBookAggregated(symbol));
     }
 
     @Override
-    public OrderBookResponse getFullOrderBookAtomic(String symbol) {
+    public OrderBookResponse getFullOrderBookAtomic(String symbol) throws IOException {
         return super.executeSync(getAPIImpl().getFullOrderBookAtomic(symbol));
     }
 }

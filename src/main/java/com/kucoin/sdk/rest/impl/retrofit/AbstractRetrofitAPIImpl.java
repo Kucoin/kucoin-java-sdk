@@ -3,6 +3,7 @@
  */
 package com.kucoin.sdk.rest.impl.retrofit;
 
+import com.kucoin.sdk.KucoinObjectMapper;
 import com.kucoin.sdk.exception.KucoinApiException;
 import com.kucoin.sdk.rest.response.KucoinResponse;
 import okhttp3.ResponseBody;
@@ -19,11 +20,11 @@ import java.lang.annotation.Annotation;
  */
 public abstract class AbstractRetrofitAPIImpl<T> {
 
-    private static final Converter.Factory jacksonConverterFactory = JacksonConverterFactory.create();
+    private static final Converter.Factory jacksonConverterFactory = JacksonConverterFactory.create(KucoinObjectMapper.INSTANCE);
 
     @SuppressWarnings("unchecked")
-    private static final Converter<ResponseBody, KucoinResponse> errorBodyConverter =
-            (Converter<ResponseBody, KucoinResponse>) jacksonConverterFactory.responseBodyConverter(
+    private static final Converter<ResponseBody, KucoinResponse<?>> errorBodyConverter =
+            (Converter<ResponseBody, KucoinResponse<?>>) jacksonConverterFactory.responseBodyConverter(
                     KucoinResponse.class, new Annotation[0], null);
 
     protected String baseUrl;
@@ -38,31 +39,27 @@ public abstract class AbstractRetrofitAPIImpl<T> {
 
     /**
      * Execute a REST call and block until the response is received.
+     * @throws IOException On socket related errors.
      */
-    public <R> R executeSync(Call<KucoinResponse<R>> call) {
-        try {
-            Response<KucoinResponse<R>> response = call.execute();
-            if (response.isSuccessful() && response.body().isSuccessful()) {
-                return response.body().getData();
+    public <R> R executeSync(Call<KucoinResponse<R>> call) throws IOException {
+        Response<KucoinResponse<R>> response = call.execute();
+        if (response.isSuccessful() && response.body().isSuccessful()) {
+            return response.body().getData();
+        } else {
+            KucoinResponse<?> errorResponse;
+            if (response.isSuccessful()) {
+                errorResponse = response.body();
             } else {
-                KucoinResponse errorResponse;
-                if (response.isSuccessful()) {
-                    errorResponse = response.body();
-                } else {
-                    errorResponse = getErrorResponse(response);
-                }
-                throw new KucoinApiException(errorResponse.getCode(), errorResponse.getMsg());
+                errorResponse = getErrorResponse(response);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            throw new KucoinApiException(errorResponse.getCode(), errorResponse.getMsg());
         }
     }
 
     /**
      * Extracts and converts the response error body into an object.
      */
-    public KucoinResponse getErrorResponse(Response<?> response) throws IOException, KucoinApiException {
+    public KucoinResponse<?> getErrorResponse(Response<?> response) throws IOException, KucoinApiException {
         return errorBodyConverter.convert(response.errorBody());
     }
 

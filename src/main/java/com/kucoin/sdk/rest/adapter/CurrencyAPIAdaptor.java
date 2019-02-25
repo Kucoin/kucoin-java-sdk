@@ -4,11 +4,12 @@
 package com.kucoin.sdk.rest.adapter;
 
 import com.kucoin.sdk.rest.impl.retrofit.PublicRetrofitAPIImpl;
-import com.kucoin.sdk.rest.interfaces.retrofit.CurrencyAPIRetrofit;
 import com.kucoin.sdk.rest.interfaces.CurrencyAPI;
+import com.kucoin.sdk.rest.interfaces.retrofit.CurrencyAPIRetrofit;
 import com.kucoin.sdk.rest.response.CurrencyDetailResponse;
 import com.kucoin.sdk.rest.response.CurrencyResponse;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -23,17 +24,17 @@ public class CurrencyAPIAdaptor extends PublicRetrofitAPIImpl<CurrencyAPIRetrofi
     }
 
     @Override
-    public List<CurrencyResponse> getCurrencies() {
+    public List<CurrencyResponse> getCurrencies() throws IOException {
         return super.executeSync(getAPIImpl().getCurrencies());
     }
 
     @Override
-    public CurrencyDetailResponse getCurrencyDetail(String currency) {
+    public CurrencyDetailResponse getCurrencyDetail(String currency) throws IOException {
         return super.executeSync(getAPIImpl().getCurrencyDetail(currency));
     }
 
     @Override
-    public Map<String, BigDecimal> getFiatPrice(String base, String currencies) {
+    public Map<String, BigDecimal> getFiatPrice(String base, String currencies) throws IOException {
         return super.executeSync(getAPIImpl().getFiatPrice(base, currencies));
     }
 }

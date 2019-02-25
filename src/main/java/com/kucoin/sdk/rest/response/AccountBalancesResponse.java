@@ -3,14 +3,17 @@
  */
 package com.kucoin.sdk.rest.response;
 
-import lombok.Data;
-
 import java.math.BigDecimal;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import lombok.Data;
 
 /**
  * Created by tao.mao on 2018/11/15.
  */
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AccountBalancesResponse {
 
     private String id;

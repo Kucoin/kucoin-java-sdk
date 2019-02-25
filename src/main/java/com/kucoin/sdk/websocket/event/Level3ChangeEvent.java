@@ -3,9 +3,9 @@
  */
 package com.kucoin.sdk.websocket.event;
 
-import lombok.Data;
-
 import java.math.BigDecimal;
+
+import lombok.Data;
 
 /**
  * Created by chenshiwei on 2019/1/19.
@@ -21,6 +21,8 @@ public class Level3ChangeEvent {
 
     private BigDecimal size;
 
+    private BigDecimal remainSize;
+
     private String orderId;
 
     private BigDecimal price;
@@ -30,4 +32,6 @@ public class Level3ChangeEvent {
     private String type;
 
     private String orderType;
+
+    private String reason;
 }

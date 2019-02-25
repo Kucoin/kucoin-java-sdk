@@ -3,14 +3,13 @@
  */
 package com.kucoin.sdk;
 
+import java.io.IOException;
+
 import com.kucoin.sdk.model.enums.PrivateChannelEnum;
-import com.kucoin.sdk.model.enums.PublicChannelEnum;
 import com.kucoin.sdk.websocket.KucoinAPICallback;
 import com.kucoin.sdk.websocket.event.AccountChangeEvent;
 import com.kucoin.sdk.websocket.event.KucoinEvent;
 import com.kucoin.sdk.websocket.event.OrderActivateEvent;
-
-import java.io.IOException;
 
 /**
  * Created by chenshiwei on 2019/1/10.
@@ -22,7 +21,7 @@ public interface KucoinPrivateWSClient {
      *
      * @param callback
      * @param symbols
-     * @return
+     * @return The subscription UUID, or null if sending failed.
      */
     String onOrderActivate(KucoinAPICallback<KucoinEvent<OrderActivateEvent>> callback, String... symbols);
 
@@ -30,7 +29,7 @@ public interface KucoinPrivateWSClient {
      * You will receive this message when an account balance changes. The message contains the details of the change.
      *
      * @param callback
-     * @return
+     * @return The subscription UUID, or null if sending failed.
      */
     String onAccountBalance(KucoinAPICallback<KucoinEvent<AccountChangeEvent>> callback);
 
@@ -39,7 +38,7 @@ public interface KucoinPrivateWSClient {
      * After the ping message is sent to the server, the system would return a pong message to the client side.
      *
      * @param requestId
-     * @return
+     * @return The requestId back, or null if sending failed.
      */
     String ping(String requestId);
 
@@ -48,7 +47,7 @@ public interface KucoinPrivateWSClient {
      *
      * @param channelEnum
      * @param symbols
-     * @return
+     * @return The ID for the unsubscribe request, or null if sending failed.
      */
     String unsubscribe(PrivateChannelEnum channelEnum, String... symbols);
 

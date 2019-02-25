@@ -3,116 +3,127 @@
  */
 package com.kucoin.sdk;
 
-import com.alibaba.fastjson.JSONObject;
 import com.kucoin.sdk.model.enums.PublicChannelEnum;
-import org.hamcrest.Matchers;
+import com.kucoin.sdk.rest.request.OrderCreateApiRequest;
+import com.kucoin.sdk.rest.response.OrderCreateResponse;
+import com.kucoin.sdk.rest.response.TickerResponse;
+import com.kucoin.sdk.websocket.event.Level2ChangeEvent;
+import com.kucoin.sdk.websocket.event.Level3ChangeEvent;
+import com.kucoin.sdk.websocket.event.MatchExcutionChangeEvent;
 import org.hamcrest.core.Is;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by chenshiwei on 2019/1/22.
+ *
+ * Run with -Dorg.slf4j.simpleLogger.defaultLogLevel=debug for debug logging
  */
 public class KucoinPublicWSClientTest {
 
     private static KucoinPublicWSClient kucoinPublicWSClient;
-
-    private static PipedInputStream pipedInputStream;
-
-    private static PipedOutputStream pipedOutputStream;
+    private static KucoinRestClient kucoinPrivateWSClient;
 
     @BeforeClass
     public static void setupClass() throws Exception {
         kucoinPublicWSClient = new KucoinClientBuilder().withBaseUrl("https://openapi-sandbox.kucoin.com")
-                .buildPublicWSClient();
-        pipedInputStream = new PipedInputStream();
-        pipedOutputStream = new PipedOutputStream();
-        pipedOutputStream.connect(pipedInputStream);
+            .buildPublicWSClient();
+        kucoinPrivateWSClient = new KucoinClientBuilder().withBaseUrl("https://openapi-sandbox.kucoin.com")
+            .withApiKey("5c42a37bef83c73aa68e43c4", "7df80b16-1b95-4739-9b03-3d987599c332", "asd123456")
+            .buildRestClient();
     }
 
     @AfterClass
     public static void afterClass() throws Exception {
         kucoinPublicWSClient.close();
-        pipedOutputStream.close();
-        pipedInputStream.close();
     }
 
     @Test
+    @Ignore
     public void onTicker() throws Exception {
+        AtomicReference<TickerResponse> event = new AtomicReference<>();
+        CountDownLatch gotEvent = new CountDownLatch(1);
+
         kucoinPublicWSClient.onTicker(response -> {
-            if (response.getData() != null) {
-                try {
-                    pipedOutputStream.write(JSONObject.toJSONBytes(response.getData()));
-                    pipedOutputStream.flush();
-                } catch (Exception e) {
-
-                }
-            }
+            event.set(response.getData());
             kucoinPublicWSClient.unsubscribe(PublicChannelEnum.TICKER, "ETH-BTC", "KCS-BTC");
+            gotEvent.countDown();
         }, "ETH-BTC", "KCS-BTC");
-        byte[] bytes = new byte[1024];
-        pipedInputStream.read(bytes);
-        assertThat(bytes.length, Matchers.greaterThan(0));
+
+        // Make some actual executions
+        buyAndSell();
+
+        assertTrue(gotEvent.await(20, TimeUnit.SECONDS));
+        System.out.println(event.get());
     }
 
     @Test
+    @Ignore // TODO broken
     public void onLevel2Data() throws Exception {
+        AtomicReference<Level2ChangeEvent> event = new AtomicReference<>();
+        CountDownLatch gotEvent = new CountDownLatch(1);
+
         kucoinPublicWSClient.onLevel2Data(response -> {
-            if (response.getData() != null) {
-                try {
-                    pipedOutputStream.write(JSONObject.toJSONBytes(response.getData()));
-                    pipedOutputStream.flush();
-                } catch (Exception e) {
-
-                }
-            }
+            event.set(response.getData());
             kucoinPublicWSClient.unsubscribe(PublicChannelEnum.LEVEL2, "ETH-BTC", "KCS-BTC");
+            gotEvent.countDown();
         }, "ETH-BTC", "KCS-BTC");
-        byte[] bytes = new byte[1024];
-        pipedInputStream.read(bytes);
-        assertThat(bytes.length, Matchers.greaterThan(0));
+
+        // Trigger a market change
+        placeOrderAndCancelOrder();
+
+        assertTrue(gotEvent.await(20, TimeUnit.SECONDS));
+        System.out.println(event.get());
     }
 
     @Test
+    @Ignore
     public void onMatchExecutionData() throws Exception {
-        kucoinPublicWSClient.onMatchExecutionData(response -> {
-            if (response.getData() != null) {
-                try {
-                    pipedOutputStream.write(JSONObject.toJSONBytes(response.getData()));
-                    pipedOutputStream.flush();
-                } catch (Exception e) {
+        AtomicReference<MatchExcutionChangeEvent> event = new AtomicReference<>();
+        CountDownLatch gotEvent = new CountDownLatch(1);
 
-                }
-            }
+        kucoinPublicWSClient.onMatchExecutionData(response -> {
+            event.set(response.getData());
             kucoinPublicWSClient.unsubscribe(PublicChannelEnum.MATCH, "ETH-BTC", "KCS-BTC");
+            gotEvent.countDown();
         }, "ETH-BTC", "KCS-BTC");
-        byte[] bytes = new byte[1024];
-        pipedInputStream.read(bytes);
-        assertThat(bytes.length, Matchers.greaterThan(0));
+
+        // Make some actual executions
+        buyAndSell();
+
+        assertTrue(gotEvent.await(20, TimeUnit.SECONDS));
+        System.out.println(event.get());
     }
 
     @Test
+    @Ignore // TODO broken
     public void onLevel3Data() throws Exception {
-        kucoinPublicWSClient.onLevel3Data(response -> {
-            if (response.getData() != null) {
-                try {
-                    pipedOutputStream.write(JSONObject.toJSONBytes(response.getData()));
-                    pipedOutputStream.flush();
-                } catch (Exception e) {
+      AtomicReference<Level3ChangeEvent> event = new AtomicReference<>();
+      CountDownLatch gotEvent = new CountDownLatch(1);
 
-                }
-            }
+        kucoinPublicWSClient.onLevel3Data(response -> {
+            event.set(response.getData());
             kucoinPublicWSClient.unsubscribe(PublicChannelEnum.LEVEL3, "ETH-BTC", "KCS-BTC");
+            gotEvent.countDown();
         }, "ETH-BTC", "KCS-BTC");
-        byte[] bytes = new byte[1024];
-        pipedInputStream.read(bytes);
-        assertThat(bytes.length, Matchers.greaterThan(0));
+
+        // Trigger a market change
+        placeOrderAndCancelOrder();
+
+        assertTrue(gotEvent.await(20, TimeUnit.SECONDS));
+        System.out.println(event.get());
     }
 
     @Test
@@ -122,4 +133,32 @@ public class KucoinPublicWSClientTest {
         assertThat(ping, Is.is(requestId));
     }
 
+    private void placeOrderAndCancelOrder() throws InterruptedException, IOException {
+      Thread.sleep(1000);
+      OrderCreateApiRequest request = OrderCreateApiRequest.builder()
+              .price(BigDecimal.valueOf(0.000001)).size(BigDecimal.ONE).side("buy")
+              .symbol("ETH-BTC").type("limit").clientOid(UUID.randomUUID().toString()).build();
+      OrderCreateResponse order = kucoinPrivateWSClient.orderAPI().createOrder(request);
+      kucoinPrivateWSClient.orderAPI().cancelOrder(order.getOrderId());
+    }
+
+    private void buyAndSell() throws InterruptedException, IOException {
+      Thread.sleep(1000);
+      OrderCreateApiRequest request1 = OrderCreateApiRequest.builder()
+              .size(new BigDecimal("0.001"))
+              .side("buy")
+              .symbol("ETH-BTC")
+              .type("market")
+              .clientOid(UUID.randomUUID().toString())
+              .build();
+      kucoinPrivateWSClient.orderAPI().createOrder(request1);
+      OrderCreateApiRequest request2 = OrderCreateApiRequest.builder()
+              .size(new BigDecimal("0.001"))
+              .side("sell")
+              .symbol("ETH-BTC")
+              .type("market")
+              .clientOid(UUID.randomUUID().toString())
+              .build();
+      kucoinPrivateWSClient.orderAPI().createOrder(request2);
+    }
 }

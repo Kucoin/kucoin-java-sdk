@@ -3,12 +3,13 @@
  */
 package com.kucoin.sdk.rest.interfaces;
 
+import java.io.IOException;
+
 import com.kucoin.sdk.rest.request.OrderCreateApiRequest;
 import com.kucoin.sdk.rest.response.OrderCancelResponse;
 import com.kucoin.sdk.rest.response.OrderCreateResponse;
 import com.kucoin.sdk.rest.response.OrderResponse;
 import com.kucoin.sdk.rest.response.Pagination;
-import retrofit2.http.Query;
 
 /**
  * Created by chenshiwei on 2019/1/9.
@@ -25,9 +26,9 @@ public interface OrderAPI {
      * The maximum matching orders for a single trading pair in one account is 50 (stop limit order included).
      *
      * @param opsRequest
-     * @return
+     * @return A response containing the order id.
      */
-    OrderCreateResponse createOrder(OrderCreateApiRequest opsRequest);
+    OrderCreateResponse createOrder(OrderCreateApiRequest opsRequest) throws IOException;
 
     /**
      * Cancel an order
@@ -35,25 +36,25 @@ public interface OrderAPI {
      * Cancel a previously placed order.
      *
      * @param orderId
-     * @return
+     * @return A response containing the id of the cancelled order.
      */
-    OrderCancelResponse cancelOrder(String orderId);
+    OrderCancelResponse cancelOrder(String orderId) throws IOException;
 
     /**
      * With best effort, cancel all open orders. The response is a list of ids of the canceled orders.
      *
      * @param symbol
-     * @return
+     * @return A response containing the ids of all open orders.
      */
-    OrderCancelResponse cancelAllOrders(String symbol);
+    OrderCancelResponse cancelAllOrders(String symbol) throws IOException;
 
     /**
      * Get a single order by order id.
      *
      * @param orderId
-     * @return
+     * @return The requested order.
      */
-    OrderResponse getOrder(String orderId);
+    OrderResponse getOrder(String orderId) throws IOException;
 
     /**
      * List your current orders.
@@ -66,9 +67,9 @@ public interface OrderAPI {
      * @param endAt       [optional] End time. unix timestamp calculated in milliseconds, the creation time queried shall prior to the end time.
      * @param pageSize
      * @param currentPage
-     * @return
+     * @return A page of orders.
      */
     Pagination<OrderResponse> listOrders(String symbol, String side, String type, String status,
-                                         Long startAt, Long endAt, int currentPage, int pageSize);
+                                         Long startAt, Long endAt, int pageSize, int currentPage) throws IOException;
 
 }

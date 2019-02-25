@@ -3,48 +3,64 @@
  */
 package com.kucoin.sdk.websocket.impl;
 
-import com.alibaba.fastjson.JSONObject;
+import java.io.Closeable;
+import java.io.IOException;
+import java.util.UUID;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.kucoin.sdk.KucoinObjectMapper;
 import com.kucoin.sdk.model.InstanceServer;
 import com.kucoin.sdk.rest.response.WebsocketTokenResponse;
 import com.kucoin.sdk.websocket.ChooseServerStrategy;
 import com.kucoin.sdk.websocket.event.KucoinEvent;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.util.UUID;
-
 /**
  * Created by chenshiwei on 2019/1/18.
  */
-public class BaseWebsocketImpl implements Closeable {
+public abstract class BaseWebsocketImpl implements Closeable {
 
-    protected ChooseServerStrategy chooseServerStrategy;
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseWebsocketImpl.class);
 
-    protected OkHttpClient client;
+    private final ChooseServerStrategy chooseServerStrategy;
+    private final OkHttpClient client;
+    private final WebSocketListener listener;
 
-    protected InstanceServer instanceServer;
+    private WebSocket webSocket;
 
-    protected WebsocketTokenResponse websocketToken;
+    protected BaseWebsocketImpl(OkHttpClient client, WebSocketListener listener, ChooseServerStrategy chooseServerStrategy) {
+      this.client = client;
+      this.listener = listener;
+      this.chooseServerStrategy = chooseServerStrategy;
+    }
 
-    protected WebSocket webSocket;
+    public void connect() throws IOException {
+      this.webSocket = createNewWebSocket();
+    }
 
-    protected WebSocket createNewWebSocket(WebSocketListener listener) {
-        this.instanceServer = chooseServerStrategy.choose(websocketToken.getInstanceServers());
+    protected abstract WebsocketTokenResponse requestToken() throws IOException;
+
+    private WebSocket createNewWebSocket() throws IOException {
+        WebsocketTokenResponse websocketToken = requestToken();
+        InstanceServer instanceServer = chooseServerStrategy.choose(websocketToken.getInstanceServers());
         String streamingUrl = String.format("%s", instanceServer.getEndpoint()
-                + "?token=" + this.websocketToken.getToken());
+                + "?token=" + websocketToken.getToken());
         Request request = new Request.Builder().url(streamingUrl).build();
         return client.newWebSocket(request, listener);
     }
 
     protected String ping(String requestId) {
-        KucoinEvent ping = new KucoinEvent();
+        KucoinEvent<Void> ping = new KucoinEvent<>();
         ping.setId(requestId);
         ping.setType("ping");
-        if (webSocket.send(JSONObject.toJSONString(ping))) {
+        if (webSocket.send(serialize(ping))) {
             return requestId;
         }
         return null;
@@ -52,13 +68,13 @@ public class BaseWebsocketImpl implements Closeable {
 
     protected String subscribe(String topic, boolean privateChannel, boolean response) {
         String uuid = UUID.randomUUID().toString();
-        KucoinEvent subscribe = new KucoinEvent();
+        KucoinEvent<Void> subscribe = new KucoinEvent<>();
         subscribe.setId(uuid);
         subscribe.setType("subscribe");
         subscribe.setTopic(topic);
         subscribe.setPrivateChannel(privateChannel);
         subscribe.setResponse(response);
-        if (webSocket.send(JSONObject.toJSONString(subscribe))) {
+        if (webSocket.send(serialize(subscribe))) {
             return uuid;
         }
         return null;
@@ -66,13 +82,13 @@ public class BaseWebsocketImpl implements Closeable {
 
     protected String unsubscribe(String topic, boolean privateChannel, boolean response) {
         String uuid = UUID.randomUUID().toString();
-        KucoinEvent subscribe = new KucoinEvent();
+        KucoinEvent<Void> subscribe = new KucoinEvent<>();
         subscribe.setId(uuid);
         subscribe.setType("unsubscribe");
         subscribe.setTopic(topic);
         subscribe.setPrivateChannel(privateChannel);
         subscribe.setResponse(response);
-        if (webSocket.send(JSONObject.toJSONString(subscribe))) {
+        if (webSocket.send(serialize(subscribe))) {
             return uuid;
         }
         return null;
@@ -80,11 +96,15 @@ public class BaseWebsocketImpl implements Closeable {
 
     @Override
     public void close() throws IOException {
-        System.out.println("Web Socket Close");
+        LOGGER.debug("Web Socket Close");
         client.dispatcher().executorService().shutdown();
     }
 
-    public InstanceServer getInstanceServer() {
-        return instanceServer;
+    private String serialize(Object o) {
+      try {
+        return KucoinObjectMapper.INSTANCE.writeValueAsString(o);
+      } catch (JsonProcessingException e) {
+        throw new RuntimeException("Failure serializing object", e);
+      }
     }
 }
