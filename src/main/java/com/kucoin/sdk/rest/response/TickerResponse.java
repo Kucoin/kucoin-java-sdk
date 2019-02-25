@@ -3,11 +3,10 @@
  */
 package com.kucoin.sdk.rest.response;
 
-import java.math.BigDecimal;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import lombok.Data;
+
+import java.math.BigDecimal;
 
 /**
  * Created by chenshiwei on 2019/1/10.

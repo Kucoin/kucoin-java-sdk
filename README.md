@@ -86,7 +86,9 @@ Market data is public and can be used without a signed request.
 ```java
 kucoinRestClient.symbolAPI().getTicker(symbol);
 kucoinRestClient.symbolAPI().getSymbols();
+kucoinRestClient.symbolAPI().getAllTickers();
 kucoinRestClient.symbolAPI().get24hrStats(symbol);
+kucoinRestClient.symbolAPI().getMarketList();
 ```
 ##### Order Book
 ```java
@@ -103,6 +105,7 @@ kucoinRestClient.historyAPI().getHistoricRates(symbol, startAt, endAt, type);
 ```java
 kucoinRestClient.currencyAPI().getCurrencies();
 kucoinRestClient.currencyAPI().getCurrencyDetail(currency);
+kucoinRestClient.currencyAPI().getFiatPrice(base, currencies);
 ```
 ##### Time
 ```java

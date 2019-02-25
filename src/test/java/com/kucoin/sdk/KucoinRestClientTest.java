@@ -3,25 +3,6 @@
  */
 package com.kucoin.sdk;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.lessThanOrEqualTo;
-import static org.hamcrest.core.IsNull.notNullValue;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-
-import org.hamcrest.core.Is;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
 import com.kucoin.sdk.exception.KucoinApiException;
 import com.kucoin.sdk.rest.request.OrderCreateApiRequest;
 import com.kucoin.sdk.rest.request.WithdrawApplyRequest;
@@ -29,6 +10,7 @@ import com.kucoin.sdk.rest.response.AccountBalanceResponse;
 import com.kucoin.sdk.rest.response.AccountBalancesResponse;
 import com.kucoin.sdk.rest.response.AccountDetailResponse;
 import com.kucoin.sdk.rest.response.AccountHoldsResponse;
+import com.kucoin.sdk.rest.response.AllTickersResponse;
 import com.kucoin.sdk.rest.response.CurrencyDetailResponse;
 import com.kucoin.sdk.rest.response.CurrencyResponse;
 import com.kucoin.sdk.rest.response.OrderBookResponse;
@@ -42,6 +24,24 @@ import com.kucoin.sdk.rest.response.TickerResponse;
 import com.kucoin.sdk.rest.response.TradeHistoryResponse;
 import com.kucoin.sdk.rest.response.TradeResponse;
 import com.kucoin.sdk.rest.response.WithdrawResponse;
+import org.hamcrest.core.Is;
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.hamcrest.core.IsNull.notNullValue;
 
 /**
  * Created by chenshiwei on 2019/1/21.
@@ -198,6 +198,14 @@ public class KucoinRestClientTest {
 
         SymbolTickResponse hrStats = liveKucoinRestClient.symbolAPI().get24hrStats("ETH-BTC");
         assertThat(hrStats, notNullValue());
+
+        List<String> marketList = liveKucoinRestClient.symbolAPI().getMarketList();
+        assertThat(marketList.size(), greaterThan(1));
+
+        AllTickersResponse allTickers = liveKucoinRestClient.symbolAPI().getAllTickers();
+        assertThat(allTickers, notNullValue());
+        assertThat(allTickers.getTicker().size(), greaterThan(1));
+
     }
 
     @Test
@@ -232,6 +240,10 @@ public class KucoinRestClientTest {
 
         CurrencyDetailResponse kcs = sandboxKucoinRestClient.currencyAPI().getCurrencyDetail("KCS");
         assertThat(kcs, notNullValue());
+
+        Map<String, BigDecimal> fiatPrice = liveKucoinRestClient.currencyAPI().getFiatPrice("USD", "KCS, BTC");
+        assertThat(fiatPrice, notNullValue());
+        assertThat(fiatPrice.keySet().size(), greaterThan(1));
     }
 
     @Test

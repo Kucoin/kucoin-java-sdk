@@ -3,8 +3,6 @@
  */
 package com.kucoin.sdk.rest.adapter;
 
-import java.io.IOException;
-
 import com.kucoin.sdk.rest.impl.retrofit.AuthRetrofitAPIImpl;
 import com.kucoin.sdk.rest.interfaces.DepositAPI;
 import com.kucoin.sdk.rest.interfaces.retrofit.DepositAPIRetrofit;
@@ -12,6 +10,8 @@ import com.kucoin.sdk.rest.request.DepositAddressCreateRequest;
 import com.kucoin.sdk.rest.response.DepositAddressResponse;
 import com.kucoin.sdk.rest.response.DepositResponse;
 import com.kucoin.sdk.rest.response.Pagination;
+
+import java.io.IOException;
 
 /**
  * Created by chenshiwei on 2019/1/15.

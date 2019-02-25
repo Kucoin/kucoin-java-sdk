@@ -50,7 +50,8 @@ public class AccountAPIAdapter extends AuthRetrofitAPIImpl<AccountAPIRetrofit> i
     }
 
     @Override
-    public Pagination<AccountDetailResponse> getAccountHistory(String accountId, long startAt, long endAt, int currentPage, int pageSize) throws IOException {
+    public Pagination<AccountDetailResponse> getAccountHistory(String accountId, long startAt, long endAt,
+                                                               int currentPage, int pageSize) throws IOException {
         return super.executeSync(getAPIImpl().getAccountDetail(accountId, currentPage, pageSize, startAt, endAt));
     }
 
@@ -60,7 +61,8 @@ public class AccountAPIAdapter extends AuthRetrofitAPIImpl<AccountAPIRetrofit> i
     }
 
     @Override
-    public Map<String, String> innerTransfer(String clientOid, String payAccountId, BigDecimal amount, String recAccountId) throws IOException {
+    public Map<String, String> innerTransfer(String clientOid, String payAccountId, BigDecimal amount,
+                                             String recAccountId) throws IOException {
         AccountTransferRequest accountTransferRequest = new AccountTransferRequest(clientOid, payAccountId, amount, recAccountId);
         return super.executeSync(getAPIImpl().applyTransfer(accountTransferRequest));
     }

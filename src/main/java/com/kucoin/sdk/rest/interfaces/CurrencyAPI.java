@@ -10,6 +10,10 @@ import com.kucoin.sdk.exception.KucoinApiException;
 import com.kucoin.sdk.rest.response.CurrencyDetailResponse;
 import com.kucoin.sdk.rest.response.CurrencyResponse;
 
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by chenshiwei on 2019/1/11.
  */
@@ -33,4 +37,14 @@ public interface CurrencyAPI {
      * @throws KucoinApiException when errors are returned from the exchange.
      */
     CurrencyDetailResponse getCurrencyDetail(String currency) throws IOException;
+
+    /**
+     * Get fiat price for currency
+     *
+     * @param base       [optional] Fiat,eg.USD,EUR, default is USD
+     * @param currencies [optional] Cryptocurrencies.For multiple cyrptocurrencies, please separate them with comma one by one. default is all
+     * @throws IOException on socket errors.
+     * @throws KucoinApiException when errors are returned from the exchange.
+     */
+    Map<String, BigDecimal> getFiatPrice(String base, String currencies) throws IOException;
 }

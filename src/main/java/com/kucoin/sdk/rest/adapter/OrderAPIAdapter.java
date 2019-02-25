@@ -3,8 +3,6 @@
  */
 package com.kucoin.sdk.rest.adapter;
 
-import java.io.IOException;
-
 import com.kucoin.sdk.rest.impl.retrofit.AuthRetrofitAPIImpl;
 import com.kucoin.sdk.rest.interfaces.OrderAPI;
 import com.kucoin.sdk.rest.interfaces.retrofit.OrderAPIRetrofit;
@@ -13,6 +11,8 @@ import com.kucoin.sdk.rest.response.OrderCancelResponse;
 import com.kucoin.sdk.rest.response.OrderCreateResponse;
 import com.kucoin.sdk.rest.response.OrderResponse;
 import com.kucoin.sdk.rest.response.Pagination;
+
+import java.io.IOException;
 
 /**
  * Created by chenshiwei on 2019/1/18.

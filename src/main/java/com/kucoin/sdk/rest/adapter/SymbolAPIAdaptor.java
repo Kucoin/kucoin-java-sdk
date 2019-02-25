@@ -9,6 +9,7 @@ import java.util.List;
 import com.kucoin.sdk.rest.impl.retrofit.PublicRetrofitAPIImpl;
 import com.kucoin.sdk.rest.interfaces.SymbolAPI;
 import com.kucoin.sdk.rest.interfaces.retrofit.SymbolAPIRetrofit;
+import com.kucoin.sdk.rest.response.AllTickersResponse;
 import com.kucoin.sdk.rest.response.SymbolResponse;
 import com.kucoin.sdk.rest.response.SymbolTickResponse;
 import com.kucoin.sdk.rest.response.TickerResponse;
@@ -33,7 +34,17 @@ public class SymbolAPIAdaptor extends PublicRetrofitAPIImpl<SymbolAPIRetrofit> i
     }
 
     @Override
+    public AllTickersResponse getAllTickers() throws IOException {
+        return super.executeSync(getAPIImpl().getAllTickers());
+    }
+
+    @Override
     public SymbolTickResponse get24hrStats(String symbol) throws IOException {
         return super.executeSync(getAPIImpl().getMarketStats(symbol));
+    }
+
+    @Override
+    public List<String> getMarketList() throws IOException {
+        return super.executeSync(getAPIImpl().getMarketList());
     }
 }

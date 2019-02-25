@@ -15,6 +15,7 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CurrencyResponse {
+
     private String fullName;
 
     private String currency;
@@ -23,11 +24,12 @@ public class CurrencyResponse {
 
     private int precision;
 
-    private BigDecimal withdrawalMinFee;
-
     private BigDecimal withdrawalMinSize;
 
-    private boolean isIsWithdrawEnabled;
+    private BigDecimal withdrawalMinFee;
 
-    private boolean isIsDepositEnabled;
+    private Boolean isWithdrawEnabled;
+
+    private Boolean isDepositEnabled;
+
 }

@@ -3,13 +3,13 @@
  */
 package com.kucoin.sdk.rest.adapter;
 
-import java.io.IOException;
-
 import com.kucoin.sdk.rest.impl.retrofit.AuthRetrofitAPIImpl;
 import com.kucoin.sdk.rest.interfaces.FillAPI;
 import com.kucoin.sdk.rest.interfaces.retrofit.FillAPIRetrofit;
 import com.kucoin.sdk.rest.response.Pagination;
 import com.kucoin.sdk.rest.response.TradeResponse;
+
+import java.io.IOException;
 
 /**
  * Created by chenshiwei on 2019/1/18.

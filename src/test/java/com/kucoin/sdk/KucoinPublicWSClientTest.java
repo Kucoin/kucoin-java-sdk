@@ -3,8 +3,18 @@
  */
 package com.kucoin.sdk;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertTrue;
+import com.kucoin.sdk.model.enums.PublicChannelEnum;
+import com.kucoin.sdk.rest.request.OrderCreateApiRequest;
+import com.kucoin.sdk.rest.response.OrderCreateResponse;
+import com.kucoin.sdk.rest.response.TickerResponse;
+import com.kucoin.sdk.websocket.event.Level2ChangeEvent;
+import com.kucoin.sdk.websocket.event.Level3ChangeEvent;
+import com.kucoin.sdk.websocket.event.MatchExcutionChangeEvent;
+import org.hamcrest.core.Is;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -13,19 +23,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.hamcrest.core.Is;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import com.kucoin.sdk.model.enums.PublicChannelEnum;
-import com.kucoin.sdk.rest.request.OrderCreateApiRequest;
-import com.kucoin.sdk.rest.response.OrderCreateResponse;
-import com.kucoin.sdk.rest.response.TickerResponse;
-import com.kucoin.sdk.websocket.event.Level2ChangeEvent;
-import com.kucoin.sdk.websocket.event.Level3ChangeEvent;
-import com.kucoin.sdk.websocket.event.MatchExcutionChangeEvent;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by chenshiwei on 2019/1/22.
