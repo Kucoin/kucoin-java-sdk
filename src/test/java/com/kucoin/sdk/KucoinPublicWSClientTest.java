@@ -13,7 +13,6 @@ import com.kucoin.sdk.websocket.event.MatchExcutionChangeEvent;
 import org.hamcrest.core.Is;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -51,7 +50,6 @@ public class KucoinPublicWSClientTest {
     }
 
     @Test
-    @Ignore
     public void onTicker() throws Exception {
         AtomicReference<TickerResponse> event = new AtomicReference<>();
         CountDownLatch gotEvent = new CountDownLatch(1);
@@ -70,7 +68,6 @@ public class KucoinPublicWSClientTest {
     }
 
     @Test
-    @Ignore // TODO broken
     public void onLevel2Data() throws Exception {
         AtomicReference<Level2ChangeEvent> event = new AtomicReference<>();
         CountDownLatch gotEvent = new CountDownLatch(1);
@@ -89,7 +86,6 @@ public class KucoinPublicWSClientTest {
     }
 
     @Test
-    @Ignore
     public void onMatchExecutionData() throws Exception {
         AtomicReference<MatchExcutionChangeEvent> event = new AtomicReference<>();
         CountDownLatch gotEvent = new CountDownLatch(1);
@@ -108,7 +104,6 @@ public class KucoinPublicWSClientTest {
     }
 
     @Test
-    @Ignore // TODO broken
     public void onLevel3Data() throws Exception {
       AtomicReference<Level3ChangeEvent> event = new AtomicReference<>();
       CountDownLatch gotEvent = new CountDownLatch(1);
