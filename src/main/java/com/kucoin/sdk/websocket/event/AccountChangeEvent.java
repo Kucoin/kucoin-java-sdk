@@ -31,4 +31,6 @@ public class AccountChangeEvent {
 
     private String time;
 
+    private String accountId;
+
 }

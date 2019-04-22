@@ -49,4 +49,6 @@ public class OrderActivateEvent {
 
     private String stopType;
 
+    private String clientOid;
+
 }

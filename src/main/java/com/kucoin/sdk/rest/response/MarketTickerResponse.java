@@ -28,4 +28,6 @@ public class MarketTickerResponse {
 
     private BigDecimal last;
 
+    private BigDecimal volValue;
+
 }
