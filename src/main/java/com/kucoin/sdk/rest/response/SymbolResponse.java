@@ -40,5 +40,7 @@ public class SymbolResponse {
 
     private BigDecimal priceIncrement;
 
+    private String feeCurrency;
+
     private boolean enableTrading;
 }

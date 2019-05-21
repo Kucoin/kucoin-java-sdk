@@ -18,4 +18,6 @@ public class DepositAddressResponse {
 
     private String memo;
 
+    private String chain;
+
 }

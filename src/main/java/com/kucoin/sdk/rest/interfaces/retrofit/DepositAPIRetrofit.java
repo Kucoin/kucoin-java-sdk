@@ -23,7 +23,8 @@ public interface DepositAPIRetrofit {
     Call<KucoinResponse<DepositAddressResponse>> createDepositAddress(@Body DepositAddressCreateRequest request);
 
     @GET("api/v1/deposit-addresses")
-    Call<KucoinResponse<DepositAddressResponse>> getDepositAddress(@Query("currency") String currency);
+    Call<KucoinResponse<DepositAddressResponse>> getDepositAddress(@Query("currency") String currency,
+                                                                   @Query(("chain")) String chain);
 
     @GET("api/v1/deposits")
     Call<KucoinResponse<Pagination<DepositResponse>>> getDepositPageList(@Query("currentPage") int currentPage,

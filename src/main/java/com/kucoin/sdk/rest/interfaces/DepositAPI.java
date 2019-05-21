@@ -18,9 +18,10 @@ public interface DepositAPI {
      * Create deposit address of currency for deposit. You can just create one deposit address.
      *
      * @param currency the code of the currency
+     * @param chain    the chain name of currency
      * @return Details of a deposit address.
      */
-    DepositAddressResponse createDepositAddress(String currency) throws IOException;
+    DepositAddressResponse createDepositAddress(String currency, String chain) throws IOException;
 
     /**
      * Get deposit address of currency for deposit.
@@ -29,7 +30,7 @@ public interface DepositAPI {
      * @param currency the code of the currency
      * @return Details of a deposit address.
      */
-    DepositAddressResponse getDepositAddress(String currency) throws IOException;
+    DepositAddressResponse getDepositAddress(String currency, String chain) throws IOException;
 
     /**
      * Get deposit page list.
@@ -43,6 +44,6 @@ public interface DepositAPI {
      * @return A page of deposits.
      */
     Pagination<DepositResponse> getDepositPageList(String currency, long startAt, long endAt,
-                                                   String status, int currentPage,int pageSize) throws IOException;
+                                                   String status, int currentPage, int pageSize) throws IOException;
 
 }

@@ -9,11 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.kucoin.sdk.exception.KucoinApiException;
-import com.kucoin.sdk.rest.response.AccountBalanceResponse;
-import com.kucoin.sdk.rest.response.AccountBalancesResponse;
-import com.kucoin.sdk.rest.response.AccountDetailResponse;
-import com.kucoin.sdk.rest.response.AccountHoldsResponse;
-import com.kucoin.sdk.rest.response.Pagination;
+import com.kucoin.sdk.rest.response.*;
 
 /**
  * Created by chenshiwei on 2019/1/9.
@@ -22,14 +18,14 @@ public interface AccountAPI {
 
     /**
      * Get a list of accounts.
-     *
+     * <p>
      * Your accounts are separate from your KuCoin accounts. See the Deposits section for documentation on how to
      * deposit funds to begin trading.
      *
      * @param currency The code of the currency
-     * @param type Account type:，"main" or "trade"
+     * @param type     Account type:，"main" or "trade"
      * @return The accounts.
-     * @throws IOException on socket errors.
+     * @throws IOException        on socket errors.
      * @throws KucoinApiException when errors are returned from the exchange.
      */
     List<AccountBalancesResponse> listAccounts(String currency, String type) throws IOException;
@@ -39,7 +35,7 @@ public interface AccountAPI {
      *
      * @param accountId id of the account
      * @return The account balance.
-     * @throws IOException on socket errors.
+     * @throws IOException        on socket errors.
      * @throws KucoinApiException when errors are returned from the exchange.
      */
     AccountBalanceResponse getAccount(String accountId) throws IOException;
@@ -48,9 +44,9 @@ public interface AccountAPI {
      * Create an account.
      *
      * @param currency the code of the currency
-     * @param type Account type ，"main" or "trade"
+     * @param type     Account type ，"main" or "trade"
      * @return The account id.
-     * @throws IOException on socket errors.
+     * @throws IOException        on socket errors.
      * @throws KucoinApiException when errors are returned from the exchange.
      */
     Map<String, String> createAccount(String currency, String type) throws IOException;
@@ -66,7 +62,7 @@ public interface AccountAPI {
      * @param currentPage The page to fetch
      * @param pageSize    The page size.
      * @return The account activity.
-     * @throws IOException on socket errors.
+     * @throws IOException        on socket errors.
      * @throws KucoinApiException when errors are returned from the exchange.
      */
     Pagination<AccountDetailResponse> getAccountHistory(String accountId, long startAt, long endAt, int currentPage, int pageSize) throws IOException;
@@ -79,9 +75,9 @@ public interface AccountAPI {
      *
      * @param accountId   Id of the account
      * @param currentPage The page to fetch
-     * @param pageSize The page size
+     * @param pageSize    The page size
      * @return The account holds.
-     * @throws IOException on socket errors.
+     * @throws IOException        on socket errors.
      * @throws KucoinApiException when errors are returned from the exchange.
      */
     Pagination<AccountHoldsResponse> getHolds(String accountId, int currentPage, int pageSize) throws IOException;
@@ -95,9 +91,47 @@ public interface AccountAPI {
      * @param recAccountId Account id of receiver
      * @param amount       Transfer amount, a multiple and positive number of the amount precision.
      * @return The order id.
-     * @throws IOException on socket errors.
+     * @throws IOException        on socket errors.
      * @throws KucoinApiException when errors are returned from the exchange.
      */
     Map<String, String> innerTransfer(String clientOid, String payAccountId, BigDecimal amount, String recAccountId) throws IOException;
 
+    /**
+     * Get a list of sub-accounts.
+     * <p>
+     * You need to create the account by using the API-KEY of sub user firstly if the account of sub user is not exist.
+     * Attention only trade account can be used for trading
+     *
+     * @return The sub-accounts.
+     * @throws IOException        on socket errors.
+     * @throws KucoinApiException when errors are returned from the exchange.
+     */
+    List<SubAccountBalanceResponse> listSubAccounts() throws IOException;
+
+
+    /**
+     * Get info for a single sub-account. Use this endpoint when you know the subUserId.
+     *
+     * @param subUserId id of the sub user
+     * @return The sub-account.
+     * @throws IOException        on socket errors.
+     * @throws KucoinApiException when errors are returned from the exchange.
+     */
+    SubAccountBalanceResponse getSubAccount(String subUserId) throws IOException;
+
+    /**
+     * Transfer the assets between the master user and the sub-user and only supports main account.
+     *
+     * @param clientOid    Request id
+     * @param currency     currency code
+     * @param amount       Transfer amount, a multiple and positive number of the amount precision.
+     * @param direction     OUT — the master user to sub user;IN — the sub user to the master user.
+     * @param subUserId     id of the sub user
+     *
+     * @return The order id.
+     * @throws IOException        on socket errors.
+     * @throws KucoinApiException when errors are returned from the exchange.
+     */
+    Map<String, String> transferBetweenSubAndMaster(String clientOid, String currency, BigDecimal amount,
+                                                    String direction, String subUserId) throws IOException;
 }

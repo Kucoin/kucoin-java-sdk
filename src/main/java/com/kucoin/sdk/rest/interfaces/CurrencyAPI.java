@@ -32,11 +32,12 @@ public interface CurrencyAPI {
      * Get single currency detail
      *
      * @param currency the code of the currency
+     * @param chain the name of the chain
      * @return Currency detail.
      * @throws IOException on socket errors.
      * @throws KucoinApiException when errors are returned from the exchange.
      */
-    CurrencyDetailResponse getCurrencyDetail(String currency) throws IOException;
+    CurrencyDetailResponse getCurrencyDetail(String currency, String chain) throws IOException;
 
     /**
      * Get fiat price for currency

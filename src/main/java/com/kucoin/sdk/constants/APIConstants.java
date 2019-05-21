@@ -25,4 +25,5 @@ public class APIConstants {
     public static final String API_LEVEL3_TOPIC_PREFIX = "/market/level3:";
     public static final String API_ACTIVATE_TOPIC_PREFIX = "/market/level3:";
     public static final String API_BALANCE_TOPIC_PREFIX = "/account/balance";
+    public static final String API_SNAPSHOT_PREFIX = "/market/snapshot:";
 }

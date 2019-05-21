@@ -17,11 +17,7 @@ import com.kucoin.sdk.rest.interfaces.WebsocketPublicAPI;
 import com.kucoin.sdk.rest.response.WebsocketTokenResponse;
 import com.kucoin.sdk.websocket.ChooseServerStrategy;
 import com.kucoin.sdk.websocket.KucoinAPICallback;
-import com.kucoin.sdk.websocket.event.KucoinEvent;
-import com.kucoin.sdk.websocket.event.Level2ChangeEvent;
-import com.kucoin.sdk.websocket.event.Level3ChangeEvent;
-import com.kucoin.sdk.websocket.event.MatchExcutionChangeEvent;
-import com.kucoin.sdk.websocket.event.TickerChangeEvent;
+import com.kucoin.sdk.websocket.event.*;
 import com.kucoin.sdk.websocket.impl.BaseWebsocketImpl;
 import com.kucoin.sdk.websocket.listener.KucoinPublicWebsocketListener;
 
@@ -37,10 +33,10 @@ public class KucoinPublicWSClientImpl extends BaseWebsocketImpl implements Kucoi
 
     public KucoinPublicWSClientImpl(KucoinClientBuilder kucoinClientBuilder) {
         this(
-            HttpClientFactory.getPublicClient(),
-            new KucoinPublicWebsocketListener(),
-            kucoinClientBuilder.getChooseServerStrategy(),
-            new WebsocketPublicAPIAdaptor(kucoinClientBuilder.getBaseUrl()));
+                HttpClientFactory.getPublicClient(),
+                new KucoinPublicWebsocketListener(),
+                kucoinClientBuilder.getChooseServerStrategy(),
+                new WebsocketPublicAPIAdaptor(kucoinClientBuilder.getBaseUrl()));
     }
 
     private KucoinPublicWSClientImpl(OkHttpClient client,
@@ -103,5 +99,15 @@ public class KucoinPublicWSClientImpl extends BaseWebsocketImpl implements Kucoi
         return super.unsubscribe(channelEnum.getTopicPrefix() + Arrays.stream(symbols).collect(Collectors.joining(",")),
                 false, true);
     }
+
+    @Override
+    public String onSnapshot(KucoinAPICallback<KucoinEvent<SnapshotEvent>> callback, String target) {
+        if (callback != null) {
+            this.listener.setSnapshotCallback(callback);
+        }
+        String topic = APIConstants.API_SNAPSHOT_PREFIX + target;
+        return subscribe(topic, false, true);
+    }
+
 
 }
