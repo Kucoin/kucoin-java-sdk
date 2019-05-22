@@ -3,6 +3,8 @@
  */
 package com.kucoin.sdk;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kucoin.sdk.model.enums.PublicChannelEnum;
 import com.kucoin.sdk.rest.request.OrderCreateApiRequest;
 import com.kucoin.sdk.rest.response.OrderCreateResponse;
@@ -12,12 +14,15 @@ import com.kucoin.sdk.websocket.event.Level2ChangeEvent;
 import com.kucoin.sdk.websocket.event.Level3ChangeEvent;
 import com.kucoin.sdk.websocket.event.MatchExcutionChangeEvent;
 import com.kucoin.sdk.websocket.event.SnapshotEvent;
+import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
@@ -38,6 +43,7 @@ public class KucoinPublicWSClientTest {
     private static KucoinPublicWSClient kucoinPublicWSClient;
     private static KucoinRestClient kucoinPrivateWSClient;
 
+
     @BeforeClass
     public static void setupClass() throws Exception {
         kucoinPublicWSClient = new KucoinClientBuilder().withBaseUrl("https://openapi-sandbox.kucoin.com")
@@ -45,6 +51,8 @@ public class KucoinPublicWSClientTest {
         kucoinPrivateWSClient = new KucoinClientBuilder().withBaseUrl("https://openapi-sandbox.kucoin.com")
                 .withApiKey("5c42a37bef83c73aa68e43c4", "7df80b16-1b95-4739-9b03-3d987599c332", "asd123456")
                 .buildRestClient();
+
+
     }
 
     @AfterClass
@@ -140,8 +148,8 @@ public class KucoinPublicWSClientTest {
             kucoinPublicWSClient.unsubscribe(PublicChannelEnum.SNAPSHOT, "ETH-BTC");
             gotEvent.countDown();
         }, "ETH-BTC");
-
-        gotEvent.await(10, TimeUnit.SECONDS);
+        placeOrderAndCancelOrder();
+        gotEvent.await(20, TimeUnit.SECONDS);
         System.out.println(event.get());
     }
 
