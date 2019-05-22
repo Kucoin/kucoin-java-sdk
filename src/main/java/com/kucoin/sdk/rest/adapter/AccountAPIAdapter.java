@@ -13,11 +13,8 @@ import com.kucoin.sdk.rest.interfaces.AccountAPI;
 import com.kucoin.sdk.rest.interfaces.retrofit.AccountAPIRetrofit;
 import com.kucoin.sdk.rest.request.AccountCreateRequest;
 import com.kucoin.sdk.rest.request.AccountTransferRequest;
-import com.kucoin.sdk.rest.response.AccountBalanceResponse;
-import com.kucoin.sdk.rest.response.AccountBalancesResponse;
-import com.kucoin.sdk.rest.response.AccountDetailResponse;
-import com.kucoin.sdk.rest.response.AccountHoldsResponse;
-import com.kucoin.sdk.rest.response.Pagination;
+import com.kucoin.sdk.rest.request.SubMasterTransferRequest;
+import com.kucoin.sdk.rest.response.*;
 
 /**
  * Created by chenshiwei on 2019/1/10.
@@ -65,5 +62,22 @@ public class AccountAPIAdapter extends AuthRetrofitAPIImpl<AccountAPIRetrofit> i
                                              String recAccountId) throws IOException {
         AccountTransferRequest accountTransferRequest = new AccountTransferRequest(clientOid, payAccountId, amount, recAccountId);
         return super.executeSync(getAPIImpl().applyTransfer(accountTransferRequest));
+    }
+
+    @Override
+    public List<SubAccountBalanceResponse> listSubAccounts() throws IOException {
+        return super.executeSync(getAPIImpl().getSubAccountList());
+    }
+
+    @Override
+    public SubAccountBalanceResponse getSubAccount(String subUserId) throws IOException {
+        return super.executeSync(getAPIImpl().getSubAccount(subUserId));
+    }
+
+    @Override
+    public Map<String, String> transferBetweenSubAndMaster(String clientOid, String currency, BigDecimal amount,
+                                                           String direction, String subUserId) throws IOException {
+        SubMasterTransferRequest request = new SubMasterTransferRequest(clientOid, currency, amount, direction, subUserId);
+        return super.executeSync(getAPIImpl().transferBetweenSubAndMaster(request));
     }
 }

@@ -24,7 +24,9 @@ public interface CurrencyAPIRetrofit {
     Call<KucoinResponse<List<CurrencyResponse>>> getCurrencies();
 
     @GET(value = "api/v1/currencies/{currency}")
-    Call<KucoinResponse<CurrencyDetailResponse>> getCurrencyDetail(@Path("currency") String currency);
+    Call<KucoinResponse<CurrencyDetailResponse>> getCurrencyDetail(@Path("currency") String currency,
+                                                                   @Query("chain") String chain);
+
 
     @GET(value = "api/v1/prices")
     Call<KucoinResponse<Map<String, BigDecimal>>> getFiatPrice(@Query("base") String base, @Query("currencies") String currencies);

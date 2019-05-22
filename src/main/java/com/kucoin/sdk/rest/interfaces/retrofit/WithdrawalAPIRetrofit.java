@@ -23,13 +23,14 @@ import retrofit2.http.Query;
 public interface WithdrawalAPIRetrofit {
 
     @GET("api/v1/withdrawals/quotas")
-    Call<KucoinResponse<WithdrawQuotaResponse>> getWithdrawQuotas(@Query("currency") String currency);
+    Call<KucoinResponse<WithdrawQuotaResponse>> getWithdrawQuotas(@Query("currency") String currency,
+                                                                  @Query("chain") String chain);
 
     @POST("api/v1/withdrawals")
     Call<KucoinResponse<WithdrawApplyResponse>> applyWithdraw(@Body WithdrawApplyRequest request);
 
     @DELETE("api/v1/withdrawals/{withdrawalId}")
-    Call<KucoinResponse<Void>> cancelWithdraw(@Path("withdrawalId") String  withdrawalId);
+    Call<KucoinResponse<Void>> cancelWithdraw(@Path("withdrawalId") String withdrawalId);
 
     @GET("api/v1/withdrawals")
     Call<KucoinResponse<Pagination<WithdrawResponse>>> getWithdrawPageList(@Query("currentPage") int currentPage,

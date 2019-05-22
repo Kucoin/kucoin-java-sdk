@@ -6,24 +6,7 @@ package com.kucoin.sdk;
 import com.kucoin.sdk.exception.KucoinApiException;
 import com.kucoin.sdk.rest.request.OrderCreateApiRequest;
 import com.kucoin.sdk.rest.request.WithdrawApplyRequest;
-import com.kucoin.sdk.rest.response.AccountBalanceResponse;
-import com.kucoin.sdk.rest.response.AccountBalancesResponse;
-import com.kucoin.sdk.rest.response.AccountDetailResponse;
-import com.kucoin.sdk.rest.response.AccountHoldsResponse;
-import com.kucoin.sdk.rest.response.AllTickersResponse;
-import com.kucoin.sdk.rest.response.CurrencyDetailResponse;
-import com.kucoin.sdk.rest.response.CurrencyResponse;
-import com.kucoin.sdk.rest.response.OrderBookResponse;
-import com.kucoin.sdk.rest.response.OrderCancelResponse;
-import com.kucoin.sdk.rest.response.OrderCreateResponse;
-import com.kucoin.sdk.rest.response.OrderResponse;
-import com.kucoin.sdk.rest.response.Pagination;
-import com.kucoin.sdk.rest.response.SymbolResponse;
-import com.kucoin.sdk.rest.response.SymbolTickResponse;
-import com.kucoin.sdk.rest.response.TickerResponse;
-import com.kucoin.sdk.rest.response.TradeHistoryResponse;
-import com.kucoin.sdk.rest.response.TradeResponse;
-import com.kucoin.sdk.rest.response.WithdrawResponse;
+import com.kucoin.sdk.rest.response.*;
 import org.hamcrest.core.Is;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -67,13 +50,20 @@ public class KucoinRestClientTest {
         endAt = LocalDateTime.of(2019, 1, 21, 0, 0, 0).toEpochSecond(ZoneOffset.of("+8"));
     }
 
+
+    @Test
+    public void userAPI() throws Exception {
+        List<SubUserInfoResponse> subUserInfoResponses = sandboxKucoinRestClient.userAPI().listSubUsers();
+        assertThat(subUserInfoResponses.size(), Is.is(1));
+    }
+
     /**
      * Check that we can get all account balances.
      */
     @Test
     public void accountAPIMulti() throws Exception {
         List<AccountBalancesResponse> accountBalancesResponses
-          = sandboxKucoinRestClient.accountAPI().listAccounts(null, null);
+                = sandboxKucoinRestClient.accountAPI().listAccounts(null, null);
         assertThat(accountBalancesResponses.size(), Is.is(6));
     }
 
@@ -104,9 +94,26 @@ public class KucoinRestClientTest {
         sandboxKucoinRestClient.accountAPI().innerTransfer(String.valueOf(System.currentTimeMillis()), mainAccountId, BigDecimal.valueOf(0.00000001), tradeAccountId);
         assertThat(result, notNullValue());
 
+        List<SubAccountBalanceResponse> subAccountBalanceResponses = sandboxKucoinRestClient.accountAPI().listSubAccounts();
+        Optional<SubAccountBalanceResponse> henryPeach = subAccountBalanceResponses.stream()
+                .filter(subAccountBalanceResponse -> subAccountBalanceResponse.getSubName().equals("HenryPeach")).findFirst();
+        assertThat(henryPeach.isPresent(), Is.is(true));
+
+        String subUserId = henryPeach.get().getSubUserId();
+        SubAccountBalanceResponse subAccount = sandboxKucoinRestClient.accountAPI().getSubAccount(subUserId);
+        assertThat(subAccount, notNullValue());
+
+
+        Map<String, String> transferResult = sandboxKucoinRestClient.accountAPI()
+                .transferBetweenSubAndMaster(String
+                        .valueOf(System.currentTimeMillis()), "BTC", BigDecimal.valueOf(0.00000001), "IN", subUserId);
+        assertThat(transferResult, notNullValue());
+
         exception.expect(KucoinApiException.class);
         exception.expectMessage("account already exists");
         sandboxKucoinRestClient.accountAPI().createAccount("KCS", "main");
+
+
     }
 
     @Test
@@ -144,9 +151,8 @@ public class KucoinRestClientTest {
                 startAt, endAt, 1, 10);
         assertThat(withdrawList, notNullValue());
 
-        // TODO doesn't work. To investigate
-//        WithdrawQuotaResponse kcs = kucoinRestClient.withdrawalAPI().getWithdrawQuotas("KCS");
-//        assertThat(kcs, notNullValue());
+        WithdrawQuotaResponse kcs = sandboxKucoinRestClient.withdrawalAPI().getWithdrawQuotas("KCS", null);
+        assertThat(kcs, notNullValue());
         exception.expect(KucoinApiException.class);
         exception.expectMessage("Sandbox environment cannot be withdrawn");
         WithdrawApplyRequest withdrawApplyRequest = WithdrawApplyRequest.builder().address("123467")
@@ -160,11 +166,11 @@ public class KucoinRestClientTest {
     public void depositAPI() throws Exception {
         exception.expect(KucoinApiException.class);
         exception.expectMessage("Sandbox environment cannot get deposit address");
-        sandboxKucoinRestClient.depositAPI().createDepositAddress("KCS");
+        sandboxKucoinRestClient.depositAPI().createDepositAddress("KCS", null);
 
         exception.expect(KucoinApiException.class);
         exception.expectMessage("Sandbox environment cannot get deposit address");
-        sandboxKucoinRestClient.depositAPI().getDepositAddress("KCS");
+        sandboxKucoinRestClient.depositAPI().getDepositAddress("KCS", null);
 
         exception.expect(KucoinApiException.class);
         exception.expectMessage("Sandbox environment cannot get deposit address");
@@ -238,7 +244,7 @@ public class KucoinRestClientTest {
         assertThat(currencies, notNullValue());
         assertThat(currencies.size(), greaterThan(0));
 
-        CurrencyDetailResponse kcs = sandboxKucoinRestClient.currencyAPI().getCurrencyDetail("KCS");
+        CurrencyDetailResponse kcs = sandboxKucoinRestClient.currencyAPI().getCurrencyDetail("KCS", null);
         assertThat(kcs, notNullValue());
 
         Map<String, BigDecimal> fiatPrice = liveKucoinRestClient.currencyAPI().getFiatPrice("USD", "KCS, BTC");

@@ -13,4 +13,6 @@ public class DepositAddressCreateRequest {
 
     private String currency;
 
+    private String chain;
+
 }

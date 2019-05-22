@@ -18,7 +18,10 @@ public enum PublicChannelEnum {
 
     MATCH(APIConstants.API_MATCH_TOPIC_PREFIX),
 
-    LEVEL3(APIConstants.API_LEVEL3_TOPIC_PREFIX);
+    LEVEL3(APIConstants.API_LEVEL3_TOPIC_PREFIX),
+
+    SNAPSHOT(APIConstants.API_SNAPSHOT_PREFIX);
+
 
     private String topicPrefix;
 

@@ -5,32 +5,14 @@ package com.kucoin.sdk;
 
 import java.io.IOException;
 
+import com.kucoin.sdk.rest.adapter.*;
+import com.kucoin.sdk.rest.interfaces.*;
 import org.apache.commons.lang3.StringUtils;
 
 import com.kucoin.sdk.constants.APIConstants;
 import com.kucoin.sdk.impl.KucoinPrivateWSClientImpl;
 import com.kucoin.sdk.impl.KucoinPublicWSClientImpl;
 import com.kucoin.sdk.impl.KucoinRestClientImpl;
-import com.kucoin.sdk.rest.adapter.AccountAPIAdapter;
-import com.kucoin.sdk.rest.adapter.CurrencyAPIAdaptor;
-import com.kucoin.sdk.rest.adapter.DepositAPIAdapter;
-import com.kucoin.sdk.rest.adapter.FillAPIAdapter;
-import com.kucoin.sdk.rest.adapter.HistoryAPIAdapter;
-import com.kucoin.sdk.rest.adapter.OrderAPIAdapter;
-import com.kucoin.sdk.rest.adapter.OrderBookAPIAdapter;
-import com.kucoin.sdk.rest.adapter.SymbolAPIAdaptor;
-import com.kucoin.sdk.rest.adapter.TimeAPIAdapter;
-import com.kucoin.sdk.rest.adapter.WithdrawalAPIAdapter;
-import com.kucoin.sdk.rest.interfaces.AccountAPI;
-import com.kucoin.sdk.rest.interfaces.CurrencyAPI;
-import com.kucoin.sdk.rest.interfaces.DepositAPI;
-import com.kucoin.sdk.rest.interfaces.FillAPI;
-import com.kucoin.sdk.rest.interfaces.HistoryAPI;
-import com.kucoin.sdk.rest.interfaces.OrderAPI;
-import com.kucoin.sdk.rest.interfaces.OrderBookAPI;
-import com.kucoin.sdk.rest.interfaces.SymbolAPI;
-import com.kucoin.sdk.rest.interfaces.TimeAPI;
-import com.kucoin.sdk.rest.interfaces.WithdrawalAPI;
 import com.kucoin.sdk.websocket.ChooseServerStrategy;
 import com.kucoin.sdk.websocket.RandomChooseStrategy;
 
@@ -49,6 +31,8 @@ public class KucoinClientBuilder {
     private String passPhrase;
 
     private String baseUrl;
+
+    private UserAPI userAPI;
 
     private AccountAPI accountAPI;
 
@@ -74,6 +58,7 @@ public class KucoinClientBuilder {
 
     public KucoinRestClient buildRestClient() {
         if (StringUtils.isBlank(baseUrl)) baseUrl = APIConstants.API_BASE_URL;
+        if (userAPI == null) userAPI = new UserAPIAdapter(baseUrl, apiKey, secret, passPhrase);
         if (accountAPI == null) accountAPI = new AccountAPIAdapter(baseUrl, apiKey, secret, passPhrase);
         if (depositAPI == null) depositAPI = new DepositAPIAdapter(baseUrl, apiKey, secret, passPhrase);
         if (withdrawalAPI == null) withdrawalAPI = new WithdrawalAPIAdapter(baseUrl, apiKey, secret, passPhrase);

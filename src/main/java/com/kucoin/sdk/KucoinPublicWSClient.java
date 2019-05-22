@@ -7,11 +7,7 @@ import java.io.IOException;
 
 import com.kucoin.sdk.model.enums.PublicChannelEnum;
 import com.kucoin.sdk.websocket.KucoinAPICallback;
-import com.kucoin.sdk.websocket.event.KucoinEvent;
-import com.kucoin.sdk.websocket.event.Level2ChangeEvent;
-import com.kucoin.sdk.websocket.event.Level3ChangeEvent;
-import com.kucoin.sdk.websocket.event.MatchExcutionChangeEvent;
-import com.kucoin.sdk.websocket.event.TickerChangeEvent;
+import com.kucoin.sdk.websocket.event.*;
 
 /**
  * Created by chenshiwei on 2019/1/10.
@@ -81,7 +77,17 @@ public interface KucoinPublicWSClient {
 
     /**
      * Close client
-     *
      */
     void close() throws IOException;
+
+    /**
+     * Subscribe to get snapshot data for a single symbol or a market
+     *
+     * @param callback
+     * @param target symbol or market
+     * @return
+     */
+    String onSnapshot(KucoinAPICallback<KucoinEvent<SnapshotEvent>> callback, String target);
+
+
 }

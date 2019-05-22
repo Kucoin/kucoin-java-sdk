@@ -26,15 +26,16 @@ public class DepositAPIAdapter extends AuthRetrofitAPIImpl<DepositAPIRetrofit> i
     }
 
     @Override
-    public DepositAddressResponse createDepositAddress(String currency) throws IOException {
+    public DepositAddressResponse createDepositAddress(String currency, String chain) throws IOException {
         DepositAddressCreateRequest request = new DepositAddressCreateRequest();
         request.setCurrency(currency);
+        request.setChain(chain);
         return super.executeSync(getAPIImpl().createDepositAddress(request));
     }
 
     @Override
-    public DepositAddressResponse getDepositAddress(String currency) throws IOException {
-        return super.executeSync(getAPIImpl().getDepositAddress(currency));
+    public DepositAddressResponse getDepositAddress(String currency, String chain) throws IOException {
+        return super.executeSync(getAPIImpl().getDepositAddress(currency, chain));
     }
 
     @Override

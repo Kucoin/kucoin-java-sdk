@@ -22,7 +22,7 @@ public interface WithdrawalAPI {
      * @param currency currency. e.g. BTC
      * @return The withdrawal quotas.
      */
-    WithdrawQuotaResponse getWithdrawQuotas(String currency) throws IOException;
+    WithdrawQuotaResponse getWithdrawQuotas(String currency, String chain) throws IOException;
 
     /**
      * apply withdraw

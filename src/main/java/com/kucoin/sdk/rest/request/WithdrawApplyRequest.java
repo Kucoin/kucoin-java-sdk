@@ -47,4 +47,6 @@ public class WithdrawApplyRequest {
      * [optional] Remark
      */
     private String remark;
+
+    private String chain;
 }
