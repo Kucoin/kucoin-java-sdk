@@ -127,11 +127,14 @@ public interface AccountAPI {
      * @param amount       Transfer amount, a multiple and positive number of the amount precision.
      * @param direction     OUT — the master user to sub user;IN — the sub user to the master user.
      * @param subUserId     id of the sub user
+     * @param subAccountType main or trade
      *
      * @return The order id.
      * @throws IOException        on socket errors.
      * @throws KucoinApiException when errors are returned from the exchange.
      */
+
+
     Map<String, String> transferBetweenSubAndMaster(String clientOid, String currency, BigDecimal amount,
-                                                    String direction, String subUserId) throws IOException;
+                                                    String direction, String subUserId, String subAccountType) throws IOException;
 }

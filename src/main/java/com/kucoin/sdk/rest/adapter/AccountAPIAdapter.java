@@ -76,8 +76,8 @@ public class AccountAPIAdapter extends AuthRetrofitAPIImpl<AccountAPIRetrofit> i
 
     @Override
     public Map<String, String> transferBetweenSubAndMaster(String clientOid, String currency, BigDecimal amount,
-                                                           String direction, String subUserId) throws IOException {
-        SubMasterTransferRequest request = new SubMasterTransferRequest(clientOid, currency, amount, direction, subUserId);
+                                                           String direction, String subUserId, String subAccountType) throws IOException {
+        SubMasterTransferRequest request = new SubMasterTransferRequest(clientOid, currency, amount, direction, subUserId, subAccountType);
         return super.executeSync(getAPIImpl().transferBetweenSubAndMaster(request));
     }
 }
