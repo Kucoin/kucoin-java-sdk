@@ -127,7 +127,7 @@ public interface AccountAPI {
      * @param amount       Transfer amount, a multiple and positive number of the amount precision.
      * @param direction     OUT — the master user to sub user;IN — the sub user to the master user.
      * @param subUserId     id of the sub user
-     * @param subAccountType main or trade
+     * @param subAccountType The account type of the sub user
      *
      * @return The order id.
      * @throws IOException        on socket errors.
