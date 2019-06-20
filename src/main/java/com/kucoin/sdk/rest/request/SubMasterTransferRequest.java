@@ -22,4 +22,6 @@ public class SubMasterTransferRequest {
 
     private String subUserId;
 
+    private String subAccountType;
+
 }
