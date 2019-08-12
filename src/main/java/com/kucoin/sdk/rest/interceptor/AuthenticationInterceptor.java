@@ -3,19 +3,8 @@
  */
 package com.kucoin.sdk.rest.interceptor;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.digest.HmacUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Strings;
 import com.kucoin.sdk.constants.APIConstants;
 import com.kucoin.sdk.exception.KucoinApiException;
-
 import lombok.Getter;
 import lombok.Setter;
 import okhttp3.Interceptor;
@@ -23,6 +12,17 @@ import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.Response;
 import okio.Buffer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 /**
  * Created by zicong.lu on 2018/12/14.
@@ -40,8 +40,8 @@ public class AuthenticationInterceptor implements Interceptor {
     /**
      * Constructor of API - keys are loaded from VM options, environment variables, resource files
      *
-     * @param apiKey The API key.
-     * @param secret The API secret.
+     * @param apiKey     The API key.
+     * @param secret     The API secret.
      * @param passPhrase The API passphrase.
      * @throws KucoinApiException in case of any error
      */
@@ -58,11 +58,11 @@ public class AuthenticationInterceptor implements Interceptor {
      */
     protected void validateCredentials() throws KucoinApiException {
         String humanMessage = ". Please check environment variables or VM options";
-        if (Strings.isNullOrEmpty(this.apiKey))
+        if (this.apiKey == null || this.apiKey.isEmpty())
             throw new KucoinApiException("Missing " + APIConstants.USER_API_KEY + humanMessage);
-        if (Strings.isNullOrEmpty(this.secret))
+        if (this.secret == null || this.secret.isEmpty())
             throw new KucoinApiException("Missing " + APIConstants.USER_API_SECRET + humanMessage);
-        if (Strings.isNullOrEmpty(this.passPhrase))
+        if (this.passPhrase == null || this.passPhrase.isEmpty())
             throw new KucoinApiException("Missing " + APIConstants.USER_API_PASSPHRASE + humanMessage);
     }
 
@@ -89,7 +89,7 @@ public class AuthenticationInterceptor implements Interceptor {
     /**
      * Generates signature info.
      *
-     * @param request The HTTP request.
+     * @param request   The HTTP request.
      * @param apiSecret API secret.
      * @param timestamp Timestamp.
      * @return THe signature.
@@ -104,11 +104,11 @@ public class AuthenticationInterceptor implements Interceptor {
         stringBuilder.append(request.method());
         stringBuilder.append(endpoint);
 
-        stringBuilder.append((StringUtils.isBlank(requestUriParams) ? "" : "?" + requestUriParams));
-        stringBuilder.append((StringUtils.isBlank(requestBody) ? "" : "" + requestBody));
+        stringBuilder.append((requestUriParams == null || requestUriParams.isEmpty()) ? "" : "?" + requestUriParams);
+        stringBuilder.append((requestBody == null || requestBody.isEmpty() ? "" : "" + requestBody));
         String originToSign = stringBuilder.toString();
 
-        String signature = Base64.encodeBase64String(HmacUtils.hmacSha256(apiSecret, originToSign));
+        String signature = calculateSignature(apiSecret, originToSign);
 
         LOGGER.debug("originToSign={}", originToSign);
         LOGGER.debug("method={},endpoint={}", request.method(), endpoint);
@@ -135,12 +135,26 @@ public class AuthenticationInterceptor implements Interceptor {
         }
 
         //编码设为UTF-8
-        Charset charset = Charset.forName("UTF-8");
+        Charset charset = StandardCharsets.UTF_8;
         MediaType contentType = request.body().contentType();
         if (contentType != null) {
-            charset = contentType.charset(Charset.forName("UTF-8"));
+            charset = contentType.charset(StandardCharsets.UTF_8);
         }
 
         return buffer.readString(charset);
     }
+
+    private static String calculateSignature(String apiSecret, String digest) {
+        SecretKeySpec signingKey = new SecretKeySpec(apiSecret.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
+        try {
+            Mac mac = Mac.getInstance(signingKey.getAlgorithm());
+            mac.init(signingKey);
+            return Base64.getEncoder().encodeToString(mac.doFinal(digest.getBytes(StandardCharsets.UTF_8)));
+        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            LOGGER.warn("Could not calculate signature", e);
+
+        }
+        return null;
+    }
+
 }
