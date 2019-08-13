@@ -111,8 +111,8 @@ public class KucoinRestClientTest {
 
     @Test
     public void fillAPI() throws Exception {
-        Pagination<TradeResponse> fills = sandboxKucoinRestClient.fillAPI().listFills("ETH-BTC", null, "BUY",
-                null, startAt, endAt, 1, 10);
+        Pagination<TradeResponse> fills = sandboxKucoinRestClient.fillAPI().listFills("ETH-BTC", null, "buy",
+                null, startAt, endAt, 10, 10);
         assertThat(fills, notNullValue());
     }
 
@@ -125,7 +125,7 @@ public class KucoinRestClientTest {
         assertThat(order, notNullValue());
 
         Pagination<OrderResponse> orderResponsePagination = sandboxKucoinRestClient.orderAPI().listOrders("ETH-BTC",
-                null, null, "active", null, null, 1, 1);
+                null, null, "active", null, null, 10, 1);
         assertThat(orderResponsePagination, notNullValue());
 
         OrderResponse orderResponse = sandboxKucoinRestClient.orderAPI().getOrder(order.getOrderId());
