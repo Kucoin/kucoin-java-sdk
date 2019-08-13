@@ -106,7 +106,7 @@ public class KucoinRestClientTest {
 
         Map<String, String> transferResult = sandboxKucoinRestClient.accountAPI()
                 .transferBetweenSubAndMaster(String
-                        .valueOf(System.currentTimeMillis()), "BTC", BigDecimal.valueOf(0.00000001), "IN", subUserId, "main");
+                        .valueOf(System.currentTimeMillis()), "BTC", BigDecimal.valueOf(0.00000001), "IN", subUserId, "MAIN");
         assertThat(transferResult, notNullValue());
 
         exception.expect(KucoinApiException.class);
