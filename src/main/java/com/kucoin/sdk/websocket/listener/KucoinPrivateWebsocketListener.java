@@ -45,7 +45,7 @@ public class KucoinPrivateWebsocketListener extends WebSocketListener {
     public void onMessage(WebSocket webSocket, String text) {
         LOGGER.debug("Got message: {}", text);
         JsonNode jsonObject = tree(text);
-        LOGGER.debug("Parsed message: ", text);
+        LOGGER.debug("Parsed message: {}", text);
 
         String type = jsonObject.get("type").asText();
         if (!type.equals("message")) {
