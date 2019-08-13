@@ -4,22 +4,15 @@
 package com.kucoin.sdk.impl;
 
 import com.kucoin.sdk.KucoinClientBuilder;
-import com.kucoin.sdk.rest.interfaces.AccountAPI;
-import com.kucoin.sdk.rest.interfaces.CurrencyAPI;
-import com.kucoin.sdk.rest.interfaces.DepositAPI;
-import com.kucoin.sdk.rest.interfaces.FillAPI;
+import com.kucoin.sdk.rest.interfaces.*;
 import com.kucoin.sdk.KucoinRestClient;
-import com.kucoin.sdk.rest.interfaces.HistoryAPI;
-import com.kucoin.sdk.rest.interfaces.OrderAPI;
-import com.kucoin.sdk.rest.interfaces.OrderBookAPI;
-import com.kucoin.sdk.rest.interfaces.SymbolAPI;
-import com.kucoin.sdk.rest.interfaces.TimeAPI;
-import com.kucoin.sdk.rest.interfaces.WithdrawalAPI;
 
 /**
  * Created by chenshiwei on 2019/1/9.
  */
 public class KucoinRestClientImpl implements KucoinRestClient {
+
+    private UserAPI userAPI;
 
     private AccountAPI accountAPI;
 
@@ -42,6 +35,7 @@ public class KucoinRestClientImpl implements KucoinRestClient {
     private TimeAPI timeAPI;
 
     public KucoinRestClientImpl(KucoinClientBuilder kucoinBuilder) {
+        this.userAPI = kucoinBuilder.getUserAPI();
         this.accountAPI = kucoinBuilder.getAccountAPI();
         this.depositAPI = kucoinBuilder.getDepositAPI();
         this.fillAPI = kucoinBuilder.getFillAPI();
@@ -52,6 +46,11 @@ public class KucoinRestClientImpl implements KucoinRestClient {
         this.historyAPI = kucoinBuilder.getHistoryAPI();
         this.currencyAPI = kucoinBuilder.getCurrencyAPI();
         this.timeAPI = kucoinBuilder.getTimeAPI();
+    }
+
+    @Override
+    public UserAPI userAPI() {
+        return userAPI;
     }
 
     @Override

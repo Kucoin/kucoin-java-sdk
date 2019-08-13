@@ -3,21 +3,14 @@
  */
 package com.kucoin.sdk;
 
-import com.kucoin.sdk.rest.interfaces.AccountAPI;
-import com.kucoin.sdk.rest.interfaces.CurrencyAPI;
-import com.kucoin.sdk.rest.interfaces.DepositAPI;
-import com.kucoin.sdk.rest.interfaces.FillAPI;
-import com.kucoin.sdk.rest.interfaces.HistoryAPI;
-import com.kucoin.sdk.rest.interfaces.OrderAPI;
-import com.kucoin.sdk.rest.interfaces.OrderBookAPI;
-import com.kucoin.sdk.rest.interfaces.SymbolAPI;
-import com.kucoin.sdk.rest.interfaces.TimeAPI;
-import com.kucoin.sdk.rest.interfaces.WithdrawalAPI;
+import com.kucoin.sdk.rest.interfaces.*;
 
 /**
  * Created by chenshiwei on 2019/1/9.
  */
 public interface KucoinRestClient {
+
+    UserAPI userAPI();
 
     AccountAPI accountAPI();
 

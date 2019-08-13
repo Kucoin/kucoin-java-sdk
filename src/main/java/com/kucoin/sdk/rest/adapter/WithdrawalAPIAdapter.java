@@ -27,8 +27,8 @@ public class WithdrawalAPIAdapter extends AuthRetrofitAPIImpl<WithdrawalAPIRetro
     }
 
     @Override
-    public WithdrawQuotaResponse getWithdrawQuotas(String currency) throws IOException {
-        return super.executeSync(getAPIImpl().getWithdrawQuotas(currency));
+    public WithdrawQuotaResponse getWithdrawQuotas(String currency, String chain) throws IOException {
+        return super.executeSync(getAPIImpl().getWithdrawQuotas(currency, chain));
     }
 
     @Override

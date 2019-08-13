@@ -39,4 +39,6 @@ public class WithdrawQuotaResponse {
 
     private Integer precision;
 
+    private String chain;
+
 }

@@ -5,12 +5,8 @@ package com.kucoin.sdk.rest.interfaces.retrofit;
 
 import com.kucoin.sdk.rest.request.AccountCreateRequest;
 import com.kucoin.sdk.rest.request.AccountTransferRequest;
-import com.kucoin.sdk.rest.response.AccountBalanceResponse;
-import com.kucoin.sdk.rest.response.AccountBalancesResponse;
-import com.kucoin.sdk.rest.response.AccountDetailResponse;
-import com.kucoin.sdk.rest.response.AccountHoldsResponse;
-import com.kucoin.sdk.rest.response.KucoinResponse;
-import com.kucoin.sdk.rest.response.Pagination;
+import com.kucoin.sdk.rest.request.SubMasterTransferRequest;
+import com.kucoin.sdk.rest.response.*;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -53,4 +49,13 @@ public interface AccountAPIRetrofit {
     @POST("api/v1/accounts/inner-transfer")
     Call<KucoinResponse<Map<String, String>>> applyTransfer(
             @Body AccountTransferRequest request);
+
+    @GET("api/v1/sub-accounts")
+    Call<KucoinResponse<List<SubAccountBalanceResponse>>> getSubAccountList();
+
+    @GET("api/v1/sub-accounts/{subUserId}")
+    Call<KucoinResponse<SubAccountBalanceResponse>> getSubAccount(@Path("subUserId") String subUserId);
+
+    @POST("api/v1/accounts/sub-transfer")
+    Call<KucoinResponse<Map<String, String>>> transferBetweenSubAndMaster(@Body SubMasterTransferRequest request);
 }

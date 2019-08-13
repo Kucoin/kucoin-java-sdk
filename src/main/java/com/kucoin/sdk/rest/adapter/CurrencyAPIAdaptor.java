@@ -29,8 +29,8 @@ public class CurrencyAPIAdaptor extends PublicRetrofitAPIImpl<CurrencyAPIRetrofi
     }
 
     @Override
-    public CurrencyDetailResponse getCurrencyDetail(String currency) throws IOException {
-        return super.executeSync(getAPIImpl().getCurrencyDetail(currency));
+    public CurrencyDetailResponse getCurrencyDetail(String currency, String chain) throws IOException {
+        return super.executeSync(getAPIImpl().getCurrencyDetail(currency, chain));
     }
 
     @Override
