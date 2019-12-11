@@ -12,6 +12,8 @@ public class MarketTickerResponse {
 
     private String symbol;
 
+    private String symbolName;
+
     private BigDecimal buy;
 
     private BigDecimal sell;
@@ -30,4 +32,5 @@ public class MarketTickerResponse {
 
     private BigDecimal volValue;
 
+    private BigDecimal averagePrice;
 }

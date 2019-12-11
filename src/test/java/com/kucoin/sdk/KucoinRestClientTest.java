@@ -215,6 +215,14 @@ public class KucoinRestClientTest {
     }
 
     @Test
+    public void symbolAPIAllTickersTest() throws Exception {
+        AllTickersResponse allTickers = sandboxKucoinRestClient.symbolAPI().getAllTickers();
+        assertThat(allTickers, notNullValue());
+        assertThat(allTickers.getTicker().size(), greaterThan(1));
+    }
+
+
+        @Test
     public void orderBookAPI() throws Exception {
         OrderBookResponse fullOrderBookAggregated = sandboxKucoinRestClient.orderBookAPI().getFullOrderBookAggregated("ETH-BTC");
         assertThat(fullOrderBookAggregated, notNullValue());
