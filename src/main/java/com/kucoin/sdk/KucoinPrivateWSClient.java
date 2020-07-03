@@ -20,9 +20,7 @@ public interface KucoinPrivateWSClient {
      * @param callback
      * @param symbols
      * @return The subscription UUID, or null if sending failed.
-     * @deprecated instead use the method <code>onStopOrderChange(KucoinAPICallback<KucoinEvent<OrderChangeEvent>> callback, String... symbols)</code>
      */
-    @Deprecated
     String onOrderActivate(KucoinAPICallback<KucoinEvent<OrderActivateEvent>> callback, String... symbols);
 
     /**
@@ -41,15 +39,6 @@ public interface KucoinPrivateWSClient {
      * @return The subscription UUID, or null if sending failed.
      */
     String onOrderChange(KucoinAPICallback<KucoinEvent<OrderChangeEvent>> callback, String... symbols);
-
-    /**
-     * You will receive the message when the status of advanced order changes. The message contains the details of the change.
-     *
-     * @param callback
-     * @param symbols
-     * @return The subscription UUID, or null if sending failed.
-     */
-    String onAdvancedOrder(KucoinAPICallback<KucoinEvent<? extends AdvancedOrderEvent>> callback, String... symbols);
 
     /**
      * To prevent the TCP link being disconnected by the server, the client side needs to send ping messages to the server to keep alive the link.

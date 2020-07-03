@@ -60,7 +60,7 @@ public class KucoinPrivateWSClientImpl extends BaseWebsocketImpl implements Kuco
         if (callback != null) {
             this.listener.setOrderActivateCallback(callback);
         }
-        String topic = APIConstants.API_ACTIVATE_TOPIC_PREFIX + Arrays.stream(symbols).collect(Collectors.joining(","));
+        String topic = APIConstants.API_ACTIVATE_TOPIC_PREFIX + String.join(",", symbols);
         return subscribe(topic, true, true);
     }
 
@@ -78,14 +78,6 @@ public class KucoinPrivateWSClientImpl extends BaseWebsocketImpl implements Kuco
             this.listener.setOrderChangeCallback(callback);
         }
         return subscribe(APIConstants.API_ORDER_TOPIC_PREFIX, true, true);
-    }
-
-    @Override
-    public String onAdvancedOrder(KucoinAPICallback<KucoinEvent<? extends AdvancedOrderEvent>> callback, String... symbols) {
-        if (callback != null) {
-            this.listener.setAdvancedOrderCallback(callback);
-        }
-        return subscribe(APIConstants.API_ADVANCED_ORDER_TOPIC_PREFIX, true, true);
     }
 
     @Override
