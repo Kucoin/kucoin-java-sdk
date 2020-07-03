@@ -9,6 +9,7 @@ import com.kucoin.sdk.rest.response.AccountBalancesResponse;
 import com.kucoin.sdk.rest.response.OrderCreateResponse;
 import com.kucoin.sdk.websocket.event.AccountChangeEvent;
 import com.kucoin.sdk.websocket.event.OrderActivateEvent;
+import com.kucoin.sdk.websocket.event.OrderChangeEvent;
 import org.hamcrest.core.Is;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -73,6 +74,35 @@ public class KucoinPrivateWSClientTest {
                   placeOrderAndCancelOrder();
                 } catch (IOException e) {
                   throw new RuntimeException(e);
+                }
+            }
+        }).start();
+
+        LOGGER.info("Waiting...");
+        assertTrue(gotEvent.await(20, TimeUnit.SECONDS));
+        System.out.println(event.get());
+    }
+
+    @Test
+    public void onOrderChange() throws Exception {
+        AtomicReference<OrderChangeEvent> event = new AtomicReference<>();
+        CountDownLatch gotEvent = new CountDownLatch(1);
+
+        kucoinPrivateWSClient.onOrderChange(response -> {
+            LOGGER.info("Got response");
+            event.set(response.getData());
+            kucoinPrivateWSClient.unsubscribe(PrivateChannelEnum.ORDER_CHANGE, "ETH-BTC", "BTC-USDT");
+            gotEvent.countDown();
+        }, "ETH-BTC", "BTC-USDT");
+
+        Thread.sleep(1000);
+
+        new Thread(() -> {
+            while (event.get() == null) {
+                try {
+                    placeOrderAndCancelOrder();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
             }
         }).start();

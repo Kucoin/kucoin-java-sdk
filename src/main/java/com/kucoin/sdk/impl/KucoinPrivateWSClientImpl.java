@@ -3,10 +3,6 @@
  */
 package com.kucoin.sdk.impl;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
 import com.kucoin.sdk.KucoinClientBuilder;
 import com.kucoin.sdk.KucoinPrivateWSClient;
 import com.kucoin.sdk.constants.APIConstants;
@@ -17,13 +13,14 @@ import com.kucoin.sdk.rest.interfaces.WebsocketPrivateAPI;
 import com.kucoin.sdk.rest.response.WebsocketTokenResponse;
 import com.kucoin.sdk.websocket.ChooseServerStrategy;
 import com.kucoin.sdk.websocket.KucoinAPICallback;
-import com.kucoin.sdk.websocket.event.AccountChangeEvent;
-import com.kucoin.sdk.websocket.event.KucoinEvent;
-import com.kucoin.sdk.websocket.event.OrderActivateEvent;
+import com.kucoin.sdk.websocket.event.*;
 import com.kucoin.sdk.websocket.impl.BaseWebsocketImpl;
 import com.kucoin.sdk.websocket.listener.KucoinPrivateWebsocketListener;
-
 import okhttp3.OkHttpClient;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * Created by chenshiwei on 2019/1/18.
@@ -35,19 +32,19 @@ public class KucoinPrivateWSClientImpl extends BaseWebsocketImpl implements Kuco
 
     public KucoinPrivateWSClientImpl(KucoinClientBuilder kucoinClientBuilder) {
         this(
-            HttpClientFactory.getPublicClient(),
-            new KucoinPrivateWebsocketListener(),
-            kucoinClientBuilder.getChooseServerStrategy(),
-            new WebsocketPrivateAPIAdaptor(kucoinClientBuilder.getBaseUrl(),
-                kucoinClientBuilder.getApiKey(),
-                kucoinClientBuilder.getSecret(),
-                kucoinClientBuilder.getPassPhrase()));
+                HttpClientFactory.getPublicClient(),
+                new KucoinPrivateWebsocketListener(),
+                kucoinClientBuilder.getChooseServerStrategy(),
+                new WebsocketPrivateAPIAdaptor(kucoinClientBuilder.getBaseUrl(),
+                        kucoinClientBuilder.getApiKey(),
+                        kucoinClientBuilder.getSecret(),
+                        kucoinClientBuilder.getPassPhrase()));
     }
 
     private KucoinPrivateWSClientImpl(OkHttpClient client,
-                                     KucoinPrivateWebsocketListener listener,
-                                     ChooseServerStrategy chooseServerStrategy,
-                                     WebsocketPrivateAPI websocketPublicAPI) {
+                                      KucoinPrivateWebsocketListener listener,
+                                      ChooseServerStrategy chooseServerStrategy,
+                                      WebsocketPrivateAPI websocketPublicAPI) {
         super(client, listener, chooseServerStrategy);
         this.listener = listener;
         this.websocketPrivateAPI = websocketPublicAPI;
@@ -73,6 +70,22 @@ public class KucoinPrivateWSClientImpl extends BaseWebsocketImpl implements Kuco
             this.listener.setAccountChangeCallback(callback);
         }
         return subscribe(APIConstants.API_BALANCE_TOPIC_PREFIX, true, true);
+    }
+
+    @Override
+    public String onOrderChange(KucoinAPICallback<KucoinEvent<OrderChangeEvent>> callback, String... symbols) {
+        if (callback != null) {
+            this.listener.setOrderChangeCallback(callback);
+        }
+        return subscribe(APIConstants.API_ORDER_TOPIC_PREFIX, true, true);
+    }
+
+    @Override
+    public String onAdvancedOrder(KucoinAPICallback<KucoinEvent<? extends AdvancedOrderEvent>> callback, String... symbols) {
+        if (callback != null) {
+            this.listener.setAdvancedOrderCallback(callback);
+        }
+        return subscribe(APIConstants.API_ADVANCED_ORDER_TOPIC_PREFIX, true, true);
     }
 
     @Override

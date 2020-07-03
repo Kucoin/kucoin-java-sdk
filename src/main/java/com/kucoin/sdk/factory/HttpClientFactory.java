@@ -8,8 +8,6 @@ import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * Created by chenshiwei on 2019/1/18.
  */
@@ -28,8 +26,7 @@ public class HttpClientFactory {
         dispatcher.setMaxRequestsPerHost(100);
         dispatcher.setMaxRequests(100);
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .dispatcher(dispatcher)
-                .pingInterval(20, TimeUnit.SECONDS);
+                .dispatcher(dispatcher);
         if (interceptor != null) {
             builder.addInterceptor(interceptor);
         }

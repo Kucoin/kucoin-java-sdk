@@ -21,9 +21,14 @@ public class APIConstants {
 
     public static final String API_TICKER_TOPIC_PREFIX = "/market/ticker:";
     public static final String API_LEVEL2_TOPIC_PREFIX = "/market/level2:";
+    public static final String API_DEPTH5_LEVEL2_TOPIC_PREFIX = "/spotMarket/level2Depth5:";
+    public static final String API_DEPTH50_LEVEL2_TOPIC_PREFIX = "/spotMarket/level2Depth50:";
     public static final String API_MATCH_TOPIC_PREFIX = "/market/match:";
     public static final String API_LEVEL3_TOPIC_PREFIX = "/market/level3:";
+    public static final String API_LEVEL3_V2_TOPIC_PREFIX = "/spotMarket/level3:";
     public static final String API_ACTIVATE_TOPIC_PREFIX = "/market/level3:";
     public static final String API_BALANCE_TOPIC_PREFIX = "/account/balance";
+    public static final String API_ADVANCED_ORDER_TOPIC_PREFIX = "/spotMarket/advancedOrders";
+    public static final String API_ORDER_TOPIC_PREFIX = "/spotMarket/tradeOrders";
     public static final String API_SNAPSHOT_PREFIX = "/market/snapshot:";
 }

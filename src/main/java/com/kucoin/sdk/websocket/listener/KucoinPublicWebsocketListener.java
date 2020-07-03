@@ -32,8 +32,11 @@ public class KucoinPublicWebsocketListener extends WebSocketListener {
 
     private KucoinAPICallback<KucoinEvent<TickerChangeEvent>> tickerCallback = new PrintCallback<>();
     private KucoinAPICallback<KucoinEvent<Level2ChangeEvent>> level2Callback = new PrintCallback<>();
+    private KucoinAPICallback<KucoinEvent<Level2Event>> level2Depth5Callback = new PrintCallback<>();
+    private KucoinAPICallback<KucoinEvent<Level2Event>> level2Depth50Callback = new PrintCallback<>();
     private KucoinAPICallback<KucoinEvent<MatchExcutionChangeEvent>> matchDataCallback = new PrintCallback<>();
     private KucoinAPICallback<KucoinEvent<Level3ChangeEvent>> level3Callback = new PrintCallback<>();
+    private KucoinAPICallback<KucoinEvent<Level3Event>> level3V2Callback = new PrintCallback<>();
     private KucoinAPICallback<KucoinEvent<SnapshotEvent>> snapshotCallback = new PrintCallback<>();
 
     @Override
@@ -74,6 +77,18 @@ public class KucoinPublicWebsocketListener extends WebSocketListener {
             KucoinEvent<SnapshotEvent> kucoinEvent = deserialize(text, new TypeReference<KucoinEvent<SnapshotEvent>>() {
             });
             snapshotCallback.onResponse(kucoinEvent);
+        } else if (topic.contains(API_LEVEL3_V2_TOPIC_PREFIX)) {
+            KucoinEvent<Level3Event> kucoinEvent = deserialize(text, new TypeReference<KucoinEvent<Level3Event>>() {
+            });
+            level3V2Callback.onResponse(kucoinEvent);
+        } else if (topic.contains(API_DEPTH5_LEVEL2_TOPIC_PREFIX)) {
+            KucoinEvent<Level2Event> kucoinEvent = deserialize(text, new TypeReference<KucoinEvent<Level2Event>>() {
+            });
+            level2Depth5Callback.onResponse(kucoinEvent);
+        } else if (topic.contains(API_DEPTH50_LEVEL2_TOPIC_PREFIX)) {
+            KucoinEvent<Level2Event> kucoinEvent = deserialize(text, new TypeReference<KucoinEvent<Level2Event>>() {
+            });
+            level2Depth50Callback.onResponse(kucoinEvent);
         }
     }
 

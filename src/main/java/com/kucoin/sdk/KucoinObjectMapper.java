@@ -10,7 +10,7 @@ public class KucoinObjectMapper {
   
     static {
         INSTANCE = new ObjectMapper();
-        INSTANCE.configure(FAIL_ON_UNKNOWN_PROPERTIES, true);
+        INSTANCE.configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
 }
