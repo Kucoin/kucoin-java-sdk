@@ -3,9 +3,10 @@
  */
 package com.kucoin.sdk.rest.interfaces;
 
-import java.io.IOException;
-
+import com.kucoin.sdk.rest.response.Level3Response;
 import com.kucoin.sdk.rest.response.OrderBookResponse;
+
+import java.io.IOException;
 
 /**
  * Created by chenshiwei on 2019/1/22.
@@ -46,5 +47,16 @@ public interface OrderBookAPI {
      * @return The full atomic order book.
      */
     OrderBookResponse getFullOrderBookAtomic(String symbol) throws IOException;
+
+    /**
+     * Get a list of open orders for a symbol. Level-3 order book includes all bids and asks (non-aggregated, each item in Level-3 means a single order).
+     * Level 3 is non-aggregated and returns the entire order book.
+     * This API is generally used by professional traders because it uses more server resources and traffic, and we have strict access frequency control.
+     * To Maintain up-to-date Order Book in real time, please use it with Websocket Feed.
+     *
+     * @param symbol
+     * @return The full atomic order book.
+     */
+    Level3Response getFullOrderBook(String symbol) throws IOException;
 
 }

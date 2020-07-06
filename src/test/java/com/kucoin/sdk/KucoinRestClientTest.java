@@ -224,6 +224,9 @@ public class KucoinRestClientTest {
 
         OrderBookResponse partOrderBookAggregated = sandboxKucoinRestClient.orderBookAPI().getPartOrderBookAggregated("ETH-BTC");
         assertThat(partOrderBookAggregated, notNullValue());
+
+        Level3Response fullOrderBook = sandboxKucoinRestClient.orderBookAPI().getFullOrderBook("ETH-BTC");
+        assertThat(fullOrderBook, notNullValue());
     }
 
     @Test

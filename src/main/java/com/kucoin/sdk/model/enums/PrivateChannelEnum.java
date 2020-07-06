@@ -14,6 +14,8 @@ public enum PrivateChannelEnum {
 
     ORDER(APIConstants.API_ACTIVATE_TOPIC_PREFIX),
 
+    ORDER_CHANGE(APIConstants.API_ORDER_TOPIC_PREFIX),
+
     ACCOUNT(APIConstants.API_BALANCE_TOPIC_PREFIX);
 
     private String topicPrefix;
