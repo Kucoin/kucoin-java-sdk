@@ -13,6 +13,7 @@ import com.kucoin.sdk.rest.interfaces.AccountAPI;
 import com.kucoin.sdk.rest.interfaces.retrofit.AccountAPIRetrofit;
 import com.kucoin.sdk.rest.request.AccountCreateRequest;
 import com.kucoin.sdk.rest.request.AccountTransferRequest;
+import com.kucoin.sdk.rest.request.AccountTransferV2Request;
 import com.kucoin.sdk.rest.request.SubMasterTransferRequest;
 import com.kucoin.sdk.rest.response.*;
 
@@ -57,11 +58,17 @@ public class AccountAPIAdapter extends AuthRetrofitAPIImpl<AccountAPIRetrofit> i
         return super.executeSync(getAPIImpl().getAccountHold(accountId, currentPage, pageSize));
     }
 
+    @Deprecated
     @Override
     public Map<String, String> innerTransfer(String clientOid, String payAccountId, BigDecimal amount,
                                              String recAccountId) throws IOException {
         AccountTransferRequest accountTransferRequest = new AccountTransferRequest(clientOid, payAccountId, amount, recAccountId);
         return super.executeSync(getAPIImpl().applyTransfer(accountTransferRequest));
+    }
+
+    @Override
+    public Map<String, String> innerTransfer2(AccountTransferV2Request request) throws IOException {
+        return super.executeSync(getAPIImpl().applyTransfer2(request));
     }
 
     @Override
