@@ -4,6 +4,7 @@
 package com.kucoin.sdk.rest.interfaces.retrofit;
 
 import com.kucoin.sdk.rest.response.KucoinResponse;
+import com.kucoin.sdk.rest.response.Level3Response;
 import com.kucoin.sdk.rest.response.OrderBookResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -22,5 +23,8 @@ public interface OrderBookAPIRetrofit {
 
     @GET("api/v1/market/orderbook/level3")
     Call<KucoinResponse<OrderBookResponse>> getFullOrderBookAtomic(@Query("symbol") String symbol);
+
+    @GET("api/v2/market/orderbook/level3")
+    Call<KucoinResponse<Level3Response>> getFullOrderBook(@Query("symbol") String symbol);
 
 }

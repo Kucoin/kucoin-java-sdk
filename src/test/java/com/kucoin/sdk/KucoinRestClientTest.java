@@ -4,6 +4,7 @@
 package com.kucoin.sdk;
 
 import com.kucoin.sdk.exception.KucoinApiException;
+import com.kucoin.sdk.rest.request.AccountTransferV2Request;
 import com.kucoin.sdk.rest.request.OrderCreateApiRequest;
 import com.kucoin.sdk.rest.request.WithdrawApplyRequest;
 import com.kucoin.sdk.rest.response.*;
@@ -90,8 +91,10 @@ public class KucoinRestClientTest {
         Pagination<AccountHoldsResponse> holds = sandboxKucoinRestClient.accountAPI().getHolds(mainAccountId, 1, 10);
         assertThat(holds, notNullValue());
 
-        Map<String, String> result = sandboxKucoinRestClient.accountAPI().innerTransfer(String.valueOf(System.currentTimeMillis()), tradeAccountId, BigDecimal.valueOf(0.00000001), mainAccountId);
-        sandboxKucoinRestClient.accountAPI().innerTransfer(String.valueOf(System.currentTimeMillis()), mainAccountId, BigDecimal.valueOf(0.00000001), tradeAccountId);
+
+        Map<String, String> result = sandboxKucoinRestClient.accountAPI().innerTransfer2(new AccountTransferV2Request(String.valueOf(System.currentTimeMillis()),"USDT", "main", "trade", BigDecimal.ONE));
+        sandboxKucoinRestClient.accountAPI().innerTransfer2(new AccountTransferV2Request(String.valueOf(System.currentTimeMillis()),"USDT", "trade", "main", BigDecimal.ONE));
+
         assertThat(result, notNullValue());
 
         List<SubAccountBalanceResponse> subAccountBalanceResponses = sandboxKucoinRestClient.accountAPI().listSubAccounts();
@@ -224,6 +227,9 @@ public class KucoinRestClientTest {
 
         OrderBookResponse partOrderBookAggregated = sandboxKucoinRestClient.orderBookAPI().getPartOrderBookAggregated("ETH-BTC");
         assertThat(partOrderBookAggregated, notNullValue());
+
+        Level3Response fullOrderBook = sandboxKucoinRestClient.orderBookAPI().getFullOrderBook("ETH-BTC");
+        assertThat(fullOrderBook, notNullValue());
     }
 
     @Test

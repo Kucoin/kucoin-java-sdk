@@ -5,6 +5,7 @@ package com.kucoin.sdk.rest.interfaces.retrofit;
 
 import com.kucoin.sdk.rest.request.AccountCreateRequest;
 import com.kucoin.sdk.rest.request.AccountTransferRequest;
+import com.kucoin.sdk.rest.request.AccountTransferV2Request;
 import com.kucoin.sdk.rest.request.SubMasterTransferRequest;
 import com.kucoin.sdk.rest.response.*;
 import retrofit2.Call;
@@ -46,9 +47,14 @@ public interface AccountAPIRetrofit {
             @Query("currentPage") int currentPage,
             @Query("pageSize") int pageSize);
 
+    @Deprecated
     @POST("api/v1/accounts/inner-transfer")
     Call<KucoinResponse<Map<String, String>>> applyTransfer(
             @Body AccountTransferRequest request);
+
+    @POST("api/v2/accounts/inner-transfer")
+    Call<KucoinResponse<Map<String, String>>> applyTransfer2(
+            @Body AccountTransferV2Request request);
 
     @GET("api/v1/sub-accounts")
     Call<KucoinResponse<List<SubAccountBalanceResponse>>> getSubAccountList();

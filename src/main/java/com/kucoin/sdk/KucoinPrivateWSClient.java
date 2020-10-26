@@ -3,13 +3,11 @@
  */
 package com.kucoin.sdk;
 
-import java.io.IOException;
-
 import com.kucoin.sdk.model.enums.PrivateChannelEnum;
 import com.kucoin.sdk.websocket.KucoinAPICallback;
-import com.kucoin.sdk.websocket.event.AccountChangeEvent;
-import com.kucoin.sdk.websocket.event.KucoinEvent;
-import com.kucoin.sdk.websocket.event.OrderActivateEvent;
+import com.kucoin.sdk.websocket.event.*;
+
+import java.io.IOException;
 
 /**
  * Created by chenshiwei on 2019/1/10.
@@ -34,6 +32,15 @@ public interface KucoinPrivateWSClient {
     String onAccountBalance(KucoinAPICallback<KucoinEvent<AccountChangeEvent>> callback);
 
     /**
+     * You will receive the message when order changes. The message contains the details of the change.
+     *
+     * @param callback
+     * @param symbols
+     * @return The subscription UUID, or null if sending failed.
+     */
+    String onOrderChange(KucoinAPICallback<KucoinEvent<OrderChangeEvent>> callback, String... symbols);
+
+    /**
      * To prevent the TCP link being disconnected by the server, the client side needs to send ping messages to the server to keep alive the link.
      * After the ping message is sent to the server, the system would return a pong message to the client side.
      *
@@ -53,7 +60,6 @@ public interface KucoinPrivateWSClient {
 
     /**
      * Close client
-     *
      */
     void close() throws IOException;
 }

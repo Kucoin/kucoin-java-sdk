@@ -39,11 +39,12 @@ public abstract class AbstractRetrofitAPIImpl<T> {
 
     /**
      * Execute a REST call and block until the response is received.
+     *
      * @throws IOException On socket related errors.
      */
     public <R> R executeSync(Call<KucoinResponse<R>> call) throws IOException {
         Response<KucoinResponse<R>> response = call.execute();
-        if (response.isSuccessful() && response.body().isSuccessful()) {
+        if (response.isSuccessful() && response.body() != null && response.body().isSuccessful()) {
             return response.body().getData();
         } else {
             KucoinResponse<?> errorResponse;

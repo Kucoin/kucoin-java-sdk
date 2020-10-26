@@ -3,10 +3,6 @@
  */
 package com.kucoin.sdk.impl;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
 import com.kucoin.sdk.KucoinClientBuilder;
 import com.kucoin.sdk.KucoinPublicWSClient;
 import com.kucoin.sdk.constants.APIConstants;
@@ -20,8 +16,11 @@ import com.kucoin.sdk.websocket.KucoinAPICallback;
 import com.kucoin.sdk.websocket.event.*;
 import com.kucoin.sdk.websocket.impl.BaseWebsocketImpl;
 import com.kucoin.sdk.websocket.listener.KucoinPublicWebsocketListener;
-
 import okhttp3.OkHttpClient;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * Created by chenshiwei on 2019/1/17.
@@ -72,11 +71,41 @@ public class KucoinPublicWSClientImpl extends BaseWebsocketImpl implements Kucoi
     }
 
     @Override
+    public String onLevel2Data(int depth, KucoinAPICallback<KucoinEvent<Level2Event>> callback, String... symbols) {
+        String topic = null;
+        if (depth == 5) {
+            if (callback != null) {
+                this.listener.setLevel2Depth5Callback(callback);
+            }
+            topic = APIConstants.API_DEPTH5_LEVEL2_TOPIC_PREFIX + Arrays.stream(symbols).collect(Collectors.joining(","));
+        } else if (depth == 50) {
+            if (callback != null) {
+                this.listener.setLevel2Depth50Callback(callback);
+            }
+            topic = APIConstants.API_DEPTH50_LEVEL2_TOPIC_PREFIX + Arrays.stream(symbols).collect(Collectors.joining(","));
+        }
+        if (topic == null) {
+            return null;
+        }
+
+        return subscribe(topic, false, true);
+    }
+
+    @Override
     public String onMatchExecutionData(KucoinAPICallback<KucoinEvent<MatchExcutionChangeEvent>> callback, String... symbols) {
         if (callback != null) {
             this.listener.setMatchDataCallback(callback);
         }
         String topic = APIConstants.API_MATCH_TOPIC_PREFIX + Arrays.stream(symbols).collect(Collectors.joining(","));
+        return subscribe(topic, false, true);
+    }
+
+    @Override
+    public String onLevel3Data_V2(KucoinAPICallback<KucoinEvent<Level3Event>> callback, String... symbols) {
+        if (callback != null) {
+            this.listener.setLevel3V2Callback(callback);
+        }
+        String topic = APIConstants.API_LEVEL3_V2_TOPIC_PREFIX + Arrays.stream(symbols).collect(Collectors.joining(","));
         return subscribe(topic, false, true);
     }
 

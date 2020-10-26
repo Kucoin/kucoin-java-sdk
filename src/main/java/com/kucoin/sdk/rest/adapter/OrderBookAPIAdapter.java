@@ -8,6 +8,7 @@ import java.io.IOException;
 import com.kucoin.sdk.rest.impl.retrofit.PublicRetrofitAPIImpl;
 import com.kucoin.sdk.rest.interfaces.OrderBookAPI;
 import com.kucoin.sdk.rest.interfaces.retrofit.OrderBookAPIRetrofit;
+import com.kucoin.sdk.rest.response.Level3Response;
 import com.kucoin.sdk.rest.response.OrderBookResponse;
 
 /**
@@ -32,5 +33,10 @@ public class OrderBookAPIAdapter extends PublicRetrofitAPIImpl<OrderBookAPIRetro
     @Override
     public OrderBookResponse getFullOrderBookAtomic(String symbol) throws IOException {
         return super.executeSync(getAPIImpl().getFullOrderBookAtomic(symbol));
+    }
+
+    @Override
+    public Level3Response getFullOrderBook(String symbol) throws IOException {
+        return super.executeSync(getAPIImpl().getFullOrderBook(symbol));
     }
 }
