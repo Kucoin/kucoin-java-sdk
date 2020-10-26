@@ -54,8 +54,6 @@ public class KucoinClientBuilder {
 
     private HistoryAPI historyAPI;
 
-    private StopOrderAPI stopOrderAPI;
-
     private ChooseServerStrategy chooseServerStrategy;
 
     public KucoinRestClient buildRestClient() {
@@ -66,7 +64,6 @@ public class KucoinClientBuilder {
         if (withdrawalAPI == null) withdrawalAPI = new WithdrawalAPIAdapter(baseUrl, apiKey, secret, passPhrase);
         if (fillAPI == null) fillAPI = new FillAPIAdapter(baseUrl, apiKey, secret, passPhrase);
         if (orderAPI == null) orderAPI = new OrderAPIAdapter(baseUrl, apiKey, secret, passPhrase);
-        if (stopOrderAPI == null) stopOrderAPI = new StopOrderAPIAdapter(baseUrl, apiKey, secret, passPhrase);
         if (currencyAPI == null) currencyAPI = new CurrencyAPIAdaptor(baseUrl);
         if (timeAPI == null) timeAPI = new TimeAPIAdapter(baseUrl);
         if (symbolAPI == null) symbolAPI = new SymbolAPIAdaptor(baseUrl);
@@ -115,11 +112,6 @@ public class KucoinClientBuilder {
 
     public KucoinClientBuilder withOrderAPI(OrderAPI orderAPI) {
         this.orderAPI = orderAPI;
-        return this;
-    }
-
-    public KucoinClientBuilder withStopOrderAPI(StopOrderAPI stopOrderAPI) {
-        this.stopOrderAPI = stopOrderAPI;
         return this;
     }
 

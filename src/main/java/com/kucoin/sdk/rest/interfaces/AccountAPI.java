@@ -3,13 +3,19 @@
  */
 package com.kucoin.sdk.rest.interfaces;
 
+import com.kucoin.sdk.exception.KucoinApiException;
+import com.kucoin.sdk.rest.request.AccountTransferV2Request;
+import com.kucoin.sdk.rest.response.AccountBalanceResponse;
+import com.kucoin.sdk.rest.response.AccountBalancesResponse;
+import com.kucoin.sdk.rest.response.AccountDetailResponse;
+import com.kucoin.sdk.rest.response.AccountHoldsResponse;
+import com.kucoin.sdk.rest.response.Pagination;
+import com.kucoin.sdk.rest.response.SubAccountBalanceResponse;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-
-import com.kucoin.sdk.exception.KucoinApiException;
-import com.kucoin.sdk.rest.response.*;
 
 /**
  * Created by chenshiwei on 2019/1/9.
@@ -94,7 +100,17 @@ public interface AccountAPI {
      * @throws IOException        on socket errors.
      * @throws KucoinApiException when errors are returned from the exchange.
      */
+    @Deprecated
     Map<String, String> innerTransfer(String clientOid, String payAccountId, BigDecimal amount, String recAccountId) throws IOException;
+
+    /**
+     * The inner transfer interface is used for assets transfer among the accounts of a user and is free of charges on the platform.
+     * For example, a user could transfer assets for free form the main account to the trading account on the platform.
+     *
+     * @param request
+     * @return
+     */
+    Map<String, String> innerTransfer2(AccountTransferV2Request request) throws IOException;
 
     /**
      * Get a list of sub-accounts.
