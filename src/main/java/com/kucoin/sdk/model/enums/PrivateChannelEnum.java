@@ -12,11 +12,14 @@ import lombok.Getter;
 @Getter
 public enum PrivateChannelEnum {
 
+    @Deprecated
     ORDER(APIConstants.API_ACTIVATE_TOPIC_PREFIX),
 
     ORDER_CHANGE(APIConstants.API_ORDER_TOPIC_PREFIX),
 
-    ACCOUNT(APIConstants.API_BALANCE_TOPIC_PREFIX);
+    ACCOUNT(APIConstants.API_BALANCE_TOPIC_PREFIX),
+
+    ADVANCED_ORDER(APIConstants.API_ADVANCED_ORDER_TOPIC_PREFIX);
 
     private String topicPrefix;
 
