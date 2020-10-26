@@ -4,37 +4,35 @@
 package com.kucoin.sdk.impl;
 
 import com.kucoin.sdk.KucoinClientBuilder;
-import com.kucoin.sdk.KucoinRestClient;
 import com.kucoin.sdk.rest.interfaces.*;
+import com.kucoin.sdk.KucoinRestClient;
 
 /**
  * Created by chenshiwei on 2019/1/9.
  */
 public class KucoinRestClientImpl implements KucoinRestClient {
 
-    private final UserAPI userAPI;
+    private UserAPI userAPI;
 
-    private final AccountAPI accountAPI;
+    private AccountAPI accountAPI;
 
-    private final DepositAPI depositAPI;
+    private DepositAPI depositAPI;
 
-    private final FillAPI fillAPI;
+    private FillAPI fillAPI;
 
-    private final OrderAPI orderAPI;
+    private OrderAPI orderAPI;
 
-    private final WithdrawalAPI withdrawAPI;
+    private WithdrawalAPI withdrawAPI;
 
-    private final SymbolAPI symbolAPI;
+    private SymbolAPI symbolAPI;
 
-    private final OrderBookAPI orderBookAPI;
+    private OrderBookAPI orderBookAPI;
 
-    private final HistoryAPI historyAPI;
+    private HistoryAPI historyAPI;
 
-    private final CurrencyAPI currencyAPI;
+    private CurrencyAPI currencyAPI;
 
-    private final TimeAPI timeAPI;
-
-    private final StopOrderAPI stopOrderAPI;
+    private TimeAPI timeAPI;
 
     public KucoinRestClientImpl(KucoinClientBuilder kucoinBuilder) {
         this.userAPI = kucoinBuilder.getUserAPI();
@@ -48,7 +46,6 @@ public class KucoinRestClientImpl implements KucoinRestClient {
         this.historyAPI = kucoinBuilder.getHistoryAPI();
         this.currencyAPI = kucoinBuilder.getCurrencyAPI();
         this.timeAPI = kucoinBuilder.getTimeAPI();
-        this.stopOrderAPI = kucoinBuilder.getStopOrderAPI();
     }
 
     @Override
@@ -104,11 +101,6 @@ public class KucoinRestClientImpl implements KucoinRestClient {
     @Override
     public TimeAPI timeAPI() {
         return timeAPI;
-    }
-
-    @Override
-    public StopOrderAPI stopOrderAPI() {
-        return stopOrderAPI;
     }
 
 }

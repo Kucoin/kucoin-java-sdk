@@ -3,55 +3,49 @@
  */
 package com.kucoin.sdk.rest.request;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 
 import java.math.BigDecimal;
 
-@Getter
-@Builder
+@Data
 public class StopOrderCreateRequest {
 
-    private final String symbol;
+    private String symbol;
 
-    @Builder.Default
-    private final String type = "limit";
+    private String type = "limit";
 
-    private final String side;
+    private String side;
 
-    private final BigDecimal price;
+    private BigDecimal price;
 
-    private final BigDecimal size;
+    private BigDecimal size;
 
-    private final BigDecimal funds;
+    private BigDecimal funds;
 
-    @Builder.Default
-    private final String tradeType = "TRADE";
+    private String tradeType = "TRADE";
 
-    private final String stp;
+    private String stp;
 
-    @Builder.Default
-    private final String stop = "loss";
+    private String stop = "loss";
 
-    private final BigDecimal stopPrice;
+    private BigDecimal stopPrice;
 
-    @Builder.Default
-    private final String timeInForce = "GTC";
+    private String timeInForce = "GTC";
 
-    private final boolean postOnly;
+    private boolean postOnly;
 
-    private final boolean hidden;
+    private boolean hidden;
 
-    private final boolean iceberg;
+    private boolean iceberg;
 
-    private final BigDecimal visibleSize;
+    private BigDecimal visibleSize;
 
-    private final Long cancelAfter;
+    private Long cancelAfter;
 
-    private final String clientOid;
+    private String clientOid;
 
-    private final String remark;
+    private String remark;
 
-    private final String tags;
+    private String tags;
 
 }

@@ -4,13 +4,11 @@
 package com.kucoin.sdk.websocket.event;
 
 import lombok.Data;
-import lombok.ToString;
 
 /**
  * Created by chenshiwei on 2019/1/10.
  */
 @Data
-@ToString
 public class KucoinEvent<T> {
 
     private String id;
