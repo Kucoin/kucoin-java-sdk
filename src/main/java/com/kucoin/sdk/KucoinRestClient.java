@@ -32,6 +32,4 @@ public interface KucoinRestClient {
 
     TimeAPI timeAPI();
 
-    StopOrderAPI stopOrderAPI();
-
 }
