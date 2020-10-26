@@ -12,29 +12,29 @@ import com.kucoin.sdk.rest.interfaces.*;
  */
 public class KucoinRestClientImpl implements KucoinRestClient {
 
-    private UserAPI userAPI;
+    private final UserAPI userAPI;
 
-    private AccountAPI accountAPI;
+    private final AccountAPI accountAPI;
 
-    private DepositAPI depositAPI;
+    private final DepositAPI depositAPI;
 
-    private FillAPI fillAPI;
+    private final FillAPI fillAPI;
 
-    private OrderAPI orderAPI;
+    private final OrderAPI orderAPI;
 
-    private WithdrawalAPI withdrawAPI;
+    private final WithdrawalAPI withdrawAPI;
 
-    private SymbolAPI symbolAPI;
+    private final SymbolAPI symbolAPI;
 
-    private OrderBookAPI orderBookAPI;
+    private final OrderBookAPI orderBookAPI;
 
-    private HistoryAPI historyAPI;
+    private final HistoryAPI historyAPI;
 
-    private CurrencyAPI currencyAPI;
+    private final CurrencyAPI currencyAPI;
 
-    private TimeAPI timeAPI;
+    private final TimeAPI timeAPI;
 
-    private StopOrderAPI stopOrderAPI;
+    private final StopOrderAPI stopOrderAPI;
 
     public KucoinRestClientImpl(KucoinClientBuilder kucoinBuilder) {
         this.userAPI = kucoinBuilder.getUserAPI();

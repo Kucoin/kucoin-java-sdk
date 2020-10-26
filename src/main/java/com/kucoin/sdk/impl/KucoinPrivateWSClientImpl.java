@@ -82,6 +82,14 @@ public class KucoinPrivateWSClientImpl extends BaseWebsocketImpl implements Kuco
     }
 
     @Override
+    public String onAdvancedOrder(KucoinAPICallback<KucoinEvent<? extends AdvancedOrderEvent>> callback, String... symbols) {
+        if (callback != null) {
+            this.listener.setAdvancedOrderCallback(callback);
+        }
+        return subscribe(APIConstants.API_ADVANCED_ORDER_TOPIC_PREFIX, true, true);
+    }
+
+    @Override
     public String ping(String requestId) {
         return super.ping(requestId);
     }
