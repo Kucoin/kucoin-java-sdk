@@ -110,6 +110,7 @@ public class KucoinPublicWSClientImpl extends BaseWebsocketImpl implements Kucoi
     }
 
     @Override
+    @Deprecated
     public String onLevel3Data(KucoinAPICallback<KucoinEvent<Level3ChangeEvent>> callback, String... symbols) {
         if (callback != null) {
             this.listener.setLevel3Callback(callback);

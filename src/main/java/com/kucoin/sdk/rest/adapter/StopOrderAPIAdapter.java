@@ -33,8 +33,13 @@ public class StopOrderAPIAdapter extends AuthRetrofitAPIImpl<StopOrderAPIRetrofi
     }
 
     @Override
-    public OrderCancelResponse cancelStopOrder(String orderId, String symbol) throws IOException {
-        return executeSync(getAPIImpl().cancelStopOrder(orderId, symbol));
+    public OrderCancelResponse cancelStopOrderByClientOid(String clientOid) throws IOException {
+        return executeSync(getAPIImpl().cancelStopOrderByClientOid(clientOid));
+    }
+
+    @Override
+    public OrderCancelResponse cancelStopOrder(String orderId) throws IOException {
+        return executeSync(getAPIImpl().cancelStopOrder(orderId));
     }
 
     @Override
@@ -53,8 +58,13 @@ public class StopOrderAPIAdapter extends AuthRetrofitAPIImpl<StopOrderAPIRetrofi
     }
 
     @Override
-    public StopOrderResponse getStopOrder(String orderId, String symbol) throws IOException {
-        return executeSync(getAPIImpl().getStopOrder(orderId, symbol));
+    public StopOrderResponse getStopOrderByClientOid(String clientOid) throws IOException {
+        return executeSync(getAPIImpl().getStopOrderByClientOid(clientOid));
+    }
+
+    @Override
+    public StopOrderResponse getStopOrder(String orderId) throws IOException {
+        return executeSync(getAPIImpl().getStopOrder(orderId));
     }
 
     @Override

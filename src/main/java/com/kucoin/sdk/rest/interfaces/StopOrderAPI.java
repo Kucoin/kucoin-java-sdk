@@ -29,10 +29,17 @@ public interface StopOrderAPI {
      * Cancel a stop order which have not been triggered
      *
      * @param orderId
-     * @param symbol
      * @return A response containing the id of the cancelled order.
      */
-    OrderCancelResponse cancelStopOrder(String orderId, String symbol) throws IOException;
+    OrderCancelResponse cancelStopOrder(String orderId) throws IOException;
+
+    /**
+     * Cancel a stop order which have not been triggered
+     *
+     * @param clientOid
+     * @return A response containing the id of the cancelled order.
+     */
+    OrderCancelResponse cancelStopOrderByClientOid(String clientOid) throws IOException;
 
     /**
      * Cancel a bulk of stop orders which have not been triggered
@@ -46,10 +53,18 @@ public interface StopOrderAPI {
      * Get a single stop order which have not been triggered by order id and symbol.
      *
      * @param orderId
-     * @param symbol
      * @return The requested stop order.
      */
-    StopOrderResponse getStopOrder(String orderId, String symbol) throws IOException;
+    StopOrderResponse getStopOrder(String orderId) throws IOException;
+
+
+    /**
+     * Get a single stop order which have not been triggered by order id and symbol.
+     *
+     * @param clientOid
+     * @return The requested stop order.
+     */
+    StopOrderResponse getStopOrderByClientOid(String clientOid) throws IOException;
 
     /**
      * Query un-triggered stop orders which requested.

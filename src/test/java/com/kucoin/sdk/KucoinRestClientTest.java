@@ -5,6 +5,7 @@ package com.kucoin.sdk;
 
 import com.kucoin.sdk.exception.KucoinApiException;
 import com.kucoin.sdk.rest.request.OrderCreateApiRequest;
+import com.kucoin.sdk.rest.request.StopOrderCreateRequest;
 import com.kucoin.sdk.rest.request.WithdrawApplyRequest;
 import com.kucoin.sdk.rest.response.*;
 import org.hamcrest.core.Is;
@@ -42,7 +43,7 @@ public class KucoinRestClientTest {
     @BeforeClass
     public static void setUpClass() {
         sandboxKucoinRestClient = new KucoinClientBuilder().withBaseUrl("https://openapi-sandbox.kucoin.com")
-                .withApiKey("5c42a37bef83c73aa68e43c4", "7df80b16-1b95-4739-9b03-3d987599c332", "asd123456")
+                .withApiKey("5f927beac1cfb50006afcd3c", "943aede3-1dd2-46fe-9654-7df9f275e118", "12121212")
                 .buildRestClient();
         liveKucoinRestClient = new KucoinClientBuilder().withBaseUrl("https://openapi-v2.kucoin.com")
                 .buildRestClient();
@@ -143,6 +144,22 @@ public class KucoinRestClientTest {
 
         OrderCancelResponse ordersCancelResponse = sandboxKucoinRestClient.orderAPI().cancelAllOrders("ETH-BTC");
         assertThat(ordersCancelResponse, notNullValue());
+    }
+
+    @Test
+    public void stopOrderAPI() throws Exception {
+        StopOrderCreateRequest request = StopOrderCreateRequest.builder()
+                .price(BigDecimal.valueOf(0.0001)).size(BigDecimal.ONE).side("buy")
+                .stop("loss").stopPrice(BigDecimal.valueOf(0.0002))
+                .symbol("ETH-BTC").type("limit").clientOid(UUID.randomUUID().toString()).build();
+        OrderCreateResponse stopOrder = sandboxKucoinRestClient.stopOrderAPI().createStopOrder(request);
+        assertThat(stopOrder, notNullValue());
+
+        StopOrderResponse stopOrderResponse = sandboxKucoinRestClient.stopOrderAPI().getStopOrder(stopOrder.getOrderId());
+        assertThat(stopOrderResponse, notNullValue());
+
+        OrderCancelResponse orderCancelResponse = sandboxKucoinRestClient.stopOrderAPI().cancelStopOrder(stopOrder.getOrderId());
+        assertThat(orderCancelResponse, notNullValue());
     }
 
     @Test

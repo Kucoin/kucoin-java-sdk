@@ -56,6 +56,7 @@ public class KucoinPrivateWSClientImpl extends BaseWebsocketImpl implements Kuco
     }
 
     @Override
+    @Deprecated
     public String onOrderActivate(KucoinAPICallback<KucoinEvent<OrderActivateEvent>> callback, String... symbols) {
         if (callback != null) {
             this.listener.setOrderActivateCallback(callback);

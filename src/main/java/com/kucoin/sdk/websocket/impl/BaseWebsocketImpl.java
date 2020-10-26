@@ -3,24 +3,22 @@
  */
 package com.kucoin.sdk.websocket.impl;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.util.UUID;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kucoin.sdk.KucoinObjectMapper;
 import com.kucoin.sdk.model.InstanceServer;
 import com.kucoin.sdk.rest.response.WebsocketTokenResponse;
 import com.kucoin.sdk.websocket.ChooseServerStrategy;
 import com.kucoin.sdk.websocket.event.KucoinEvent;
-
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.Closeable;
+import java.io.IOException;
+import java.util.UUID;
 
 /**
  * Created by chenshiwei on 2019/1/18.
@@ -36,13 +34,13 @@ public abstract class BaseWebsocketImpl implements Closeable {
     private WebSocket webSocket;
 
     protected BaseWebsocketImpl(OkHttpClient client, WebSocketListener listener, ChooseServerStrategy chooseServerStrategy) {
-      this.client = client;
-      this.listener = listener;
-      this.chooseServerStrategy = chooseServerStrategy;
+        this.client = client;
+        this.listener = listener;
+        this.chooseServerStrategy = chooseServerStrategy;
     }
 
     public void connect() throws IOException {
-      this.webSocket = createNewWebSocket();
+        this.webSocket = createNewWebSocket();
     }
 
     protected abstract WebsocketTokenResponse requestToken() throws IOException;
@@ -101,10 +99,10 @@ public abstract class BaseWebsocketImpl implements Closeable {
     }
 
     private String serialize(Object o) {
-      try {
-        return KucoinObjectMapper.INSTANCE.writeValueAsString(o);
-      } catch (JsonProcessingException e) {
-        throw new RuntimeException("Failure serializing object", e);
-      }
+        try {
+            return KucoinObjectMapper.INSTANCE.writeValueAsString(o);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failure serializing object", e);
+        }
     }
 }
