@@ -56,6 +56,7 @@ public class KucoinPrivateWSClientImpl extends BaseWebsocketImpl implements Kuco
     }
 
     @Override
+    @Deprecated
     public String onOrderActivate(KucoinAPICallback<KucoinEvent<OrderActivateEvent>> callback, String... symbols) {
         if (callback != null) {
             this.listener.setOrderActivateCallback(callback);
@@ -78,6 +79,14 @@ public class KucoinPrivateWSClientImpl extends BaseWebsocketImpl implements Kuco
             this.listener.setOrderChangeCallback(callback);
         }
         return subscribe(APIConstants.API_ORDER_TOPIC_PREFIX, true, true);
+    }
+
+    @Override
+    public String onAdvancedOrder(KucoinAPICallback<KucoinEvent<? extends AdvancedOrderEvent>> callback, String... symbols) {
+        if (callback != null) {
+            this.listener.setAdvancedOrderCallback(callback);
+        }
+        return subscribe(APIConstants.API_ADVANCED_ORDER_TOPIC_PREFIX, true, true);
     }
 
     @Override
