@@ -22,6 +22,7 @@ public enum PublicChannelEnum {
 
     MATCH(APIConstants.API_MATCH_TOPIC_PREFIX),
 
+    @Deprecated
     LEVEL3(APIConstants.API_LEVEL3_TOPIC_PREFIX),
 
     LEVEL3_V2(APIConstants.API_LEVEL3_V2_TOPIC_PREFIX),
