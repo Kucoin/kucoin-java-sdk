@@ -3,8 +3,10 @@
  */
 package com.kucoin.sdk;
 
+import com.google.common.collect.Lists;
 import com.kucoin.sdk.exception.KucoinApiException;
 import com.kucoin.sdk.rest.request.AccountTransferV2Request;
+import com.kucoin.sdk.rest.request.MultiOrderCreateRequest;
 import com.kucoin.sdk.rest.request.OrderCreateApiRequest;
 import com.kucoin.sdk.rest.request.StopOrderCreateRequest;
 import com.kucoin.sdk.rest.request.WithdrawApplyRequest;
@@ -44,8 +46,9 @@ public class KucoinRestClientTest {
     @BeforeClass
     public static void setUpClass() {
         sandboxKucoinRestClient = new KucoinClientBuilder().withBaseUrl("https://openapi-sandbox.kucoin.com")
-                .withApiKey("5f927beac1cfb50006afcd3c", "943aede3-1dd2-46fe-9654-7df9f275e118", "12121212")
+                .withApiKey("5ebe68e1abcd2200064f8ce6", "f0aa1d6e-c64d-42a9-ad28-bcae24236ad9", "qhQ3tB88JiJg")
                 .buildRestClient();
+
         liveKucoinRestClient = new KucoinClientBuilder().withBaseUrl("https://openapi-v2.kucoin.com")
                 .buildRestClient();
         startAt = LocalDateTime.of(2019, 1, 1, 0, 0, 0).toEpochSecond(ZoneOffset.of("+8"));
@@ -72,7 +75,7 @@ public class KucoinRestClientTest {
     @Test
     public void accountAPI() throws Exception {
         List<AccountBalancesResponse> accountBalancesResponses = sandboxKucoinRestClient.accountAPI().listAccounts("BTC", null);
-        assertThat(accountBalancesResponses.size(), Is.is(2));
+        assertThat(accountBalancesResponses.size(), Is.is(3));
         Optional<AccountBalancesResponse> main = accountBalancesResponses.stream()
                 .filter(accountBalancesResponse -> accountBalancesResponse.getType().equals("main")).findFirst();
         Optional<AccountBalancesResponse> trade = accountBalancesResponses.stream()
@@ -80,72 +83,88 @@ public class KucoinRestClientTest {
         assertThat(main.isPresent(), Is.is(true));
         assertThat(trade.isPresent(), Is.is(true));
 
-        String mainAccountId = main.get().getId();
         String tradeAccountId = trade.get().getId();
-        AccountBalanceResponse account = sandboxKucoinRestClient.accountAPI().getAccount(mainAccountId);
+        AccountBalanceResponse account = sandboxKucoinRestClient.accountAPI().getAccount(tradeAccountId);
         assertThat(account, notNullValue());
 
-        Pagination<AccountDetailResponse> accountHistory = sandboxKucoinRestClient.accountAPI().getAccountHistory(mainAccountId,
-                startAt, endAt, 1, 10);
-        assertThat(accountHistory, notNullValue());
-
-        Pagination<AccountHoldsResponse> holds = sandboxKucoinRestClient.accountAPI().getHolds(mainAccountId, 1, 10);
-        assertThat(holds, notNullValue());
-
-
-        Map<String, String> result = sandboxKucoinRestClient.accountAPI().innerTransfer2(new AccountTransferV2Request(String.valueOf(System.currentTimeMillis()),"USDT", "main", "trade", BigDecimal.ONE));
-        sandboxKucoinRestClient.accountAPI().innerTransfer2(new AccountTransferV2Request(String.valueOf(System.currentTimeMillis()),"USDT", "trade", "main", BigDecimal.ONE));
-
+        Map<String, String> result = sandboxKucoinRestClient.accountAPI().innerTransfer2(new AccountTransferV2Request(String.valueOf(System.currentTimeMillis()),"BTC", "main", "trade", BigDecimal.ONE));
         assertThat(result, notNullValue());
+
+        TransferableBalanceResponse transferable = sandboxKucoinRestClient.accountAPI().transferable("BTC", "MARGIN");
+        assertThat(transferable, notNullValue());
+
+        Pagination<AccountDetailResponse> accountHistory = sandboxKucoinRestClient.accountAPI().getAccountLedgers("BTC",
+                null, null, startAt, System.currentTimeMillis(), 1, 10);
+        assertThat(accountHistory, notNullValue());
 
         List<SubAccountBalanceResponse> subAccountBalanceResponses = sandboxKucoinRestClient.accountAPI().listSubAccounts();
         Optional<SubAccountBalanceResponse> henryPeach = subAccountBalanceResponses.stream()
-                .filter(subAccountBalanceResponse -> subAccountBalanceResponse.getSubName().equals("HenryPeach")).findFirst();
+                .filter(subAccountBalanceResponse -> subAccountBalanceResponse.getSubName().equals("nilmiao01")).findFirst();
         assertThat(henryPeach.isPresent(), Is.is(true));
 
         String subUserId = henryPeach.get().getSubUserId();
         SubAccountBalanceResponse subAccount = sandboxKucoinRestClient.accountAPI().getSubAccount(subUserId);
         assertThat(subAccount, notNullValue());
 
-
-        Map<String, String> transferResult = sandboxKucoinRestClient.accountAPI()
-                .transferBetweenSubAndMaster(String
-                        .valueOf(System.currentTimeMillis()), "BTC", BigDecimal.valueOf(0.00000001), "IN", subUserId, "MAIN");
+        Map<String, String> transferResult = sandboxKucoinRestClient.accountAPI().transferBetweenSubAndMasterV2(
+                String.valueOf(System.currentTimeMillis()), "BTC", BigDecimal.valueOf(0.00000001),
+                "OUT", subUserId,"MAIN", "MAIN");
         assertThat(transferResult, notNullValue());
 
         exception.expect(KucoinApiException.class);
         exception.expectMessage("account already exists");
-        sandboxKucoinRestClient.accountAPI().createAccount("KCS", "main");
 
+        Map<String, String> create = sandboxKucoinRestClient.accountAPI().createAccount("KCS", "main");
+        assertThat(create, notNullValue());
 
     }
 
     @Test
     public void fillAPI() throws Exception {
-        Pagination<TradeResponse> fills = sandboxKucoinRestClient.fillAPI().listFills("ETH-BTC", null, "buy",
-                null, startAt, endAt, 10, 10);
+        Pagination<TradeResponse> fills = sandboxKucoinRestClient.fillAPI().listFills("KCS-USDT", null, "buy",
+                null,"TRADE", startAt, endAt, 10, 10);
         assertThat(fills, notNullValue());
     }
 
     @Test
     public void orderAPI() throws Exception {
+
+        List<UserFeeResponse> userFees = sandboxKucoinRestClient.orderAPI().getUserTradeFees("BTC-USDT,KCS-USDT");
+        assertThat(userFees, notNullValue());
+
         OrderCreateApiRequest request = OrderCreateApiRequest.builder()
-                .price(BigDecimal.valueOf(0.000001)).size(BigDecimal.ONE).side("buy")
-                .symbol("ETH-BTC").type("limit").clientOid(UUID.randomUUID().toString()).build();
+                .price(BigDecimal.valueOf(0.000001)).size(BigDecimal.ONE).side("buy").tradeType("TRADE")
+                .symbol("ETH-BTC").type("limit").clientOid(String.valueOf(System.currentTimeMillis())).build();
         OrderCreateResponse order = sandboxKucoinRestClient.orderAPI().createOrder(request);
         assertThat(order, notNullValue());
 
+        MultiOrderCreateRequest multiOrderRequest = new MultiOrderCreateRequest();
+        multiOrderRequest.setSymbol("ETH-BTC");
+        OrderCreateApiRequest request2 = OrderCreateApiRequest.builder()
+                .price(BigDecimal.valueOf(0.000001)).size(BigDecimal.ONE).side("buy").tradeType("TRADE")
+                .symbol("ETH-BTC").type("limit").clientOid(String.valueOf(System.currentTimeMillis())).build();
+        request.setClientOid(String.valueOf(System.currentTimeMillis()));
+        multiOrderRequest.setOrderList(Lists.newArrayList(request,request2));
+        MultiOrderCreateResponse multiOrderResponse = sandboxKucoinRestClient.orderAPI().createMultipleOrders(multiOrderRequest);
+        assertThat(multiOrderResponse, notNullValue());
+
         Pagination<OrderResponse> orderResponsePagination = sandboxKucoinRestClient.orderAPI().listOrders("ETH-BTC",
-                null, null, "active", null, null, 10, 1);
+                null, null,"TRADE", "active", null, null, 10, 1);
         assertThat(orderResponsePagination, notNullValue());
 
         OrderResponse orderResponse = sandboxKucoinRestClient.orderAPI().getOrder(order.getOrderId());
         assertThat(orderResponse, notNullValue());
 
+        ActiveOrderResponse activeOrder = sandboxKucoinRestClient.orderAPI().getOrderByClientOid(request.getClientOid());
+        assertThat(activeOrder, notNullValue());
+
         OrderCancelResponse orderCancelResponse = sandboxKucoinRestClient.orderAPI().cancelOrder(order.getOrderId());
         assertThat(orderCancelResponse, notNullValue());
 
-        OrderCancelResponse ordersCancelResponse = sandboxKucoinRestClient.orderAPI().cancelAllOrders("ETH-BTC");
+        OrderCancelResponse orderCancel = sandboxKucoinRestClient.orderAPI().cancelOrderByClientOid(request.getClientOid());
+        assertThat(orderCancel, notNullValue());
+
+        OrderCancelResponse ordersCancelResponse = sandboxKucoinRestClient.orderAPI().cancelAllOrders("ETH-BTC", "TRADE");
         assertThat(ordersCancelResponse, notNullValue());
     }
 
@@ -215,20 +234,20 @@ public class KucoinRestClientTest {
      */
     @Test
     public void symbolAPILive() throws Exception {
-        TickerResponse ticker = liveKucoinRestClient.symbolAPI().getTicker("ETH-BTC");
+        TickerResponse ticker = sandboxKucoinRestClient.symbolAPI().getTicker("ETH-BTC");
         assertThat(ticker, notNullValue());
 
-        List<SymbolResponse> symbols = liveKucoinRestClient.symbolAPI().getSymbols();
+        List<SymbolResponse> symbols = sandboxKucoinRestClient.symbolAPI().getSymbols();
         assertThat(symbols, notNullValue());
         assertThat(symbols.size(), greaterThan(0));
 
-        SymbolTickResponse hrStats = liveKucoinRestClient.symbolAPI().get24hrStats("ETH-BTC");
+        SymbolTickResponse hrStats = sandboxKucoinRestClient.symbolAPI().get24hrStats("ETH-BTC");
         assertThat(hrStats, notNullValue());
 
-        List<String> marketList = liveKucoinRestClient.symbolAPI().getMarketList();
+        List<String> marketList = sandboxKucoinRestClient.symbolAPI().getMarketList();
         assertThat(marketList.size(), greaterThan(1));
 
-        AllTickersResponse allTickers = liveKucoinRestClient.symbolAPI().getAllTickers();
+        AllTickersResponse allTickers = sandboxKucoinRestClient.symbolAPI().getAllTickers();
         assertThat(allTickers, notNullValue());
         assertThat(allTickers.getTicker().size(), greaterThan(1));
 
@@ -236,15 +255,6 @@ public class KucoinRestClientTest {
 
     @Test
     public void orderBookAPI() throws Exception {
-        OrderBookResponse fullOrderBookAggregated = sandboxKucoinRestClient.orderBookAPI().getFullOrderBookAggregated("ETH-BTC");
-        assertThat(fullOrderBookAggregated, notNullValue());
-
-        OrderBookResponse fullOrderBookAtomic = sandboxKucoinRestClient.orderBookAPI().getFullOrderBookAtomic("ETH-BTC");
-        assertThat(fullOrderBookAtomic, notNullValue());
-
-        OrderBookResponse partOrderBookAggregated = sandboxKucoinRestClient.orderBookAPI().getPartOrderBookAggregated("ETH-BTC");
-        assertThat(partOrderBookAggregated, notNullValue());
-
         Level3Response fullOrderBook = sandboxKucoinRestClient.orderBookAPI().getFullOrderBook("ETH-BTC");
         assertThat(fullOrderBook, notNullValue());
     }
@@ -270,7 +280,7 @@ public class KucoinRestClientTest {
         CurrencyDetailResponse kcs = sandboxKucoinRestClient.currencyAPI().getCurrencyDetail("KCS", null);
         assertThat(kcs, notNullValue());
 
-        Map<String, BigDecimal> fiatPrice = liveKucoinRestClient.currencyAPI().getFiatPrice("USD", "KCS, BTC");
+        Map<String, BigDecimal> fiatPrice = sandboxKucoinRestClient.currencyAPI().getFiatPrice("USD", "KCS, BTC");
         assertThat(fiatPrice, notNullValue());
         assertThat(fiatPrice.keySet().size(), greaterThan(1));
     }
@@ -279,6 +289,12 @@ public class KucoinRestClientTest {
     public void timeAPI() throws Exception {
         Long serverTimeStamp = sandboxKucoinRestClient.timeAPI().getServerTimeStamp();
         assertThat(System.currentTimeMillis() - serverTimeStamp, lessThanOrEqualTo(5000L));
+    }
+
+    @Test
+    public void commonAPI() throws Exception {
+        ServiceStatusResponse serverStatus = sandboxKucoinRestClient.commonAPI().getServerStatus();
+        assertThat(serverStatus, notNullValue());
     }
 
 }

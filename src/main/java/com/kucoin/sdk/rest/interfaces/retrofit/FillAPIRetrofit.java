@@ -20,6 +20,7 @@ public interface FillAPIRetrofit {
                                                                 @Query("orderId") String orderId,
                                                                 @Query("side") String side,
                                                                 @Query("type") String type,
+                                                                @Query("tradeType") String tradeType,
                                                                 @Query("startAt") Long startAt,
                                                                 @Query("endAt") Long endAt,
                                                                 @Query("pageSize") int pageSize,

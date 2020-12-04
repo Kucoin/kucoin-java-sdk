@@ -20,12 +20,13 @@ public interface FillAPI {
      * @param orderId     [optional] Limit list of fills to this orderId
      * @param side        [optional] buy or sell
      * @param type        [optional] limit, market, limit_stop or market_stop
+     * @param tradeType   TRADE, MARGIN_TRADE
      * @param startAt     [optional] Start time. unix timestamp calculated in milliseconds, the creation time queried shall posterior to the start time.
      * @param endAt       [optional] End time. unix timestamp calculated in milliseconds, the creation time queried shall prior to the end time.
      * @param pageSize
      * @param currentPage
      * @return Trades.
      */
-    Pagination<TradeResponse> listFills(String symbol, String orderId, String side, String type,
+    Pagination<TradeResponse> listFills(String symbol, String orderId, String side, String type, String tradeType,
                                         Long startAt, Long endAt, int pageSize, int currentPage) throws IOException;
 }

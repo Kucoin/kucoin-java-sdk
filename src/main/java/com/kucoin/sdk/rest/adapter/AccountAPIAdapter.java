@@ -3,19 +3,23 @@
  */
 package com.kucoin.sdk.rest.adapter;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
-
 import com.kucoin.sdk.rest.impl.retrofit.AuthRetrofitAPIImpl;
 import com.kucoin.sdk.rest.interfaces.AccountAPI;
 import com.kucoin.sdk.rest.interfaces.retrofit.AccountAPIRetrofit;
 import com.kucoin.sdk.rest.request.AccountCreateRequest;
-import com.kucoin.sdk.rest.request.AccountTransferRequest;
 import com.kucoin.sdk.rest.request.AccountTransferV2Request;
-import com.kucoin.sdk.rest.request.SubMasterTransferRequest;
-import com.kucoin.sdk.rest.response.*;
+import com.kucoin.sdk.rest.request.SubMasterTransferV2Request;
+import com.kucoin.sdk.rest.response.AccountBalanceResponse;
+import com.kucoin.sdk.rest.response.AccountBalancesResponse;
+import com.kucoin.sdk.rest.response.AccountDetailResponse;
+import com.kucoin.sdk.rest.response.Pagination;
+import com.kucoin.sdk.rest.response.SubAccountBalanceResponse;
+import com.kucoin.sdk.rest.response.TransferableBalanceResponse;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chenshiwei on 2019/1/10.
@@ -48,22 +52,10 @@ public class AccountAPIAdapter extends AuthRetrofitAPIImpl<AccountAPIRetrofit> i
     }
 
     @Override
-    public Pagination<AccountDetailResponse> getAccountHistory(String accountId, long startAt, long endAt,
-                                                               int currentPage, int pageSize) throws IOException {
-        return super.executeSync(getAPIImpl().getAccountDetail(accountId, currentPage, pageSize, startAt, endAt));
-    }
+    public Pagination<AccountDetailResponse> getAccountLedgers(String currency, String direction, String bizType, long startAt,
+                                                               long endAt, int currentPage, int pageSize) throws IOException {
 
-    @Override
-    public Pagination<AccountHoldsResponse> getHolds(String accountId, int currentPage, int pageSize) throws IOException {
-        return super.executeSync(getAPIImpl().getAccountHold(accountId, currentPage, pageSize));
-    }
-
-    @Deprecated
-    @Override
-    public Map<String, String> innerTransfer(String clientOid, String payAccountId, BigDecimal amount,
-                                             String recAccountId) throws IOException {
-        AccountTransferRequest accountTransferRequest = new AccountTransferRequest(clientOid, payAccountId, amount, recAccountId);
-        return super.executeSync(getAPIImpl().applyTransfer(accountTransferRequest));
+        return super.executeSync(getAPIImpl().getAccountLedgers(currency, direction, bizType, currentPage, pageSize, startAt, endAt));
     }
 
     @Override
@@ -82,9 +74,18 @@ public class AccountAPIAdapter extends AuthRetrofitAPIImpl<AccountAPIRetrofit> i
     }
 
     @Override
-    public Map<String, String> transferBetweenSubAndMaster(String clientOid, String currency, BigDecimal amount,
-                                                           String direction, String subUserId, String subAccountType) throws IOException {
-        SubMasterTransferRequest request = new SubMasterTransferRequest(clientOid, currency, amount, direction, subUserId, subAccountType);
-        return super.executeSync(getAPIImpl().transferBetweenSubAndMaster(request));
+    public Map<String, String> transferBetweenSubAndMasterV2(
+            String clientOid, String currency, BigDecimal amount, String direction,
+            String subUserId, String subAccountType, String accountType) throws IOException {
+
+        SubMasterTransferV2Request request = new SubMasterTransferV2Request(clientOid, currency,
+                amount, direction, accountType, subUserId, subAccountType);
+        return super.executeSync(getAPIImpl().transferBetweenSubAndMasterV2(request));
     }
+
+    @Override
+    public TransferableBalanceResponse transferable(String currency, String type) throws IOException {
+        return super.executeSync(getAPIImpl().transferable(currency, type));
+    }
+
 }

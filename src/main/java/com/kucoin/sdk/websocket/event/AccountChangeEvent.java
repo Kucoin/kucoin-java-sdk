@@ -27,6 +27,8 @@ public class AccountChangeEvent {
 
     private String relationEvent;
 
+    private String relationContext;
+
     private String relationEventId;
 
     private String time;

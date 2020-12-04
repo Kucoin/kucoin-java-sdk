@@ -37,4 +37,6 @@ public class DepositResponse {
     private Long createdAt;
 
     private Long updatedAt;
+
+    private String remark;
 }

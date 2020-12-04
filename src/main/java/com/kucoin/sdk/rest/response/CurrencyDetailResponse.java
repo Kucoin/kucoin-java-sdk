@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CurrencyDetailResponse extends CurrencyResponse {
+
     private BigDecimal withdrawalMinSize;
 
     private BigDecimal withdrawalMinFee;
@@ -26,4 +27,5 @@ public class CurrencyDetailResponse extends CurrencyResponse {
 
     @JsonProperty("isDepositEnabled")
     private Boolean isDepositEnabled;
+
 }

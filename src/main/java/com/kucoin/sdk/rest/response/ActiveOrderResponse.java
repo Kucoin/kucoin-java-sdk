@@ -1,19 +1,17 @@
-/**
- * Copyright 2019 Mek Global Limited.
+/*
+ * Copyright 2019 Mek Global Limited
  */
+
 package com.kucoin.sdk.rest.response;
+
+import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import lombok.Data;
-
 @Data
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class OrderResponse {
+public class ActiveOrderResponse {
 
     private String id;
 
@@ -79,8 +77,7 @@ public class OrderResponse {
 
     private String tags;
 
-    @JsonProperty("isActive")
-    private boolean isActive;
+    private Boolean isActive;
 
     private boolean cancelExist;
 
@@ -88,4 +85,10 @@ public class OrderResponse {
 
     private String tradeType;
 
+    public String getTradeType() {
+        if (StringUtils.isBlank(tradeType)) {
+            return "TRADE";
+        }
+        return tradeType;
+    }
 }

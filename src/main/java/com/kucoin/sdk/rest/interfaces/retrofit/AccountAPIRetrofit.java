@@ -4,10 +4,15 @@
 package com.kucoin.sdk.rest.interfaces.retrofit;
 
 import com.kucoin.sdk.rest.request.AccountCreateRequest;
-import com.kucoin.sdk.rest.request.AccountTransferRequest;
 import com.kucoin.sdk.rest.request.AccountTransferV2Request;
-import com.kucoin.sdk.rest.request.SubMasterTransferRequest;
-import com.kucoin.sdk.rest.response.*;
+import com.kucoin.sdk.rest.request.SubMasterTransferV2Request;
+import com.kucoin.sdk.rest.response.AccountBalanceResponse;
+import com.kucoin.sdk.rest.response.AccountBalancesResponse;
+import com.kucoin.sdk.rest.response.AccountDetailResponse;
+import com.kucoin.sdk.rest.response.KucoinResponse;
+import com.kucoin.sdk.rest.response.Pagination;
+import com.kucoin.sdk.rest.response.SubAccountBalanceResponse;
+import com.kucoin.sdk.rest.response.TransferableBalanceResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -33,24 +38,15 @@ public interface AccountAPIRetrofit {
     @POST("api/v1/accounts")
     Call<KucoinResponse<Map<String, String>>> addAccount(@Body AccountCreateRequest request);
 
-    @GET("api/v1/accounts/{accountId}/ledgers")
-    Call<KucoinResponse<Pagination<AccountDetailResponse>>> getAccountDetail(
-            @Path("accountId") String accountId,
+    @GET("api/v1/accounts/ledgers")
+    Call<KucoinResponse<Pagination<AccountDetailResponse>>> getAccountLedgers(
+            @Query("currency") String currency,
+            @Query("direction") String direction,
+            @Query("bizType") String bizType,
             @Query("currentPage") int currentPage,
             @Query("pageSize") int pageSize,
             @Query("startAt") long startAt,
             @Query("endAt") long endAt);
-
-    @GET("api/v1/accounts/{accountId}/holds")
-    Call<KucoinResponse<Pagination<AccountHoldsResponse>>> getAccountHold(
-            @Path("accountId") String accountId,
-            @Query("currentPage") int currentPage,
-            @Query("pageSize") int pageSize);
-
-    @Deprecated
-    @POST("api/v1/accounts/inner-transfer")
-    Call<KucoinResponse<Map<String, String>>> applyTransfer(
-            @Body AccountTransferRequest request);
 
     @POST("api/v2/accounts/inner-transfer")
     Call<KucoinResponse<Map<String, String>>> applyTransfer2(
@@ -62,6 +58,10 @@ public interface AccountAPIRetrofit {
     @GET("api/v1/sub-accounts/{subUserId}")
     Call<KucoinResponse<SubAccountBalanceResponse>> getSubAccount(@Path("subUserId") String subUserId);
 
-    @POST("api/v1/accounts/sub-transfer")
-    Call<KucoinResponse<Map<String, String>>> transferBetweenSubAndMaster(@Body SubMasterTransferRequest request);
+    @POST("api/v2/accounts/sub-transfer")
+    Call<KucoinResponse<Map<String, String>>> transferBetweenSubAndMasterV2(@Body SubMasterTransferV2Request request);
+
+    @GET("api/v1/accounts/transferable")
+    Call<KucoinResponse<TransferableBalanceResponse>> transferable(@Query("currency") String currency, @Query("type") String type);
+
 }
