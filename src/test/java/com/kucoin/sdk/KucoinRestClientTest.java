@@ -45,12 +45,8 @@ public class KucoinRestClientTest {
 
     @BeforeClass
     public static void setUpClass() {
-        /*sandboxKucoinRestClient = new KucoinClientBuilder().withBaseUrl("https://openapi-sandbox.kucoin.com")
+        sandboxKucoinRestClient = new KucoinClientBuilder().withBaseUrl("https://openapi-sandbox.kucoin.com")
                 .withApiKey("5ebe68e1abcd2200064f8ce6", "f0aa1d6e-c64d-42a9-ad28-bcae24236ad9", "qhQ3tB88JiJg")
-                .buildRestClient();*/
-
-        sandboxKucoinRestClient = new KucoinClientBuilder().withBaseUrl("http://10.254.2.251:10240")
-                .withApiKey("5f07ea80e6d130000824b2cc", "2eff5c56-542e-4961-ba69-dffe3b4a669b", "K5RCSUKzj8sSVzv")
                 .buildRestClient();
 
         liveKucoinRestClient = new KucoinClientBuilder().withBaseUrl("https://openapi-v2.kucoin.com")
