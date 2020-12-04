@@ -42,19 +42,6 @@ public interface OrderAPI {
     OrderCreateResponse createOrder(OrderCreateApiRequest opsRequest) throws IOException;
 
     /**
-     * Place a Stop Order
-     * <p>
-     * A stop order is an order to buy or sell the specified amount of cryptos at the last traded price
-     * or pre-specified limit price once the order has traded at or through a pre-specified stopPrice.
-     * The order will be executed by the highest price first. For orders of the same price,
-     * the order will be executed in time priority.
-     * </p>
-     * @param stopOrderRequest
-     * @return
-     */
-    OrderCreateResponse createStopOrder(StopOrderCreateRequest stopOrderRequest) throws IOException;
-
-    /**
      * Place Bulk Orders
      * <p>
      * Request via this endpoint to place 5 orders at the same time. The order type must be a limit order of the same symbol. The interface currently only supports spot trading

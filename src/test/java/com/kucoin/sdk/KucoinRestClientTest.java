@@ -148,13 +148,6 @@ public class KucoinRestClientTest {
         MultiOrderCreateResponse multiOrderResponse = sandboxKucoinRestClient.orderAPI().createMultipleOrders(multiOrderRequest);
         assertThat(multiOrderResponse, notNullValue());
 
-        StopOrderCreateRequest stopOrderRequest = StopOrderCreateRequest.builder()
-                .price(BigDecimal.valueOf(0.098)).size(BigDecimal.ONE).side("buy")
-                .symbol("ETH-BTC").type("limit").clientOid(String.valueOf(System.currentTimeMillis()))
-                .stop("loss").stopPrice(new BigDecimal("0.078")).build();
-        OrderCreateResponse orderStopResponse = sandboxKucoinRestClient.orderAPI().createStopOrder(stopOrderRequest);
-        assertThat(orderStopResponse, notNullValue());
-
         Pagination<OrderResponse> orderResponsePagination = sandboxKucoinRestClient.orderAPI().listOrders("ETH-BTC",
                 null, null,"TRADE", "active", null, null, 10, 1);
         assertThat(orderResponsePagination, notNullValue());
@@ -173,6 +166,22 @@ public class KucoinRestClientTest {
 
         OrderCancelResponse ordersCancelResponse = sandboxKucoinRestClient.orderAPI().cancelAllOrders("ETH-BTC", "TRADE");
         assertThat(ordersCancelResponse, notNullValue());
+    }
+
+    @Test
+    public void stopOrderAPI() throws Exception {
+        StopOrderCreateRequest request = StopOrderCreateRequest.builder()
+                .price(BigDecimal.valueOf(0.0001)).size(BigDecimal.ONE).side("buy")
+                .stop("loss").stopPrice(BigDecimal.valueOf(0.0002))
+                .symbol("ETH-BTC").type("limit").clientOid(UUID.randomUUID().toString()).build();
+        OrderCreateResponse stopOrder = sandboxKucoinRestClient.stopOrderAPI().createStopOrder(request);
+        assertThat(stopOrder, notNullValue());
+
+        StopOrderResponse stopOrderResponse = sandboxKucoinRestClient.stopOrderAPI().getStopOrder(stopOrder.getOrderId());
+        assertThat(stopOrderResponse, notNullValue());
+
+        OrderCancelResponse orderCancelResponse = sandboxKucoinRestClient.stopOrderAPI().cancelStopOrder(stopOrder.getOrderId());
+        assertThat(orderCancelResponse, notNullValue());
     }
 
     @Test
@@ -246,9 +255,6 @@ public class KucoinRestClientTest {
 
     @Test
     public void orderBookAPI() throws Exception {
-        OrderBookResponse partOrderBookAggregated = sandboxKucoinRestClient.orderBookAPI().getPartOrderBookAggregated("ETH-BTC");
-        assertThat(partOrderBookAggregated, notNullValue());
-
         Level3Response fullOrderBook = sandboxKucoinRestClient.orderBookAPI().getFullOrderBook("ETH-BTC");
         assertThat(fullOrderBook, notNullValue());
     }

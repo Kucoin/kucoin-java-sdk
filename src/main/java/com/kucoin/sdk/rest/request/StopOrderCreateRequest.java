@@ -1,77 +1,57 @@
-/*
- * Copyright 2019 Mek Global Limited
+/**
+ * Copyright 2019 Mek Global Limited.
  */
-
 package com.kucoin.sdk.rest.request;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
-/**
- * @author: yi.yang
- * @date: Created by yi.yang on 2020/3/25.
- * @Description: 止损单创建订单订单请求
- */
-@Data
+@Getter
 @Builder
 public class StopOrderCreateRequest {
 
-    private String id;
+    private final String symbol;
 
-    private String symbol;
+    @Builder.Default
+    private final String type = "limit";
 
-    private String userId;
+    private final String side;
 
-    private String type;
+    private final BigDecimal price;
 
-    private String side;
+    private final BigDecimal size;
 
-    private BigDecimal price;
+    private final BigDecimal funds;
 
-    private BigDecimal size;
+    @Builder.Default
+    private final String tradeType = "TRADE";
 
-    private BigDecimal funds;
+    private final String stp;
 
-    private BigDecimal takerFeeRate;
+    @Builder.Default
+    private final String stop = "loss";
 
-    private BigDecimal makerFeeRate;
+    private final BigDecimal stopPrice;
 
-    private String feeCurrency;
+    @Builder.Default
+    private final String timeInForce = "GTC";
 
-    private String stp;
+    private final boolean postOnly;
 
-    private String stop;
+    private final boolean hidden;
 
-    private BigDecimal stopPrice;
+    private final boolean iceberg;
 
-    private String timeInForce;
+    private final BigDecimal visibleSize;
 
-    private Long cancelAfter;
+    private final Long cancelAfter;
 
-    private boolean postOnly;
+    private final String clientOid;
 
-    private boolean hidden;
+    private final String remark;
 
-    private boolean iceberge;
+    private final String tags;
 
-    private BigDecimal visibleSize;
-
-    private String channel;
-
-    private String clientOid;
-
-    private String remark;
-
-    private String tags;
-
-    private Long orderTime;
-
-    private String domainId;
-
-    private String tradeType;
-
-    private Date createdAt;
 }

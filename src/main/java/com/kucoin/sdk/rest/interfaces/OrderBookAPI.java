@@ -23,7 +23,31 @@ public interface OrderBookAPI {
      * @param symbol
      * @return The aggregated part order book.
      */
-    OrderBookResponse getPartOrderBookAggregated(String symbol) throws IOException;
+    OrderBookResponse getTop100Level2OrderBook(String symbol) throws IOException;
+
+    /**
+     * Get a list of open orders for a symbol.
+     * Level-2 order book includes all bids and asks (aggregated by price), this level return only one size for each active price (as if there was only a single order for that size at the level).
+     * This API will return a part of Order Book within 20 depth for each side(ask or bid).
+     * It is recommended to use in most cases, it is the fastest Order Book API, and reduces traffic usage.
+     * To maintain up-to-date Order Book in real time, please use it with Websocket Feed.
+     *
+     * @param symbol
+     * @return The aggregated part order book.
+     */
+    OrderBookResponse getTop20Level2OrderBook(String symbol) throws IOException;
+
+    /**
+     * Get a list of open orders for a symbol.
+     * Level-2 order book includes all bids and asks (aggregated by price), this level return only one size for each active price (as if there was only a single order for that size at the level).
+     * This API will return data with full depth.
+     * It is generally used by professional traders because it uses more server resources and traffic, and we have strict access frequency control.
+     * To maintain up-to-date Order Book in real time, please use it with Websocket Feed.
+     *
+     * @param symbol
+     * @return The aggregated full order book.
+     */
+    OrderBookResponse getFullLevel2OrderBook(String symbol) throws IOException;
 
     /**
      * Get a list of open orders for a symbol. Level-3 order book includes all bids and asks (non-aggregated, each item in Level-3 means a single order).

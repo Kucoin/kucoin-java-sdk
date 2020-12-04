@@ -34,4 +34,6 @@ public interface KucoinRestClient {
 
     CommonAPI commonAPI();
 
+    StopOrderAPI stopOrderAPI();
+
 }
