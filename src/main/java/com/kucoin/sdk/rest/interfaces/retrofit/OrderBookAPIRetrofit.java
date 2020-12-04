@@ -15,26 +15,14 @@ import retrofit2.http.Query;
  */
 public interface OrderBookAPIRetrofit {
 
-    @Deprecated
-    @GET("api/v1/market/orderbook/level2_100")
-    Call<KucoinResponse<OrderBookResponse>> getPartOrderBookAggregated(@Query("symbol") String symbol);
-
     @GET("api/v1/market/orderbook/level2_100")
     Call<KucoinResponse<OrderBookResponse>> getTop100Level2OrderBook(@Query("symbol") String symbol);
 
     @GET("api/v1/market/orderbook/level2_20")
     Call<KucoinResponse<OrderBookResponse>> getTop20Level2OrderBook(@Query("symbol") String symbol);
 
-    @Deprecated
-    @GET("api/v1/market/orderbook/level2")
-    Call<KucoinResponse<OrderBookResponse>> getFullOrderBookAggregated(@Query("symbol") String symbol);
-
     @GET("api/v2/market/orderbook/level2")
     Call<KucoinResponse<OrderBookResponse>> getFullLevel2OrderBook(@Query("symbol") String symbol);
-
-    @Deprecated
-    @GET("api/v1/market/orderbook/level3")
-    Call<KucoinResponse<OrderBookResponse>> getFullOrderBookAtomic(@Query("symbol") String symbol);
 
     @GET("api/v2/market/orderbook/level3")
     Call<KucoinResponse<Level3Response>> getFullOrderBook(@Query("symbol") String symbol);

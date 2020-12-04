@@ -8,9 +8,7 @@ import com.kucoin.sdk.rest.request.AccountTransferV2Request;
 import com.kucoin.sdk.rest.request.OrderCreateApiRequest;
 import com.kucoin.sdk.rest.request.StopOrderCreateRequest;
 import com.kucoin.sdk.rest.response.AccountBalancesResponse;
-import com.kucoin.sdk.rest.response.OrderCancelResponse;
 import com.kucoin.sdk.rest.response.OrderCreateResponse;
-import com.kucoin.sdk.rest.response.StopOrderResponse;
 import com.kucoin.sdk.websocket.event.AccountChangeEvent;
 import com.kucoin.sdk.websocket.event.AdvancedOrderEvent;
 import com.kucoin.sdk.websocket.event.OrderActivateEvent;
@@ -25,14 +23,12 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertTrue;
 
 /**

@@ -32,9 +32,6 @@ public interface OrderAPIRetrofit {
     @POST("api/v1/orders")
     Call<KucoinResponse<OrderCreateResponse>> createOrder(@Body OrderCreateApiRequest opsRequest);
 
-    @POST("api/v1/stop-order")
-    Call<KucoinResponse<OrderCreateResponse>> createStopOrder(@Body StopOrderCreateRequest stopOrderRequest);
-
     @POST("api/v1/orders/multi")
     Call<KucoinResponse<MultiOrderCreateResponse>> createMultipleOrders(@Body MultiOrderCreateRequest multiOrderCreateRequest);
 
