@@ -4,6 +4,7 @@
 package com.kucoin.sdk;
 
 import com.kucoin.sdk.model.enums.PrivateChannelEnum;
+import com.kucoin.sdk.rest.request.AccountTransferV2Request;
 import com.kucoin.sdk.rest.request.OrderCreateApiRequest;
 import com.kucoin.sdk.rest.response.AccountBalancesResponse;
 import com.kucoin.sdk.rest.response.OrderCreateResponse;
@@ -129,7 +130,7 @@ public class KucoinPrivateWSClientTest {
         new Thread(() -> {
             while (event.get() == null) {
                 try {
-                  innerTransfer();
+                  innerTransfer2();
                 } catch (IOException e) {
                   throw new RuntimeException(e);
                 }
@@ -156,17 +157,11 @@ public class KucoinPrivateWSClientTest {
         kucoinRestClient.orderAPI().cancelOrder(order.getOrderId());
     }
 
-    private void innerTransfer() throws IOException {
-        List<AccountBalancesResponse> accountBalancesResponses = kucoinRestClient.accountAPI().listAccounts("BTC", null);
+    private void innerTransfer2() throws IOException {
+        List<AccountBalancesResponse> accountBalancesResponses = kucoinRestClient.accountAPI().listAccounts("USDT", null);
         assertThat(accountBalancesResponses.size(), Is.is(2));
-        Optional<AccountBalancesResponse> main = accountBalancesResponses.stream()
-                .filter(accountBalancesResponse -> accountBalancesResponse.getType().equals("main")).findFirst();
-        Optional<AccountBalancesResponse> trade = accountBalancesResponses.stream()
-                .filter(accountBalancesResponse -> accountBalancesResponse.getType().equals("trade")).findFirst();
-        String mainAccountId = main.get().getId();
-        String tradeAccountId = trade.get().getId();
-        kucoinRestClient.accountAPI().innerTransfer(String.valueOf(System.currentTimeMillis()), mainAccountId, BigDecimal.valueOf(0.00000001), tradeAccountId);
-        kucoinRestClient.accountAPI().innerTransfer(String.valueOf(System.currentTimeMillis()), tradeAccountId, BigDecimal.valueOf(0.00000001), mainAccountId);
+        kucoinRestClient.accountAPI().innerTransfer2(new AccountTransferV2Request(String.valueOf(System.currentTimeMillis()),
+                "USDT", "trade", "main", new BigDecimal("0.000001")));
     }
 
 }

@@ -40,4 +40,6 @@ public class WithdrawResponse {
     private Date createdAt;
 
     private Date updatedAt;
+
+    private String remark;
 }

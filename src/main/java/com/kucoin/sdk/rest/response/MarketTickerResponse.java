@@ -12,6 +12,8 @@ public class MarketTickerResponse {
 
     private String symbol;
 
+    private String symbolName;
+
     private BigDecimal buy;
 
     private BigDecimal sell;
@@ -29,5 +31,15 @@ public class MarketTickerResponse {
     private BigDecimal last;
 
     private BigDecimal volValue;
+
+    private BigDecimal averagePrice;
+
+    private BigDecimal takerFeeRate;
+
+    private BigDecimal makerFeeRate;
+
+    private BigDecimal takerCoefficient;
+
+    private BigDecimal makerCoefficient;
 
 }

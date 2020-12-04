@@ -40,7 +40,7 @@ public class SymbolAPIAdaptor extends PublicRetrofitAPIImpl<SymbolAPIRetrofit> i
 
     @Override
     public SymbolTickResponse get24hrStats(String symbol) throws IOException {
-        return super.executeSync(getAPIImpl().getMarketStats(symbol));
+        return super.executeSync(getAPIImpl(). getMarketStats(symbol));
     }
 
     @Override

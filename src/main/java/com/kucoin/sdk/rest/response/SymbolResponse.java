@@ -42,5 +42,7 @@ public class SymbolResponse {
 
     private String feeCurrency;
 
-    private boolean enableTrading;
+    private Boolean enableTrading;
+
+    private Boolean isMarginEnabled;
 }

@@ -25,8 +25,8 @@ public class FillAPIAdapter extends AuthRetrofitAPIImpl<FillAPIRetrofit> impleme
 
     @Override
     public Pagination<TradeResponse> listFills(String symbol, String orderId, String side,
-                                               String type, Long start, Long end,
+                                               String type, String tradeType, Long start, Long end,
                                                int pageSize, int currentPage) throws IOException {
-        return executeSync(getAPIImpl().queryTrades(symbol, orderId, side, type, start, end, pageSize, currentPage));
+        return executeSync(getAPIImpl().queryTrades(symbol, orderId, side, type, tradeType, start, end, pageSize, currentPage));
     }
 }

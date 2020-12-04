@@ -34,6 +34,8 @@ public class KucoinRestClientImpl implements KucoinRestClient {
 
     private TimeAPI timeAPI;
 
+    private CommonAPI commonAPI;
+
     public KucoinRestClientImpl(KucoinClientBuilder kucoinBuilder) {
         this.userAPI = kucoinBuilder.getUserAPI();
         this.accountAPI = kucoinBuilder.getAccountAPI();
@@ -46,6 +48,7 @@ public class KucoinRestClientImpl implements KucoinRestClient {
         this.historyAPI = kucoinBuilder.getHistoryAPI();
         this.currencyAPI = kucoinBuilder.getCurrencyAPI();
         this.timeAPI = kucoinBuilder.getTimeAPI();
+        this.commonAPI = kucoinBuilder.getCommonAPI();
     }
 
     @Override
@@ -103,4 +106,8 @@ public class KucoinRestClientImpl implements KucoinRestClient {
         return timeAPI;
     }
 
+    @Override
+    public CommonAPI commonAPI() {
+        return commonAPI;
+    }
 }

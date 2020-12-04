@@ -34,4 +34,8 @@ public class CurrencyResponse {
     @JsonProperty("isDepositEnabled")
     private Boolean isDepositEnabled;
 
+    private Boolean isMarginEnabled;
+
+    private Boolean isDebitEnabled;
+
 }

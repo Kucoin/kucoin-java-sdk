@@ -32,4 +32,6 @@ public interface KucoinRestClient {
 
     TimeAPI timeAPI();
 
+    CommonAPI commonAPI();
+
 }

@@ -8,9 +8,9 @@ import com.kucoin.sdk.rest.request.AccountTransferV2Request;
 import com.kucoin.sdk.rest.response.AccountBalanceResponse;
 import com.kucoin.sdk.rest.response.AccountBalancesResponse;
 import com.kucoin.sdk.rest.response.AccountDetailResponse;
-import com.kucoin.sdk.rest.response.AccountHoldsResponse;
 import com.kucoin.sdk.rest.response.Pagination;
 import com.kucoin.sdk.rest.response.SubAccountBalanceResponse;
+import com.kucoin.sdk.rest.response.TransferableBalanceResponse;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -62,7 +62,9 @@ public interface AccountAPI {
      * Items are paginated and sorted latest first.
      * See the Pagination section for retrieving additional entries after the first page.
      *
-     * @param accountId   Id of the account
+     * @param currency    Id of the account
+     * @param direction   [Optional] Side: in - Receive, out - Send
+     * @param bizType     [Optional] Business type: DEPOSIT, WITHDRAW, TRANSFER, SUB_TRANSFER,TRADE_EXCHANGE, MARGIN_EXCHANGE, KUCOIN_BONUS.
      * @param startAt     Start time. unix timestamp calculated in seconds, the creation time queried shall posterior to the start time
      * @param endAt       End time. unix timestamp calculated in seconds, the creation time queried shall prior to the end time.
      * @param currentPage The page to fetch
@@ -71,37 +73,8 @@ public interface AccountAPI {
      * @throws IOException        on socket errors.
      * @throws KucoinApiException when errors are returned from the exchange.
      */
-    Pagination<AccountDetailResponse> getAccountHistory(String accountId, long startAt, long endAt, int currentPage, int pageSize) throws IOException;
-
-    /**
-     * Holds are placed on an account for any active orders or pending withdraw requests.
-     * As an order is filled, the hold amount is updated.
-     * If an order is canceled, any remaining hold is removed.
-     * For a withdraw, once it is completed, the hold is removed.
-     *
-     * @param accountId   Id of the account
-     * @param currentPage The page to fetch
-     * @param pageSize    The page size
-     * @return The account holds.
-     * @throws IOException        on socket errors.
-     * @throws KucoinApiException when errors are returned from the exchange.
-     */
-    Pagination<AccountHoldsResponse> getHolds(String accountId, int currentPage, int pageSize) throws IOException;
-
-    /**
-     * The inner transfer interface is used for assets transfer among the accounts of a user and is free of charges on the platform.
-     * For example, a user could transfer assets for free form the main account to the trading account on the platform.
-     *
-     * @param clientOid    Request id
-     * @param payAccountId Account id of payer
-     * @param recAccountId Account id of receiver
-     * @param amount       Transfer amount, a multiple and positive number of the amount precision.
-     * @return The order id.
-     * @throws IOException        on socket errors.
-     * @throws KucoinApiException when errors are returned from the exchange.
-     */
-    @Deprecated
-    Map<String, String> innerTransfer(String clientOid, String payAccountId, BigDecimal amount, String recAccountId) throws IOException;
+    Pagination<AccountDetailResponse> getAccountLedgers(String currency, String direction, String bizType, long startAt,
+                                                        long endAt, int currentPage, int pageSize) throws IOException;
 
     /**
      * The inner transfer interface is used for assets transfer among the accounts of a user and is free of charges on the platform.
@@ -144,13 +117,23 @@ public interface AccountAPI {
      * @param direction     OUT — the master user to sub user;IN — the sub user to the master user.
      * @param subUserId     id of the sub user
      * @param subAccountType The account type of the sub user: MAIN or TRADE
+     * @param accountType The account type of the user: MAIN or TRADE
      *
      * @return The order id.
      * @throws IOException        on socket errors.
      * @throws KucoinApiException when errors are returned from the exchange.
      */
+    Map<String, String> transferBetweenSubAndMasterV2(
+            String clientOid, String currency, BigDecimal amount, String direction,
+            String subUserId, String subAccountType, String accountType) throws IOException;
 
+    /**
+     * This endpoint returns the transferable balance of a specified account.
+     * @param currency
+     * @param type   The account type: MAIN, TRADE, MARGIN or POOL
+     * @return
+     */
+    TransferableBalanceResponse transferable(String currency,String type) throws IOException;
 
-    Map<String, String> transferBetweenSubAndMaster(String clientOid, String currency, BigDecimal amount,
-                                                    String direction, String subUserId, String subAccountType) throws IOException;
 }
+

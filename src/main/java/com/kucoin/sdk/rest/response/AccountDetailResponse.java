@@ -16,6 +16,8 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AccountDetailResponse {
 
+    private String id;
+
     private String currency;
 
     private BigDecimal amount;

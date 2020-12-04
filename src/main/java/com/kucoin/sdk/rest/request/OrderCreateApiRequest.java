@@ -6,6 +6,7 @@ package com.kucoin.sdk.rest.request;
 import java.math.BigDecimal;
 
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 
 /**
@@ -14,8 +15,8 @@ import lombok.Getter;
  * @author 屈亮
  * @since 2018-09-17
  */
-@Getter
 @Builder
+@Data
 public class OrderCreateApiRequest {
 
     /**
@@ -54,6 +55,11 @@ public class OrderCreateApiRequest {
      */
     @Builder.Default
     private final String stp = "";
+
+    /**
+     * [Optional] The type of trading : TRADE（Spot Trade）, MARGIN_TRADE (Margin Trade). Default is TRADE
+     */
+    private String tradeType;
 
     /**
      * [optional] Either loss or entry. Requires stopPrice to be defined
@@ -100,7 +106,7 @@ public class OrderCreateApiRequest {
     /**
      * Unique order id selected by you to identify your order e.g. UUID
      */
-    private final String clientOid;
+    private String clientOid;
 
     /**
      * [optional] remark for the order, length cannot exceed 100 utf8 characters

@@ -18,12 +18,6 @@ public interface OrderBookAPIRetrofit {
     @GET("api/v1/market/orderbook/level2_100")
     Call<KucoinResponse<OrderBookResponse>> getPartOrderBookAggregated(@Query("symbol") String symbol);
 
-    @GET("api/v1/market/orderbook/level2")
-    Call<KucoinResponse<OrderBookResponse>> getFullOrderBookAggregated(@Query("symbol") String symbol);
-
-    @GET("api/v1/market/orderbook/level3")
-    Call<KucoinResponse<OrderBookResponse>> getFullOrderBookAtomic(@Query("symbol") String symbol);
-
     @GET("api/v2/market/orderbook/level3")
     Call<KucoinResponse<Level3Response>> getFullOrderBook(@Query("symbol") String symbol);
 
