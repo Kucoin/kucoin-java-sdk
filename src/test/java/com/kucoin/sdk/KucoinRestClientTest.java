@@ -176,6 +176,22 @@ public class KucoinRestClientTest {
     }
 
     @Test
+    public void stopOrderAPI() throws Exception {
+        StopOrderCreateRequest request = StopOrderCreateRequest.builder()
+                .price(BigDecimal.valueOf(0.0001)).size(BigDecimal.ONE).side("buy")
+                .stop("loss").stopPrice(BigDecimal.valueOf(0.0002))
+                .symbol("ETH-BTC").type("limit").clientOid(UUID.randomUUID().toString()).build();
+        OrderCreateResponse stopOrder = sandboxKucoinRestClient.stopOrderAPI().createStopOrder(request);
+        assertThat(stopOrder, notNullValue());
+
+        StopOrderResponse stopOrderResponse = sandboxKucoinRestClient.stopOrderAPI().getStopOrder(stopOrder.getOrderId());
+        assertThat(stopOrderResponse, notNullValue());
+
+        OrderCancelResponse orderCancelResponse = sandboxKucoinRestClient.stopOrderAPI().cancelStopOrder(stopOrder.getOrderId());
+        assertThat(orderCancelResponse, notNullValue());
+    }
+
+    @Test
     public void withdrawalAPI() throws Exception {
         Pagination<WithdrawResponse> withdrawList = sandboxKucoinRestClient.withdrawalAPI().getWithdrawList("KCS", "FAILURE",
                 startAt, endAt, 1, 10);

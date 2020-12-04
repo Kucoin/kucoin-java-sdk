@@ -3,13 +3,13 @@
  */
 package com.kucoin.sdk.rest.adapter;
 
-import java.io.IOException;
-
 import com.kucoin.sdk.rest.impl.retrofit.PublicRetrofitAPIImpl;
 import com.kucoin.sdk.rest.interfaces.OrderBookAPI;
 import com.kucoin.sdk.rest.interfaces.retrofit.OrderBookAPIRetrofit;
 import com.kucoin.sdk.rest.response.Level3Response;
 import com.kucoin.sdk.rest.response.OrderBookResponse;
+
+import java.io.IOException;
 
 /**
  * Created by chenshiwei on 2019/1/22.
@@ -21,8 +21,36 @@ public class OrderBookAPIAdapter extends PublicRetrofitAPIImpl<OrderBookAPIRetro
     }
 
     @Override
+    @Deprecated
     public OrderBookResponse getPartOrderBookAggregated(String symbol) throws IOException {
         return super.executeSync(getAPIImpl().getPartOrderBookAggregated(symbol));
+    }
+
+    @Override
+    public OrderBookResponse getTop100Level2OrderBook(String symbol) throws IOException {
+        return super.executeSync(getAPIImpl().getTop100Level2OrderBook(symbol));
+    }
+
+    @Override
+    public OrderBookResponse getTop20Level2OrderBook(String symbol) throws IOException {
+        return super.executeSync(getAPIImpl().getTop20Level2OrderBook(symbol));
+    }
+
+    @Override
+    @Deprecated
+    public OrderBookResponse getFullOrderBookAggregated(String symbol) throws IOException {
+        return super.executeSync(getAPIImpl().getFullOrderBookAggregated(symbol));
+    }
+
+    @Override
+    public OrderBookResponse getFullLevel2OrderBook(String symbol) throws IOException {
+        return super.executeSync(getAPIImpl().getFullLevel2OrderBook(symbol));
+    }
+
+    @Override
+    @Deprecated
+    public OrderBookResponse getFullOrderBookAtomic(String symbol) throws IOException {
+        return super.executeSync(getAPIImpl().getFullOrderBookAtomic(symbol));
     }
 
     @Override

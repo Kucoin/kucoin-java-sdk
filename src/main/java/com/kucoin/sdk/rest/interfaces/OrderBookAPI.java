@@ -23,6 +23,7 @@ public interface OrderBookAPI {
      * @param symbol
      * @return The aggregated part order book.
      */
+    @Deprecated
     OrderBookResponse getPartOrderBookAggregated(String symbol) throws IOException;
 
     /**
