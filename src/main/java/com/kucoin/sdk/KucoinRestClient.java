@@ -36,4 +36,8 @@ public interface KucoinRestClient {
 
     StopOrderAPI stopOrderAPI();
 
+    MarginAPI marginAPI();
+
+    LoanAPI loanAPI();
+
 }

@@ -6,11 +6,56 @@ package com.kucoin.sdk;
 import com.google.common.collect.Lists;
 import com.kucoin.sdk.exception.KucoinApiException;
 import com.kucoin.sdk.rest.request.AccountTransferV2Request;
+import com.kucoin.sdk.rest.request.BorrowRecordQueryRequest;
+import com.kucoin.sdk.rest.request.BorrowRequest;
+import com.kucoin.sdk.rest.request.LendRequest;
 import com.kucoin.sdk.rest.request.MultiOrderCreateRequest;
 import com.kucoin.sdk.rest.request.OrderCreateApiRequest;
+import com.kucoin.sdk.rest.request.RepaySingleRequest;
 import com.kucoin.sdk.rest.request.StopOrderCreateRequest;
+import com.kucoin.sdk.rest.request.ToggleAutoLendRequest;
 import com.kucoin.sdk.rest.request.WithdrawApplyRequest;
-import com.kucoin.sdk.rest.response.*;
+import com.kucoin.sdk.rest.response.AccountBalanceResponse;
+import com.kucoin.sdk.rest.response.AccountBalancesResponse;
+import com.kucoin.sdk.rest.response.AccountDetailResponse;
+import com.kucoin.sdk.rest.response.ActiveLendItem;
+import com.kucoin.sdk.rest.response.ActiveOrderResponse;
+import com.kucoin.sdk.rest.response.AllTickersResponse;
+import com.kucoin.sdk.rest.response.BorrowOutstandingResponse;
+import com.kucoin.sdk.rest.response.BorrowQueryResponse;
+import com.kucoin.sdk.rest.response.BorrowRepaidResponse;
+import com.kucoin.sdk.rest.response.BorrowResponse;
+import com.kucoin.sdk.rest.response.CurrencyDetailResponse;
+import com.kucoin.sdk.rest.response.CurrencyResponse;
+import com.kucoin.sdk.rest.response.DoneLendItem;
+import com.kucoin.sdk.rest.response.LastTradeResponse;
+import com.kucoin.sdk.rest.response.LendAssetsResponse;
+import com.kucoin.sdk.rest.response.LendResponse;
+import com.kucoin.sdk.rest.response.Level3Response;
+import com.kucoin.sdk.rest.response.MarginAccountResponse;
+import com.kucoin.sdk.rest.response.MarginConfigResponse;
+import com.kucoin.sdk.rest.response.MarkPriceResponse;
+import com.kucoin.sdk.rest.response.MarketItemResponse;
+import com.kucoin.sdk.rest.response.MultiOrderCreateResponse;
+import com.kucoin.sdk.rest.response.OrderCancelResponse;
+import com.kucoin.sdk.rest.response.OrderCreateResponse;
+import com.kucoin.sdk.rest.response.OrderResponse;
+import com.kucoin.sdk.rest.response.Pagination;
+import com.kucoin.sdk.rest.response.ServiceStatusResponse;
+import com.kucoin.sdk.rest.response.SettledTradeItem;
+import com.kucoin.sdk.rest.response.StopOrderResponse;
+import com.kucoin.sdk.rest.response.SubAccountBalanceResponse;
+import com.kucoin.sdk.rest.response.SubUserInfoResponse;
+import com.kucoin.sdk.rest.response.SymbolResponse;
+import com.kucoin.sdk.rest.response.SymbolTickResponse;
+import com.kucoin.sdk.rest.response.TickerResponse;
+import com.kucoin.sdk.rest.response.TradeHistoryResponse;
+import com.kucoin.sdk.rest.response.TradeResponse;
+import com.kucoin.sdk.rest.response.TransferableBalanceResponse;
+import com.kucoin.sdk.rest.response.UnsettledTradeItem;
+import com.kucoin.sdk.rest.response.UserFeeResponse;
+import com.kucoin.sdk.rest.response.WithdrawQuotaResponse;
+import com.kucoin.sdk.rest.response.WithdrawResponse;
 import org.hamcrest.core.Is;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -46,7 +91,7 @@ public class KucoinRestClientTest {
     @BeforeClass
     public static void setUpClass() {
         sandboxKucoinRestClient = new KucoinClientBuilder().withBaseUrl("https://openapi-sandbox.kucoin.com")
-                .withApiKey("5ebe68e1abcd2200064f8ce6", "f0aa1d6e-c64d-42a9-ad28-bcae24236ad9", "qhQ3tB88JiJg")
+                .withApiKey("5fd1f0a62bf81d000732cbcb", "41c0a0af-123d-4e3a-868b-e05df5c5e8bd", "1qaz2wsx")
                 .buildRestClient();
 
         liveKucoinRestClient = new KucoinClientBuilder().withBaseUrl("https://openapi-v2.kucoin.com")
@@ -295,6 +340,103 @@ public class KucoinRestClientTest {
     public void commonAPI() throws Exception {
         ServiceStatusResponse serverStatus = sandboxKucoinRestClient.commonAPI().getServerStatus();
         assertThat(serverStatus, notNullValue());
+    }
+
+    @Test
+    public void marginAPI() throws Exception {
+
+        MarkPriceResponse markPrice = sandboxKucoinRestClient.marginAPI().getMarkPrice("USDT-BTC");
+        assertThat(markPrice, notNullValue());
+
+        MarginConfigResponse marginConfig = sandboxKucoinRestClient.marginAPI().getMarginConfig();
+        assertThat(marginConfig, notNullValue());
+
+        MarginAccountResponse marginAccount = sandboxKucoinRestClient.marginAPI().getMarginAccount();
+        assertThat(marginAccount, notNullValue());
+
+    }
+
+    @Test
+    public void loanAPI() throws Exception {
+
+        List<LendAssetsResponse> lendAssets = sandboxKucoinRestClient.loanAPI().queryLendAssets("USDT");
+        assertThat(lendAssets, notNullValue());
+
+        List<MarketItemResponse> marketItem = sandboxKucoinRestClient.loanAPI().queryMarket("USDT", 7);
+        assertThat(marketItem, notNullValue());
+
+        List<LastTradeResponse> lastTrade = sandboxKucoinRestClient.loanAPI().queryLastTrade("USDT");
+        assertThat(lastTrade, notNullValue());
+
+        BorrowRequest borrowRequest = BorrowRequest.builder()
+                .currency("USDT").type("IOC").size(BigDecimal.ONE).maxRate(new BigDecimal("0.001")).term("7")
+                .build();
+        BorrowResponse borrow = sandboxKucoinRestClient.loanAPI().borrow(borrowRequest);
+        assertThat(borrow, notNullValue());
+
+        BorrowQueryResponse borrowQuery = sandboxKucoinRestClient.loanAPI().queryBorrow(borrow.getOrderId());
+        assertThat(borrowQuery, notNullValue());
+
+        BorrowRecordQueryRequest borrowRecordQueryRequest = BorrowRecordQueryRequest.builder()
+                .currency("USDT")
+                .build();
+        Pagination<BorrowOutstandingResponse> pageBorrowOutstanding = sandboxKucoinRestClient.loanAPI().queryBorrowOutstanding(borrowRecordQueryRequest);
+        assertThat(pageBorrowOutstanding, notNullValue());
+
+        BorrowRecordQueryRequest borrowRepaidRequest = BorrowRecordQueryRequest.builder()
+                .currency("USDT")
+                .build();
+        Pagination<BorrowRepaidResponse> pageBorrowRepaid = sandboxKucoinRestClient.loanAPI().queryBorrowRepaid(borrowRepaidRequest);
+        assertThat(pageBorrowRepaid, notNullValue());
+
+        /*RepayAllRequest repayAllRequest = RepayAllRequest.builder()
+                .currency("USDT")
+                .size(BigDecimal.TEN)
+                .sequence(RepaySeqStrategy.HIGHEST_RATE_FIRST)
+                .build();
+        sandboxKucoinRestClient.loanAPI().repayAll(repayAllRequest);*/
+
+        RepaySingleRequest repaySingleRequest = RepaySingleRequest.builder()
+                .currency("USDT")
+                .size(BigDecimal.TEN)
+                .tradeId(borrowQuery.getMatchList().get(0).getTradeId())
+                .build();
+        sandboxKucoinRestClient.loanAPI().repaySingle(repaySingleRequest);
+
+        LendRequest lendRequest = LendRequest.builder()
+                .currency("USDT")
+                .dailyIntRate(new BigDecimal("0.001"))
+                .size(BigDecimal.TEN)
+                .term(7)
+                .build();
+        LendResponse lend = sandboxKucoinRestClient.loanAPI().lend(lendRequest);
+        assertThat(lend, notNullValue());
+
+        // sandboxKucoinRestClient.loanAPI().cancelLendOrder(lend.getOrderId());
+
+        ToggleAutoLendRequest toggleAutoLendRequest = ToggleAutoLendRequest.builder()
+                .currency("USDT")
+                .isEnable(false)
+                .build();
+        sandboxKucoinRestClient.loanAPI().toggleAutoLend(toggleAutoLendRequest);
+
+        Pagination<ActiveLendItem> pageActiveLend = sandboxKucoinRestClient.loanAPI().queryActiveLend(
+                "USDT", 1, 10);
+        assertThat(pageActiveLend, notNullValue());
+
+        Pagination<DoneLendItem> pageDoneLend = sandboxKucoinRestClient.loanAPI().queryDoneLend(
+                "USDT", 1, 10);
+        assertThat(pageDoneLend, notNullValue());
+
+        Pagination<UnsettledTradeItem> pageUnsettledTrade = sandboxKucoinRestClient.loanAPI().queryUnsettledTrade(
+                "USDT", 1, 10);
+        assertThat(pageUnsettledTrade, notNullValue());
+
+        Pagination<SettledTradeItem> pageSettledTrade = sandboxKucoinRestClient.loanAPI().querySettledTrade(
+                "USDT", 1, 10);
+        assertThat(pageSettledTrade, notNullValue());
+
+
     }
 
 }
