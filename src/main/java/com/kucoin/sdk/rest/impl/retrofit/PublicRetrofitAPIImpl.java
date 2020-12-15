@@ -3,24 +3,23 @@
  */
 package com.kucoin.sdk.rest.impl.retrofit;
 
-import java.lang.reflect.ParameterizedType;
-
 import com.kucoin.sdk.factory.RetrofitFactory;
+
+import java.lang.reflect.ParameterizedType;
 
 /**
  * Created by chenshiwei on 2019/1/10.
  */
 public class PublicRetrofitAPIImpl<T> extends AbstractRetrofitAPIImpl<T> {
 
-    private volatile boolean inited;
-    private T apiImpl;
+    private volatile T apiImpl;
 
     @Override
     public T getAPIImpl() {
-        if (inited)
+        if (apiImpl != null)
             return apiImpl;
         synchronized (getClass()) {
-            if (inited)
+            if (apiImpl != null)
                 return apiImpl;
             @SuppressWarnings("unchecked")
             Class<T> tClass = (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass())
