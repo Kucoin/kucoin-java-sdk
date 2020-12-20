@@ -4,6 +4,7 @@
 package com.kucoin.sdk.rest.response;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -45,4 +46,17 @@ public class SymbolResponse {
     private Boolean enableTrading;
 
     private Boolean isMarginEnabled;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SymbolResponse that = (SymbolResponse) o;
+        return Objects.equals(symbol, that.symbol) && Objects.equals(market, that.market);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(symbol, market);
+    }
 }
