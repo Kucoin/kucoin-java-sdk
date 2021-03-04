@@ -18,11 +18,12 @@ import java.io.IOException;
  */
 public class DepositAPIAdapter extends AuthRetrofitAPIImpl<DepositAPIRetrofit> implements DepositAPI {
 
-    public DepositAPIAdapter(String baseUrl, String apiKey, String secret, String passPhrase) {
+    public DepositAPIAdapter(String baseUrl, String apiKey, String secret, String passPhrase, Integer apiKeyVersion) {
         this.baseUrl = baseUrl;
         this.apiKey = apiKey;
         this.secret = secret;
         this.passPhrase = passPhrase;
+        this.apiKeyVersion = apiKeyVersion;
     }
 
     @Override

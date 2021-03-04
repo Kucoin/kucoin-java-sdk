@@ -25,12 +25,12 @@ public class RetrofitFactory {
 
     }
 
-    public static Retrofit getAuthRetorfit(String baseUrl, String apiKey, String secret, String passPhrase) {
+    public static Retrofit getAuthRetorfit(String baseUrl, String apiKey, String secret, String passPhrase, Integer apiKeyVersion) {
 
         return new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(CONVERTER_FACTORY)
-                .client(HttpClientFactory.getAuthClient(apiKey, secret, passPhrase))
+                .client(HttpClientFactory.getAuthClient(apiKey, secret, passPhrase, apiKeyVersion))
                 .build();
 
     }

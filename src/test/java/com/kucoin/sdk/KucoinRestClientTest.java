@@ -5,6 +5,7 @@ package com.kucoin.sdk;
 
 import com.google.common.collect.Lists;
 import com.kucoin.sdk.exception.KucoinApiException;
+import com.kucoin.sdk.model.enums.ApiKeyVersionEnum;
 import com.kucoin.sdk.rest.request.AccountTransferV2Request;
 import com.kucoin.sdk.rest.request.BorrowRecordQueryRequest;
 import com.kucoin.sdk.rest.request.BorrowRequest;
@@ -92,6 +93,7 @@ public class KucoinRestClientTest {
     public static void setUpClass() {
         sandboxKucoinRestClient = new KucoinClientBuilder().withBaseUrl("https://openapi-sandbox.kucoin.com")
                 .withApiKey("5fd1f0a62bf81d000732cbcb", "41c0a0af-123d-4e3a-868b-e05df5c5e8bd", "1qaz2wsx")
+                .withApiKeyVersion(ApiKeyVersionEnum.V1.getVersion())
                 .buildRestClient();
 
         liveKucoinRestClient = new KucoinClientBuilder().withBaseUrl("https://openapi-v2.kucoin.com")
