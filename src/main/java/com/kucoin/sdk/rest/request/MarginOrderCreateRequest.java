@@ -53,11 +53,6 @@ public class MarginOrderCreateRequest {
     private final String stp = "";
 
     /**
-     * [Optional] The type of trading : TRADE（Spot Trade）, MARGIN_TRADE (Margin Trade). Default is TRADE
-     */
-    private String tradeType;
-
-    /**
      * [optional] Either loss or entry. Requires stopPrice to be defined
      */
     @Builder.Default

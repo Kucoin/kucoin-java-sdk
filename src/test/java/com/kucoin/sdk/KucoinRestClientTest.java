@@ -10,6 +10,7 @@ import com.kucoin.sdk.rest.request.AccountTransferV2Request;
 import com.kucoin.sdk.rest.request.BorrowRecordQueryRequest;
 import com.kucoin.sdk.rest.request.BorrowRequest;
 import com.kucoin.sdk.rest.request.LendRequest;
+import com.kucoin.sdk.rest.request.MarginOrderCreateRequest;
 import com.kucoin.sdk.rest.request.MultiOrderCreateRequest;
 import com.kucoin.sdk.rest.request.OrderCreateApiRequest;
 import com.kucoin.sdk.rest.request.RepayAllRequest;
@@ -37,6 +38,7 @@ import com.kucoin.sdk.rest.response.LendResponse;
 import com.kucoin.sdk.rest.response.Level3Response;
 import com.kucoin.sdk.rest.response.MarginAccountResponse;
 import com.kucoin.sdk.rest.response.MarginConfigResponse;
+import com.kucoin.sdk.rest.response.MarginOrderCreateResponse;
 import com.kucoin.sdk.rest.response.MarkPriceResponse;
 import com.kucoin.sdk.rest.response.MarketItemResponse;
 import com.kucoin.sdk.rest.response.MultiOrderCreateResponse;
@@ -358,6 +360,15 @@ public class KucoinRestClientTest {
 
         MarginAccountResponse marginAccount = sandboxKucoinRestClient.marginAPI().getMarginAccount();
         assertThat(marginAccount, notNullValue());
+
+
+        MarginOrderCreateRequest request = MarginOrderCreateRequest.builder()
+                .price(BigDecimal.valueOf(20)).size(new BigDecimal("0.0130")).side("sell")
+                .symbol("ATOM-USDT").type("limit").clientOid(String.valueOf(System.currentTimeMillis()))
+                .build();
+        MarginOrderCreateResponse marginOrderResponse = sandboxKucoinRestClient.marginAPI().createMarginOrder(request);
+        assertThat(marginOrderResponse, notNullValue());
+
 
     }
 
