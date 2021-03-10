@@ -48,6 +48,7 @@ public class KucoinPrivateWSClientTest {
     public static void setupClass() throws Exception {
         KucoinClientBuilder builder = new KucoinClientBuilder().withBaseUrl("https://openapi-sandbox.kucoin.com")
                 .withApiKey("5f927beac1cfb50006afcd3c", "943aede3-1dd2-46fe-9654-7df9f275e118", "12121212")
+                // Version number of api-key
                 .withApiKeyVersion(ApiKeyVersionEnum.V2.getVersion());
         kucoinRestClient = builder.buildRestClient();
         kucoinPrivateWSClient = builder.buildPrivateWSClient();

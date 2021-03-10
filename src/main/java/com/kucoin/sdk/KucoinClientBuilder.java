@@ -30,6 +30,9 @@ public class KucoinClientBuilder {
 
     private String passPhrase;
 
+    /**
+     * Version number of api-key, default 1
+     */
     private Integer apiKeyVersion = 1;
 
     private String baseUrl;

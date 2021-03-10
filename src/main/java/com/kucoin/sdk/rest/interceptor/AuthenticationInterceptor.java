@@ -79,6 +79,7 @@ public class AuthenticationInterceptor implements Interceptor {
 
         String encryptPassPhrase = Base64.encodeBase64String(HmacUtils.hmacSha256(secret, passPhrase));
 
+        // Version number of api-key
         if (apiKeyVersion == 1) {
             newRequestBuilder.addHeader(APIConstants.API_HEADER_PASSPHRASE, passPhrase);
         } else if (apiKeyVersion == 2) {
@@ -91,7 +92,7 @@ public class AuthenticationInterceptor implements Interceptor {
         newRequestBuilder.addHeader(APIConstants.API_HEADER_KEY, apiKey);
         newRequestBuilder.addHeader(APIConstants.API_HEADER_SIGN, signature);
         newRequestBuilder.addHeader(APIConstants.API_HEADER_TIMESTAMP, timestamp);
-        newRequestBuilder.addHeader(APIConstants.API_HEADER_USER_AGENT, "KuCoin-Java-SDK");
+        newRequestBuilder.addHeader(APIConstants.API_HEADER_USER_AGENT, "KuCoin-Java-SDK:" + apiKeyVersion);
         newRequestBuilder.addHeader("X-VERSION", "default"); // just for dev test
 
         // Build new request after adding the necessary authentication information
