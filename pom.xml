@@ -6,7 +6,7 @@
 
     <groupId>com.kucoin</groupId>
     <artifactId>kucoin-java-sdk</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
 
     <name>kucoin-java-sdk</name>
     <url>http://www.kucoin.com</url>

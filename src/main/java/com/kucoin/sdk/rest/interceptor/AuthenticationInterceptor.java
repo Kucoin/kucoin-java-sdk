@@ -36,6 +36,7 @@ public class AuthenticationInterceptor implements Interceptor {
     private String apiKey;
     private String secret;
     private String passPhrase;
+    private Integer apiKeyVersion;
 
     /**
      * Constructor of API - keys are loaded from VM options, environment variables, resource files
@@ -45,10 +46,11 @@ public class AuthenticationInterceptor implements Interceptor {
      * @param passPhrase The API passphrase.
      * @throws KucoinApiException in case of any error
      */
-    public AuthenticationInterceptor(String apiKey, String secret, String passPhrase) {
+    public AuthenticationInterceptor(String apiKey, String secret, String passPhrase, Integer apiKeyVersion) {
         this.apiKey = apiKey;
         this.secret = secret;
         this.passPhrase = passPhrase;
+        this.apiKeyVersion = apiKeyVersion;
     }
 
     /**
@@ -75,10 +77,22 @@ public class AuthenticationInterceptor implements Interceptor {
         String timestamp = String.valueOf(System.currentTimeMillis());
         String signature = genSignature(original, secret, timestamp);
 
+        String encryptPassPhrase = Base64.encodeBase64String(HmacUtils.hmacSha256(secret, passPhrase));
+
+        // Version number of api-key
+        if (apiKeyVersion == 1) {
+            newRequestBuilder.addHeader(APIConstants.API_HEADER_PASSPHRASE, passPhrase);
+        } else if (apiKeyVersion == 2) {
+            newRequestBuilder.addHeader(APIConstants.API_HEADER_PASSPHRASE, encryptPassPhrase);
+            newRequestBuilder.addHeader(APIConstants.API_HEADER_KEY_VERSION, apiKeyVersion.toString());
+        } else {
+            throw new KucoinApiException("KC-API-KEY-VERSION can only be 1 and 2");
+        }
+
         newRequestBuilder.addHeader(APIConstants.API_HEADER_KEY, apiKey);
         newRequestBuilder.addHeader(APIConstants.API_HEADER_SIGN, signature);
-        newRequestBuilder.addHeader(APIConstants.API_HEADER_PASSPHRASE, passPhrase);
         newRequestBuilder.addHeader(APIConstants.API_HEADER_TIMESTAMP, timestamp);
+        newRequestBuilder.addHeader(APIConstants.API_HEADER_USER_AGENT, "KuCoin-Java-SDK:" + apiKeyVersion);
         newRequestBuilder.addHeader("X-VERSION", "default"); // just for dev test
 
         // Build new request after adding the necessary authentication information

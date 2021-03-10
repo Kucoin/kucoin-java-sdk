@@ -17,8 +17,8 @@ public class HttpClientFactory {
         return buildHttpClient(null);
     }
 
-    public static OkHttpClient getAuthClient(String apiKey, String secret, String passPhrase) {
-        return buildHttpClient(new AuthenticationInterceptor(apiKey, secret, passPhrase));
+    public static OkHttpClient getAuthClient(String apiKey, String secret, String passPhrase, Integer apiKeyVersion) {
+        return buildHttpClient(new AuthenticationInterceptor(apiKey, secret, passPhrase, apiKeyVersion));
     }
 
     private static OkHttpClient buildHttpClient(Interceptor interceptor) {

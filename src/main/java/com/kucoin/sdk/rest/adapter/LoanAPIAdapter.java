@@ -34,11 +34,12 @@ import java.util.List;
  */
 public class LoanAPIAdapter extends AuthRetrofitAPIImpl<LoanAPIRetrofit> implements LoanAPI {
 
-    public LoanAPIAdapter(String baseUrl, String apiKey, String secret, String passPhrase) {
+    public LoanAPIAdapter(String baseUrl, String apiKey, String secret, String passPhrase, Integer apiKeyVersion) {
         this.baseUrl = baseUrl;
         this.apiKey = apiKey;
         this.secret = secret;
         this.passPhrase = passPhrase;
+        this.apiKeyVersion = apiKeyVersion;
     }
 
     @Override

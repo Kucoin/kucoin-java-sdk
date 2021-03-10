@@ -3,6 +3,7 @@
  */
 package com.kucoin.sdk;
 
+import com.kucoin.sdk.model.enums.ApiKeyVersionEnum;
 import com.kucoin.sdk.model.enums.PublicChannelEnum;
 import com.kucoin.sdk.rest.request.OrderCreateApiRequest;
 import com.kucoin.sdk.rest.response.OrderCreateResponse;
@@ -40,9 +41,9 @@ public class KucoinPublicWSClientTest {
                 .buildPublicWSClient();
         kucoinRestClient = new KucoinClientBuilder().withBaseUrl("https://openapi-sandbox.kucoin.com")
                 .withApiKey("5c42a37bef83c73aa68e43c4", "7df80b16-1b95-4739-9b03-3d987599c332", "asd123456")
+                // Version number of api-key
+                .withApiKeyVersion(ApiKeyVersionEnum.V2.getVersion())
                 .buildRestClient();
-
-
     }
 
     @AfterClass

@@ -30,6 +30,11 @@ public class KucoinClientBuilder {
 
     private String passPhrase;
 
+    /**
+     * Version number of api-key, default 2
+     */
+    private Integer apiKeyVersion = 2;
+
     private String baseUrl;
 
     private UserAPI userAPI;
@@ -66,15 +71,15 @@ public class KucoinClientBuilder {
 
     public KucoinRestClient buildRestClient() {
         if (StringUtils.isBlank(baseUrl)) baseUrl = APIConstants.API_BASE_URL;
-        if (userAPI == null) userAPI = new UserAPIAdapter(baseUrl, apiKey, secret, passPhrase);
-        if (accountAPI == null) accountAPI = new AccountAPIAdapter(baseUrl, apiKey, secret, passPhrase);
-        if (depositAPI == null) depositAPI = new DepositAPIAdapter(baseUrl, apiKey, secret, passPhrase);
-        if (withdrawalAPI == null) withdrawalAPI = new WithdrawalAPIAdapter(baseUrl, apiKey, secret, passPhrase);
-        if (fillAPI == null) fillAPI = new FillAPIAdapter(baseUrl, apiKey, secret, passPhrase);
-        if (orderAPI == null) orderAPI = new OrderAPIAdapter(baseUrl, apiKey, secret, passPhrase);
-        if (stopOrderAPI == null) stopOrderAPI = new StopOrderAPIAdapter(baseUrl, apiKey, secret, passPhrase);
-        if (marginAPI == null) marginAPI = new MarginAPIAdapter(baseUrl, apiKey, secret, passPhrase);
-        if (loanAPI == null) loanAPI = new LoanAPIAdapter(baseUrl, apiKey, secret, passPhrase);
+        if (userAPI == null) userAPI = new UserAPIAdapter(baseUrl, apiKey, secret, passPhrase, apiKeyVersion);
+        if (accountAPI == null) accountAPI = new AccountAPIAdapter(baseUrl, apiKey, secret, passPhrase, apiKeyVersion);
+        if (depositAPI == null) depositAPI = new DepositAPIAdapter(baseUrl, apiKey, secret, passPhrase, apiKeyVersion);
+        if (withdrawalAPI == null) withdrawalAPI = new WithdrawalAPIAdapter(baseUrl, apiKey, secret, passPhrase, apiKeyVersion);
+        if (fillAPI == null) fillAPI = new FillAPIAdapter(baseUrl, apiKey, secret, passPhrase, apiKeyVersion);
+        if (orderAPI == null) orderAPI = new OrderAPIAdapter(baseUrl, apiKey, secret, passPhrase, apiKeyVersion);
+        if (stopOrderAPI == null) stopOrderAPI = new StopOrderAPIAdapter(baseUrl, apiKey, secret, passPhrase, apiKeyVersion);
+        if (marginAPI == null) marginAPI = new MarginAPIAdapter(baseUrl, apiKey, secret, passPhrase, apiKeyVersion);
+        if (loanAPI == null) loanAPI = new LoanAPIAdapter(baseUrl, apiKey, secret, passPhrase, apiKeyVersion);
         if (currencyAPI == null) currencyAPI = new CurrencyAPIAdaptor(baseUrl);
         if (timeAPI == null) timeAPI = new TimeAPIAdapter(baseUrl);
         if (commonAPI == null) commonAPI = new CommonAPIAdapter(baseUrl);
@@ -104,6 +109,11 @@ public class KucoinClientBuilder {
         this.apiKey = apiKey;
         this.secret = secret;
         this.passPhrase = passPhrase;
+        return this;
+    }
+
+    public KucoinClientBuilder withApiKeyVersion(Integer apiKeyVersion) {
+        this.apiKeyVersion = apiKeyVersion;
         return this;
     }
 

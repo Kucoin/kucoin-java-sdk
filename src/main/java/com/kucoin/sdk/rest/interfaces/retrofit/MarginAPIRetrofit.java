@@ -3,12 +3,16 @@
  */
 package com.kucoin.sdk.rest.interfaces.retrofit;
 
+import com.kucoin.sdk.rest.request.MarginOrderCreateRequest;
 import com.kucoin.sdk.rest.response.KucoinResponse;
 import com.kucoin.sdk.rest.response.MarginAccountResponse;
 import com.kucoin.sdk.rest.response.MarginConfigResponse;
+import com.kucoin.sdk.rest.response.MarginOrderCreateResponse;
 import com.kucoin.sdk.rest.response.MarkPriceResponse;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 /**
@@ -24,5 +28,8 @@ public interface MarginAPIRetrofit {
 
     @GET("api/v1/margin/account")
     Call<KucoinResponse<MarginAccountResponse>> getMarginAccount();
+
+    @POST("api/v1/margin/order")
+    Call<KucoinResponse<MarginOrderCreateResponse>> createMarginOrder(@Body MarginOrderCreateRequest request);
 
 }

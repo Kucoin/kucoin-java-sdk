@@ -3,8 +3,10 @@
  */
 package com.kucoin.sdk.rest.interfaces;
 
+import com.kucoin.sdk.rest.request.MarginOrderCreateRequest;
 import com.kucoin.sdk.rest.response.MarginAccountResponse;
 import com.kucoin.sdk.rest.response.MarginConfigResponse;
+import com.kucoin.sdk.rest.response.MarginOrderCreateResponse;
 import com.kucoin.sdk.rest.response.MarkPriceResponse;
 
 import java.io.IOException;
@@ -41,5 +43,14 @@ public interface MarginAPI {
      * @return
      */
     MarginAccountResponse getMarginAccount() throws IOException;
+
+    /**
+     * You can place two types of orders: limit and market. Orders can only be placed if your account has sufficient funds.
+     * Once an order is placed, your account funds will be put on hold for the duration of the order.
+     * How much and which funds are put on hold depends on the order type and parameters specified. See the Holds details below.
+     * @param request
+     * @return
+     */
+    MarginOrderCreateResponse createMarginOrder(MarginOrderCreateRequest request) throws IOException;
 
 }

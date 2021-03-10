@@ -16,11 +16,12 @@ import java.io.IOException;
  */
 public class FillAPIAdapter extends AuthRetrofitAPIImpl<FillAPIRetrofit> implements FillAPI {
 
-    public FillAPIAdapter(String baseUrl, String apiKey, String secret, String passPhrase) {
+    public FillAPIAdapter(String baseUrl, String apiKey, String secret, String passPhrase, Integer apiKeyVersion) {
         this.baseUrl = baseUrl;
         this.apiKey = apiKey;
         this.secret = secret;
         this.passPhrase = passPhrase;
+        this.apiKeyVersion = apiKeyVersion;
     }
 
     @Override

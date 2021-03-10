@@ -5,12 +5,16 @@ package com.kucoin.sdk;
 
 import com.google.common.collect.Lists;
 import com.kucoin.sdk.exception.KucoinApiException;
+import com.kucoin.sdk.model.enums.ApiKeyVersionEnum;
 import com.kucoin.sdk.rest.request.AccountTransferV2Request;
 import com.kucoin.sdk.rest.request.BorrowRecordQueryRequest;
 import com.kucoin.sdk.rest.request.BorrowRequest;
 import com.kucoin.sdk.rest.request.LendRequest;
+import com.kucoin.sdk.rest.request.MarginOrderCreateRequest;
 import com.kucoin.sdk.rest.request.MultiOrderCreateRequest;
 import com.kucoin.sdk.rest.request.OrderCreateApiRequest;
+import com.kucoin.sdk.rest.request.RepayAllRequest;
+import com.kucoin.sdk.rest.request.RepaySeqStrategy;
 import com.kucoin.sdk.rest.request.RepaySingleRequest;
 import com.kucoin.sdk.rest.request.StopOrderCreateRequest;
 import com.kucoin.sdk.rest.request.ToggleAutoLendRequest;
@@ -34,6 +38,7 @@ import com.kucoin.sdk.rest.response.LendResponse;
 import com.kucoin.sdk.rest.response.Level3Response;
 import com.kucoin.sdk.rest.response.MarginAccountResponse;
 import com.kucoin.sdk.rest.response.MarginConfigResponse;
+import com.kucoin.sdk.rest.response.MarginOrderCreateResponse;
 import com.kucoin.sdk.rest.response.MarkPriceResponse;
 import com.kucoin.sdk.rest.response.MarketItemResponse;
 import com.kucoin.sdk.rest.response.MultiOrderCreateResponse;
@@ -91,7 +96,9 @@ public class KucoinRestClientTest {
     @BeforeClass
     public static void setUpClass() {
         sandboxKucoinRestClient = new KucoinClientBuilder().withBaseUrl("https://openapi-sandbox.kucoin.com")
-                .withApiKey("5fd1f0a62bf81d000732cbcb", "41c0a0af-123d-4e3a-868b-e05df5c5e8bd", "1qaz2wsx")
+                .withApiKey("6040ba17365ac600068963ed", "b69e3410-5215-4360-a2c8-569a6a669141", "1qaz2wsx")
+                // Version number of api-key
+                .withApiKeyVersion(ApiKeyVersionEnum.V2.getVersion())
                 .buildRestClient();
 
         liveKucoinRestClient = new KucoinClientBuilder().withBaseUrl("https://openapi-v2.kucoin.com")
@@ -354,6 +361,15 @@ public class KucoinRestClientTest {
         MarginAccountResponse marginAccount = sandboxKucoinRestClient.marginAPI().getMarginAccount();
         assertThat(marginAccount, notNullValue());
 
+
+        MarginOrderCreateRequest request = MarginOrderCreateRequest.builder()
+                .price(BigDecimal.valueOf(20)).size(new BigDecimal("0.0130")).side("sell")
+                .symbol("ATOM-USDT").type("limit").clientOid(String.valueOf(System.currentTimeMillis()))
+                .build();
+        MarginOrderCreateResponse marginOrderResponse = sandboxKucoinRestClient.marginAPI().createMarginOrder(request);
+        assertThat(marginOrderResponse, notNullValue());
+
+
     }
 
     @Test
@@ -389,12 +405,12 @@ public class KucoinRestClientTest {
         Pagination<BorrowRepaidResponse> pageBorrowRepaid = sandboxKucoinRestClient.loanAPI().queryBorrowRepaid(borrowRepaidRequest);
         assertThat(pageBorrowRepaid, notNullValue());
 
-        /*RepayAllRequest repayAllRequest = RepayAllRequest.builder()
+        RepayAllRequest repayAllRequest = RepayAllRequest.builder()
                 .currency("USDT")
                 .size(BigDecimal.TEN)
                 .sequence(RepaySeqStrategy.HIGHEST_RATE_FIRST)
                 .build();
-        sandboxKucoinRestClient.loanAPI().repayAll(repayAllRequest);*/
+        sandboxKucoinRestClient.loanAPI().repayAll(repayAllRequest);
 
         RepaySingleRequest repaySingleRequest = RepaySingleRequest.builder()
                 .currency("USDT")
@@ -402,7 +418,6 @@ public class KucoinRestClientTest {
                 .tradeId(borrowQuery.getMatchList().get(0).getTradeId())
                 .build();
         sandboxKucoinRestClient.loanAPI().repaySingle(repaySingleRequest);
-
         LendRequest lendRequest = LendRequest.builder()
                 .currency("USDT")
                 .dailyIntRate(new BigDecimal("0.001"))
@@ -411,12 +426,14 @@ public class KucoinRestClientTest {
                 .build();
         LendResponse lend = sandboxKucoinRestClient.loanAPI().lend(lendRequest);
         assertThat(lend, notNullValue());
-
         // sandboxKucoinRestClient.loanAPI().cancelLendOrder(lend.getOrderId());
 
         ToggleAutoLendRequest toggleAutoLendRequest = ToggleAutoLendRequest.builder()
                 .currency("USDT")
                 .isEnable(false)
+                .term(28)
+                .retainSize(new BigDecimal("10000000"))
+                .dailyIntRate(new BigDecimal("0.0015"))
                 .build();
         sandboxKucoinRestClient.loanAPI().toggleAutoLend(toggleAutoLendRequest);
 

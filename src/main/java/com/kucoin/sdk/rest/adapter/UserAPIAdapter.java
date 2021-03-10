@@ -14,11 +14,12 @@ import java.util.List;
 public class UserAPIAdapter extends AuthRetrofitAPIImpl<UserAPIRetrofit> implements UserAPI {
 
 
-    public UserAPIAdapter(String baseUrl, String apiKey, String secret, String passPhrase) {
+    public UserAPIAdapter(String baseUrl, String apiKey, String secret, String passPhrase, Integer apiKeyVersion) {
         this.baseUrl = baseUrl;
         this.apiKey = apiKey;
         this.secret = secret;
         this.passPhrase = passPhrase;
+        this.apiKeyVersion = apiKeyVersion;
     }
 
     @Override

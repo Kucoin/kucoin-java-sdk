@@ -25,11 +25,12 @@ import java.util.List;
  */
 public class OrderAPIAdapter extends AuthRetrofitAPIImpl<OrderAPIRetrofit> implements OrderAPI {
 
-    public OrderAPIAdapter(String baseUrl, String apiKey, String secret, String passPhrase) {
+    public OrderAPIAdapter(String baseUrl, String apiKey, String secret, String passPhrase, Integer apiKeyVersion) {
         this.baseUrl = baseUrl;
         this.apiKey = apiKey;
         this.secret = secret;
         this.passPhrase = passPhrase;
+        this.apiKeyVersion = apiKeyVersion;
     }
 
     @Override

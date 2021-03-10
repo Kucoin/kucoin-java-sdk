@@ -3,6 +3,7 @@
  */
 package com.kucoin.sdk;
 
+import com.kucoin.sdk.model.enums.ApiKeyVersionEnum;
 import com.kucoin.sdk.model.enums.PrivateChannelEnum;
 import com.kucoin.sdk.rest.request.AccountTransferV2Request;
 import com.kucoin.sdk.rest.request.OrderCreateApiRequest;
@@ -46,7 +47,9 @@ public class KucoinPrivateWSClientTest {
     @BeforeClass
     public static void setupClass() throws Exception {
         KucoinClientBuilder builder = new KucoinClientBuilder().withBaseUrl("https://openapi-sandbox.kucoin.com")
-                .withApiKey("5f927beac1cfb50006afcd3c", "943aede3-1dd2-46fe-9654-7df9f275e118", "12121212");
+                .withApiKey("5f927beac1cfb50006afcd3c", "943aede3-1dd2-46fe-9654-7df9f275e118", "12121212")
+                // Version number of api-key
+                .withApiKeyVersion(ApiKeyVersionEnum.V2.getVersion());
         kucoinRestClient = builder.buildRestClient();
         kucoinPrivateWSClient = builder.buildPrivateWSClient();
     }

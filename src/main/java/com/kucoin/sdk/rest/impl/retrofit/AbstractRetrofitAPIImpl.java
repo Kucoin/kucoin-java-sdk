@@ -35,6 +35,8 @@ public abstract class AbstractRetrofitAPIImpl<T> {
 
     protected String passPhrase;
 
+    protected Integer apiKeyVersion;
+
     public abstract T getAPIImpl();
 
     /**
