@@ -38,7 +38,8 @@ public class KucoinPrivateWSClientImpl extends BaseWebsocketImpl implements Kuco
                 new WebsocketPrivateAPIAdaptor(kucoinClientBuilder.getBaseUrl(),
                         kucoinClientBuilder.getApiKey(),
                         kucoinClientBuilder.getSecret(),
-                        kucoinClientBuilder.getPassPhrase()));
+                        kucoinClientBuilder.getPassPhrase(),
+                        kucoinClientBuilder.getApiKeyVersion()));
     }
 
     private KucoinPrivateWSClientImpl(OkHttpClient client,
