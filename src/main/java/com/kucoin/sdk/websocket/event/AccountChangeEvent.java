@@ -27,12 +27,20 @@ public class AccountChangeEvent {
 
     private String relationEvent;
 
-    private String relationContext;
+    private RelationContext relationContext;
 
     private String relationEventId;
 
     private String time;
 
     private String accountId;
+
+    @Data
+    public static class RelationContext {
+
+        private String symbol;
+
+        private String orderId;
+    }
 
 }
