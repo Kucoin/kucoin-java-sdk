@@ -16,11 +16,12 @@ import com.kucoin.sdk.rest.response.WebsocketTokenResponse;
 public class WebsocketPrivateAPIAdaptor extends AuthRetrofitAPIImpl<WebsocketAuthAPIRetrofit>
         implements WebsocketPrivateAPI {
 
-    public WebsocketPrivateAPIAdaptor(String baseUrl, String apiKey, String secret, String passPhrase) {
+    public WebsocketPrivateAPIAdaptor(String baseUrl, String apiKey, String secret, String passPhrase, Integer apiKeyVersion) {
         this.baseUrl = baseUrl;
         this.apiKey = apiKey;
         this.secret = secret;
         this.passPhrase = passPhrase;
+        this.apiKeyVersion = apiKeyVersion;
     }
 
     @Override
