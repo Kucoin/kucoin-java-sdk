@@ -26,7 +26,7 @@ public class HttpClientFactory {
         dispatcher.setMaxRequestsPerHost(100);
         dispatcher.setMaxRequests(100);
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .dispatcher(dispatcher);
+                .dispatcher(dispatcher).pingInterval(30, TimeUnit.SECONDS);
         if (interceptor != null) {
             builder.addInterceptor(interceptor);
         }
