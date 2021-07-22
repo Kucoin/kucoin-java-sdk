@@ -97,4 +97,12 @@ public abstract class AbstractRetrofitAPIImpl<T> {
     public void setPassPhrase(String passPhrase) {
         this.passPhrase = passPhrase;
     }
+
+    public Integer getApiKeyVersion() {
+        return apiKeyVersion;
+    }
+
+    public void setApiKeyVersion(Integer apiKeyVersion) {
+        this.apiKeyVersion = apiKeyVersion;
+    }
 }
