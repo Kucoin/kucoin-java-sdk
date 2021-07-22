@@ -59,7 +59,8 @@ public class OrderCreateApiRequest {
     /**
      * [Optional] The type of trading : TRADE（Spot Trade）, MARGIN_TRADE (Margin Trade). Default is TRADE
      */
-    private String tradeType;
+    @Builder.Default
+    private String tradeType ="TRADE";
 
     /**
      * [optional] Either loss or entry. Requires stopPrice to be defined
