@@ -30,6 +30,7 @@ import com.kucoin.sdk.rest.response.BorrowQueryResponse;
 import com.kucoin.sdk.rest.response.BorrowRepaidResponse;
 import com.kucoin.sdk.rest.response.BorrowResponse;
 import com.kucoin.sdk.rest.response.CurrencyDetailResponse;
+import com.kucoin.sdk.rest.response.CurrencyDetailV2Response;
 import com.kucoin.sdk.rest.response.CurrencyResponse;
 import com.kucoin.sdk.rest.response.DoneLendItem;
 import com.kucoin.sdk.rest.response.LastTradeResponse;
@@ -331,6 +332,11 @@ public class KucoinRestClientTest {
 
         CurrencyDetailResponse kcs = sandboxKucoinRestClient.currencyAPI().getCurrencyDetail("KCS", null);
         assertThat(kcs, notNullValue());
+
+
+
+        CurrencyDetailV2Response kcsv2 = liveKucoinRestClient.currencyAPI().getCurrencyDetailV2("KCS", null);
+        assertThat(kcsv2, notNullValue());
 
         Map<String, BigDecimal> fiatPrice = sandboxKucoinRestClient.currencyAPI().getFiatPrice("USD", "KCS, BTC");
         assertThat(fiatPrice, notNullValue());
