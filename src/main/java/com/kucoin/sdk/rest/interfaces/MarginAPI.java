@@ -7,6 +7,7 @@ import com.kucoin.sdk.rest.request.MarginOrderCreateRequest;
 import com.kucoin.sdk.rest.response.MarginAccountResponse;
 import com.kucoin.sdk.rest.response.MarginConfigResponse;
 import com.kucoin.sdk.rest.response.MarginOrderCreateResponse;
+import com.kucoin.sdk.rest.response.MarginPriceStrategyResponse;
 import com.kucoin.sdk.rest.response.MarkPriceResponse;
 
 import java.io.IOException;
@@ -53,4 +54,13 @@ public interface MarginAPI {
      */
     MarginOrderCreateResponse createMarginOrder(MarginOrderCreateRequest request) throws IOException;
 
+    /**
+     *  Get Margin Price Strategy
+     *  <p>
+     *  Request via this endpoint to get the cross/isolated margin risk limit.
+     *  </p>
+     * @param marginModel
+     * @return
+     */
+    MarginPriceStrategyResponse getMarginPriceStrategy(String marginModel) throws IOException;
 }
