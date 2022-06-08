@@ -3,6 +3,8 @@
  */
 package com.kucoin.sdk.factory;
 
+import java.util.concurrent.TimeUnit;
+
 import com.kucoin.sdk.rest.interceptor.AuthenticationInterceptor;
 import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
