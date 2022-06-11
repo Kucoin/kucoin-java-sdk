@@ -3,11 +3,13 @@
  */
 package com.kucoin.sdk;
 
+import com.kucoin.sdk.exception.KucoinApiException;
 import com.kucoin.sdk.model.enums.ApiKeyVersionEnum;
 import com.kucoin.sdk.model.enums.PublicChannelEnum;
 import com.kucoin.sdk.rest.request.OrderCreateApiRequest;
 import com.kucoin.sdk.rest.response.OrderCreateResponse;
 import com.kucoin.sdk.rest.response.TickerResponse;
+import com.kucoin.sdk.websocket.KucoinAPICallback;
 import com.kucoin.sdk.websocket.event.*;
 import org.hamcrest.core.Is;
 import org.junit.AfterClass;
@@ -56,11 +58,31 @@ public class KucoinPublicWSClientTest {
         AtomicReference<TickerResponse> event = new AtomicReference<>();
         CountDownLatch gotEvent = new CountDownLatch(1);
 
+        kucoinPublicWSClient.onTicker(new KucoinAPICallback<KucoinEvent<TickerChangeEvent>>() {
+
+			@Override
+			public void onResponse(KucoinEvent<TickerChangeEvent> response) throws KucoinApiException {
+	            event.set(response.getData());
+	            kucoinPublicWSClient.unsubscribe(PublicChannelEnum.TICKER, "ETH-BTC", "KCS-BTC");
+	            gotEvent.countDown();
+			}
+
+			@Override
+			public void onFailure(Throwable cause) {
+				System.out.println("WS connection failed. Reconnecting. cause:" + cause.getMessage());
+
+				//reinitializeWSConnection();	//implement this method
+			}
+        	
+        }, "ETH-BTC", "KCS-BTC");
+        
+        /*
         kucoinPublicWSClient.onTicker(response -> {
             event.set(response.getData());
             kucoinPublicWSClient.unsubscribe(PublicChannelEnum.TICKER, "ETH-BTC", "KCS-BTC");
             gotEvent.countDown();
         }, "ETH-BTC", "KCS-BTC");
+        */
 
         // Make some actual executions
         buyAndSell();
@@ -74,11 +96,31 @@ public class KucoinPublicWSClientTest {
         AtomicReference<Level2ChangeEvent> event = new AtomicReference<>();
         CountDownLatch gotEvent = new CountDownLatch(1);
 
+        kucoinPublicWSClient.onLevel2Data(new KucoinAPICallback<KucoinEvent<Level2ChangeEvent>>() {
+
+			@Override
+			public void onResponse(KucoinEvent<Level2ChangeEvent> response) throws KucoinApiException {
+	            event.set(response.getData());
+	            kucoinPublicWSClient.unsubscribe(PublicChannelEnum.LEVEL2, "ETH-BTC", "KCS-BTC");
+	            gotEvent.countDown();
+			}
+
+			@Override
+			public void onFailure(Throwable cause) {
+				System.out.println("WS connection failed. Reconnecting. cause:" + cause.getMessage());
+
+				//reinitializeWSConnection();	//implement this method
+			}
+        	
+        }, "ETH-BTC", "KCS-BTC");
+        
+        /*
         kucoinPublicWSClient.onLevel2Data(response -> {
             event.set(response.getData());
             kucoinPublicWSClient.unsubscribe(PublicChannelEnum.LEVEL2, "ETH-BTC", "KCS-BTC");
             gotEvent.countDown();
         }, "ETH-BTC", "KCS-BTC");
+        */
 
         // Trigger a market change
         placeOrderAndCancelOrder();
@@ -92,11 +134,31 @@ public class KucoinPublicWSClientTest {
         AtomicReference<Level2Event> event = new AtomicReference<>();
         CountDownLatch gotEvent = new CountDownLatch(1);
 
+        kucoinPublicWSClient.onLevel2Data(5, new KucoinAPICallback<KucoinEvent<Level2Event>>() {
+
+			@Override
+			public void onResponse(KucoinEvent<Level2Event> response) throws KucoinApiException {
+	            event.set(response.getData());
+	            kucoinPublicWSClient.unsubscribe(PublicChannelEnum.LEVEL2_DEPTH5, "ETH-BTC", "BTC-USDT");
+	            gotEvent.countDown();
+			}
+
+			@Override
+			public void onFailure(Throwable cause) {
+				System.out.println("WS connection failed. Reconnecting. cause:" + cause.getMessage());
+
+				//reinitializeWSConnection();	//implement this method
+			}
+        	
+        }, "ETH-BTC", "BTC-USDT");
+        
+        /*
         kucoinPublicWSClient.onLevel2Data(5, response -> {
             event.set(response.getData());
             kucoinPublicWSClient.unsubscribe(PublicChannelEnum.LEVEL2_DEPTH5, "ETH-BTC", "BTC-USDT");
             gotEvent.countDown();
         }, "ETH-BTC", "BTC-USDT");
+        */
 
         // Trigger a market change
         placeOrderAndCancelOrder();
@@ -110,11 +172,30 @@ public class KucoinPublicWSClientTest {
         AtomicReference<Level2Event> event = new AtomicReference<>();
         CountDownLatch gotEvent = new CountDownLatch(1);
 
+        kucoinPublicWSClient.onLevel2Data(50,  new KucoinAPICallback<KucoinEvent<Level2Event>>() {
+
+			@Override
+			public void onResponse(KucoinEvent<Level2Event> response) throws KucoinApiException {
+	            event.set(response.getData());
+	            kucoinPublicWSClient.unsubscribe(PublicChannelEnum.LEVEL2_DEPTH50, "ETH-BTC", "BTC-USDT");
+	            gotEvent.countDown();
+			}
+
+			@Override
+			public void onFailure(Throwable cause) {
+				System.out.println("WS connection failed. Reconnecting. cause:" + cause.getMessage());
+
+				//reinitializeWSConnection();	//implement this method
+			}
+        }, "ETH-BTC", "BTC-USDT");
+        
+        /*
         kucoinPublicWSClient.onLevel2Data(50, response -> {
             event.set(response.getData());
             kucoinPublicWSClient.unsubscribe(PublicChannelEnum.LEVEL2_DEPTH50, "ETH-BTC", "BTC-USDT");
             gotEvent.countDown();
         }, "ETH-BTC", "BTC-USDT");
+        */
 
         // Trigger a market change
         placeOrderAndCancelOrder();
@@ -128,11 +209,31 @@ public class KucoinPublicWSClientTest {
         AtomicReference<MatchExcutionChangeEvent> event = new AtomicReference<>();
         CountDownLatch gotEvent = new CountDownLatch(1);
 
+        kucoinPublicWSClient.onMatchExecutionData(new KucoinAPICallback<KucoinEvent<MatchExcutionChangeEvent>>() {
+
+			@Override
+			public void onResponse(KucoinEvent<MatchExcutionChangeEvent> response) throws KucoinApiException {
+	            event.set(response.getData());
+	            kucoinPublicWSClient.unsubscribe(PublicChannelEnum.MATCH, "ETH-BTC", "KCS-BTC");
+	            gotEvent.countDown();
+			}
+
+			@Override
+			public void onFailure(Throwable cause) {
+				System.out.println("WS connection failed. Reconnecting. cause:" + cause.getMessage());
+
+				//reinitializeWSConnection();	//implement this method
+			}
+        	
+        }, "ETH-BTC", "KCS-BTC");
+        
+        /*
         kucoinPublicWSClient.onMatchExecutionData(response -> {
             event.set(response.getData());
             kucoinPublicWSClient.unsubscribe(PublicChannelEnum.MATCH, "ETH-BTC", "KCS-BTC");
             gotEvent.countDown();
         }, "ETH-BTC", "KCS-BTC");
+		*/
 
         // Make some actual executions
         buyAndSell();
@@ -146,11 +247,31 @@ public class KucoinPublicWSClientTest {
         AtomicReference<Level3ChangeEvent> event = new AtomicReference<>();
         CountDownLatch gotEvent = new CountDownLatch(1);
 
+        kucoinPublicWSClient.onLevel3Data(new KucoinAPICallback<KucoinEvent<Level3ChangeEvent>>() {
+
+			@Override
+			public void onResponse(KucoinEvent<Level3ChangeEvent> response) throws KucoinApiException {
+	            event.set(response.getData());
+	            kucoinPublicWSClient.unsubscribe(PublicChannelEnum.LEVEL3, "ETH-BTC", "KCS-BTC");
+	            gotEvent.countDown();
+			}
+
+			@Override
+			public void onFailure(Throwable cause) {
+				System.out.println("WS connection failed. Reconnecting. cause:" + cause.getMessage());
+
+				//reinitializeWSConnection();	//implement this method
+			}
+        	
+        }, "ETH-BTC", "KCS-BTC");
+        
+        /*
         kucoinPublicWSClient.onLevel3Data(response -> {
             event.set(response.getData());
             kucoinPublicWSClient.unsubscribe(PublicChannelEnum.LEVEL3, "ETH-BTC", "KCS-BTC");
             gotEvent.countDown();
         }, "ETH-BTC", "KCS-BTC");
+        */
 
         // Trigger a market change
         placeOrderAndCancelOrder();
@@ -164,11 +285,31 @@ public class KucoinPublicWSClientTest {
         AtomicReference<Level3Event> event = new AtomicReference<>();
         CountDownLatch gotEvent = new CountDownLatch(1);
 
+        kucoinPublicWSClient.onLevel3Data_V2(new KucoinAPICallback<KucoinEvent<Level3Event>>() {
+
+			@Override
+			public void onResponse(KucoinEvent<Level3Event> response) throws KucoinApiException {
+	            event.set(response.getData());
+	            kucoinPublicWSClient.unsubscribe(PublicChannelEnum.LEVEL3_V2, "ETH-BTC", "BTC-USDT");
+	            gotEvent.countDown();
+			}
+
+			@Override
+			public void onFailure(Throwable cause) {
+				System.out.println("WS connection failed. Reconnecting. cause:" + cause.getMessage());
+
+				//reinitializeWSConnection();	//implement this method
+			}
+        	
+        }, "ETH-BTC", "BTC-USDT");
+        
+        /*
         kucoinPublicWSClient.onLevel3Data_V2(response -> {
             event.set(response.getData());
             kucoinPublicWSClient.unsubscribe(PublicChannelEnum.LEVEL3_V2, "ETH-BTC", "BTC-USDT");
             gotEvent.countDown();
         }, "ETH-BTC", "BTC-USDT");
+        */
 
         // Trigger a market change
         placeOrderAndCancelOrder();
@@ -188,11 +329,33 @@ public class KucoinPublicWSClientTest {
     public void onSnapshot() throws Exception {
         AtomicReference<SnapshotEvent> event = new AtomicReference<>();
         CountDownLatch gotEvent = new CountDownLatch(1);
+        
+        kucoinPublicWSClient.onSnapshot(new KucoinAPICallback<KucoinEvent<SnapshotEvent>>() {
+
+			@Override
+			public void onResponse(KucoinEvent<SnapshotEvent> response) throws KucoinApiException {
+	            event.set(response.getData());
+	            kucoinPublicWSClient.unsubscribe(PublicChannelEnum.SNAPSHOT, "ETH-BTC");
+	            gotEvent.countDown();
+			}
+
+			@Override
+			public void onFailure(Throwable cause) {
+				System.out.println("WS connection failed. Reconnecting. cause:" + cause.getMessage());
+
+				//reinitializeWSConnection();	//implement this method
+			}
+        	
+        }, "ETH-BTC");
+        
+        /*
         kucoinPublicWSClient.onSnapshot(response -> {
             event.set(response.getData());
             kucoinPublicWSClient.unsubscribe(PublicChannelEnum.SNAPSHOT, "ETH-BTC");
             gotEvent.countDown();
         }, "ETH-BTC");
+        */
+        
         placeOrderAndCancelOrder();
         gotEvent.await(20, TimeUnit.SECONDS);
         System.out.println(event.get());

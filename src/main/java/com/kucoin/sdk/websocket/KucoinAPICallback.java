@@ -11,5 +11,7 @@ import com.kucoin.sdk.exception.KucoinApiException;
 public interface KucoinAPICallback<T> {
 
     void onResponse(T response) throws KucoinApiException;
+    
+    void onFailure(Throwable cause);
 
 }

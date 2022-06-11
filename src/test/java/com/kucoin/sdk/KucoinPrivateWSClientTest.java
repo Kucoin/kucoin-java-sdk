@@ -3,6 +3,7 @@
  */
 package com.kucoin.sdk;
 
+import com.kucoin.sdk.exception.KucoinApiException;
 import com.kucoin.sdk.model.enums.ApiKeyVersionEnum;
 import com.kucoin.sdk.model.enums.PrivateChannelEnum;
 import com.kucoin.sdk.rest.request.AccountTransferV2Request;
@@ -10,8 +11,10 @@ import com.kucoin.sdk.rest.request.OrderCreateApiRequest;
 import com.kucoin.sdk.rest.request.StopOrderCreateRequest;
 import com.kucoin.sdk.rest.response.AccountBalancesResponse;
 import com.kucoin.sdk.rest.response.OrderCreateResponse;
+import com.kucoin.sdk.websocket.KucoinAPICallback;
 import com.kucoin.sdk.websocket.event.AccountChangeEvent;
 import com.kucoin.sdk.websocket.event.AdvancedOrderEvent;
+import com.kucoin.sdk.websocket.event.KucoinEvent;
 import com.kucoin.sdk.websocket.event.OrderActivateEvent;
 import com.kucoin.sdk.websocket.event.OrderChangeEvent;
 import org.hamcrest.core.Is;
@@ -64,12 +67,33 @@ public class KucoinPrivateWSClientTest {
         AtomicReference<OrderActivateEvent> event = new AtomicReference<>();
         CountDownLatch gotEvent = new CountDownLatch(1);
 
+        kucoinPrivateWSClient.onOrderActivate(new KucoinAPICallback<KucoinEvent<OrderActivateEvent>>() {
+
+			@Override
+			public void onResponse(KucoinEvent<OrderActivateEvent> response) throws KucoinApiException {
+	            LOGGER.info("Got response");
+	            event.set(response.getData());
+	            kucoinPrivateWSClient.unsubscribe(PrivateChannelEnum.ORDER, "ETH-BTC", "KCS-BTC");
+	            gotEvent.countDown();
+			}
+
+			@Override
+			public void onFailure(Throwable cause) {
+				System.out.println("WS connection failed. Reconnecting. cause:" + cause.getMessage());
+
+				//reinitializeWSConnection();	//implement this method
+			}
+        	
+        }, "ETH-BTC", "KCS-BTC");
+        
+        /*
         kucoinPrivateWSClient.onOrderActivate(response -> {
             LOGGER.info("Got response");
             event.set(response.getData());
             kucoinPrivateWSClient.unsubscribe(PrivateChannelEnum.ORDER, "ETH-BTC", "KCS-BTC");
             gotEvent.countDown();
         }, "ETH-BTC", "KCS-BTC");
+        */
 
         Thread.sleep(1000);
 
@@ -93,12 +117,33 @@ public class KucoinPrivateWSClientTest {
         AtomicReference<OrderChangeEvent> event = new AtomicReference<>();
         CountDownLatch gotEvent = new CountDownLatch(1);
 
+        kucoinPrivateWSClient.onOrderChange(new KucoinAPICallback<KucoinEvent<OrderChangeEvent>>() {
+
+			@Override
+			public void onResponse(KucoinEvent<OrderChangeEvent> response) throws KucoinApiException {
+	            LOGGER.info("Got response");
+	            event.set(response.getData());
+	            kucoinPrivateWSClient.unsubscribe(PrivateChannelEnum.ORDER_CHANGE, "ETH-BTC", "BTC-USDT");
+	            gotEvent.countDown();
+			}
+
+			@Override
+			public void onFailure(Throwable cause) {
+				System.out.println("WS connection failed. Reconnecting. cause:" + cause.getMessage());
+
+				//reinitializeWSConnection();	//implement this method
+			}
+        	
+        }, "ETH-BTC", "BTC-USDT");
+        
+        /*
         kucoinPrivateWSClient.onOrderChange(response -> {
             LOGGER.info("Got response");
             event.set(response.getData());
             kucoinPrivateWSClient.unsubscribe(PrivateChannelEnum.ORDER_CHANGE, "ETH-BTC", "BTC-USDT");
             gotEvent.countDown();
         }, "ETH-BTC", "BTC-USDT");
+        */
 
         Thread.sleep(1000);
 
@@ -122,12 +167,33 @@ public class KucoinPrivateWSClientTest {
         AtomicReference<AccountChangeEvent> event = new AtomicReference<>();
         CountDownLatch gotEvent = new CountDownLatch(1);
 
+        kucoinPrivateWSClient.onAccountBalance(new KucoinAPICallback<KucoinEvent<AccountChangeEvent>>() {
+
+			@Override
+			public void onResponse(KucoinEvent<AccountChangeEvent> response) throws KucoinApiException {
+	            LOGGER.info("Got response");
+	            event.set(response.getData());
+	            kucoinPrivateWSClient.unsubscribe(PrivateChannelEnum.ACCOUNT);
+	            gotEvent.countDown();
+			}
+
+			@Override
+			public void onFailure(Throwable cause) {
+				System.out.println("WS connection failed. Reconnecting. cause:" + cause.getMessage());
+
+				//reinitializeWSConnection();	//implement this method
+			}
+        	
+        });
+        
+        /*
         kucoinPrivateWSClient.onAccountBalance(response -> {
             LOGGER.info("Got response");
             event.set(response.getData());
             kucoinPrivateWSClient.unsubscribe(PrivateChannelEnum.ACCOUNT);
             gotEvent.countDown();
         });
+        */
 
         Thread.sleep(1000);
 
@@ -158,12 +224,33 @@ public class KucoinPrivateWSClientTest {
         AtomicReference<AdvancedOrderEvent> event = new AtomicReference<>();
         CountDownLatch gotEvent = new CountDownLatch(1);
 
+        kucoinPrivateWSClient.onAdvancedOrder(new KucoinAPICallback<KucoinEvent<? extends AdvancedOrderEvent>>() {
+
+			@Override
+			public void onResponse(KucoinEvent<? extends AdvancedOrderEvent> response) throws KucoinApiException {
+	            LOGGER.info("Got response {}", response);
+	            event.set(response.getData());
+	            kucoinPrivateWSClient.unsubscribe(PrivateChannelEnum.ADVANCED_ORDER, "ETH-BTC");
+	            gotEvent.countDown();
+			}
+
+			@Override
+			public void onFailure(Throwable cause) {
+				System.out.println("WS connection failed. Reconnecting. cause:" + cause.getMessage());
+
+				//reinitializeWSConnection();	//implement this method
+			}
+        	
+        }, "ETH-BTC");
+        
+        /*
         kucoinPrivateWSClient.onAdvancedOrder(response -> {
             LOGGER.info("Got response {}", response);
             event.set(response.getData());
             kucoinPrivateWSClient.unsubscribe(PrivateChannelEnum.ADVANCED_ORDER, "ETH-BTC");
             gotEvent.countDown();
         }, "ETH-BTC");
+        */
 
         Thread.sleep(1000);
 

@@ -95,6 +95,31 @@ public class KucoinPublicWebsocketListener extends WebSocketListener {
     @Override
     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
         LOGGER.error("Error on private socket", t);
+        
+        if( tickerCallback != null ) {
+        	tickerCallback.onFailure(t);
+        }
+        if( level2Callback != null ) {
+        	level2Callback.onFailure(t);
+        }
+        if( level2Depth5Callback != null ) {
+        	level2Depth5Callback.onFailure(t);
+        }
+        if( level2Depth50Callback != null ) {
+        	level2Depth50Callback.onFailure(t);
+        }
+        if( matchDataCallback != null ) {
+        	matchDataCallback.onFailure(t);
+        }
+        if( level3Callback != null ) {
+        	level3Callback.onFailure(t);
+        }
+        if( level3V2Callback != null ) {
+        	level3V2Callback.onFailure(t);
+        }
+        if( snapshotCallback != null ) {
+        	snapshotCallback.onFailure(t);
+        }
     }
 
     private JsonNode tree(String text) {
