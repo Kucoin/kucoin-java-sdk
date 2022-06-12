@@ -94,7 +94,7 @@ public class KucoinPublicWebsocketListener extends WebSocketListener {
 
     @Override
     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-        LOGGER.error("Error on private socket", t);
+        LOGGER.error("Error on public socket", t);
         
         if( tickerCallback != null ) {
         	tickerCallback.onFailure(t);
