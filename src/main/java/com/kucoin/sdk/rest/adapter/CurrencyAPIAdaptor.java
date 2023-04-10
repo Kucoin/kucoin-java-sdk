@@ -7,6 +7,7 @@ import com.kucoin.sdk.rest.impl.retrofit.PublicRetrofitAPIImpl;
 import com.kucoin.sdk.rest.interfaces.CurrencyAPI;
 import com.kucoin.sdk.rest.interfaces.retrofit.CurrencyAPIRetrofit;
 import com.kucoin.sdk.rest.response.CurrencyDetailResponse;
+import com.kucoin.sdk.rest.response.CurrencyDetailV2Response;
 import com.kucoin.sdk.rest.response.CurrencyResponse;
 
 import java.io.IOException;
@@ -31,6 +32,12 @@ public class CurrencyAPIAdaptor extends PublicRetrofitAPIImpl<CurrencyAPIRetrofi
     @Override
     public CurrencyDetailResponse getCurrencyDetail(String currency, String chain) throws IOException {
         return super.executeSync(getAPIImpl().getCurrencyDetail(currency, chain));
+    }
+
+
+    @Override
+    public CurrencyDetailV2Response getCurrencyDetailV2(String currency, String chain) throws IOException {
+        return super.executeSync(getAPIImpl().getCurrencyDetailV2(currency, chain));
     }
 
     @Override
