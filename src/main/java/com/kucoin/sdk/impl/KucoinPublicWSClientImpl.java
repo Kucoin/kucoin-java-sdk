@@ -38,6 +38,15 @@ public class KucoinPublicWSClientImpl extends BaseWebsocketImpl implements Kucoi
                 new WebsocketPublicAPIAdaptor(kucoinClientBuilder.getBaseUrl()));
     }
 
+    public KucoinPublicWSClientImpl(KucoinClientBuilder kucoinClientBuilder,
+                                    KucoinAPICallback connectedCallback, KucoinAPICallback disconnectedCallback) {
+        this(
+                HttpClientFactory.getPublicClient(),
+                new KucoinPublicWebsocketListener(connectedCallback, disconnectedCallback),
+                kucoinClientBuilder.getChooseServerStrategy(),
+                new WebsocketPublicAPIAdaptor(kucoinClientBuilder.getBaseUrl()));
+    }
+
     private KucoinPublicWSClientImpl(OkHttpClient client,
                                      KucoinPublicWebsocketListener listener,
                                      ChooseServerStrategy chooseServerStrategy,

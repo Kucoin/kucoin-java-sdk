@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import com.kucoin.sdk.rest.adapter.*;
 import com.kucoin.sdk.rest.interfaces.*;
+import com.kucoin.sdk.websocket.KucoinAPICallback;
 import org.apache.commons.lang3.StringUtils;
 
 import com.kucoin.sdk.constants.APIConstants;
@@ -69,6 +70,9 @@ public class KucoinClientBuilder {
 
     private LoanAPI loanAPI;
 
+    private KucoinAPICallback connectedCallback;
+    private KucoinAPICallback disConnectedCallback;
+
     public KucoinRestClient buildRestClient() {
         if (StringUtils.isBlank(baseUrl)) baseUrl = APIConstants.API_BASE_URL;
         if (userAPI == null) userAPI = new UserAPIAdapter(baseUrl, apiKey, secret, passPhrase, apiKeyVersion);
@@ -92,7 +96,12 @@ public class KucoinClientBuilder {
     public KucoinPublicWSClient buildPublicWSClient() throws IOException {
         if (StringUtils.isBlank(baseUrl)) baseUrl = APIConstants.API_BASE_URL;
         if (chooseServerStrategy == null) chooseServerStrategy = new RandomChooseStrategy();
-        KucoinPublicWSClientImpl client = new KucoinPublicWSClientImpl(this);
+        KucoinPublicWSClientImpl client;
+        if (connectedCallback == null) {
+            client = new KucoinPublicWSClientImpl(this);
+        } else {
+            client = new KucoinPublicWSClientImpl(this, connectedCallback, disConnectedCallback);
+        }
         client.connect();
         return client;
     }
@@ -181,4 +190,12 @@ public class KucoinClientBuilder {
         this.chooseServerStrategy = chooseServerStrategy;
         return this;
     }
+
+    public KucoinClientBuilder withCallback(KucoinAPICallback connectedCallback,
+                                            KucoinAPICallback disconnectedCallback) {
+        this.connectedCallback = connectedCallback;
+        this.disConnectedCallback = disconnectedCallback;
+        return this;
+    }
+
 }

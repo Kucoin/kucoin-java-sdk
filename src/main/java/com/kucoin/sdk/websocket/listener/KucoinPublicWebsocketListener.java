@@ -39,9 +39,21 @@ public class KucoinPublicWebsocketListener extends WebSocketListener {
     private KucoinAPICallback<KucoinEvent<Level3Event>> level3V2Callback = new PrintCallback<>();
     private KucoinAPICallback<KucoinEvent<SnapshotEvent>> snapshotCallback = new PrintCallback<>();
 
+    private KucoinAPICallback<String> connectedCallback;
+    private KucoinAPICallback<String> disConnectedCallback;
+
+    public KucoinPublicWebsocketListener() {}
+
+    public KucoinPublicWebsocketListener(KucoinAPICallback<String> connectedCallback,
+                                         KucoinAPICallback<String> disConnectedCallback) {
+        this.connectedCallback = connectedCallback;
+        this.disConnectedCallback = disConnectedCallback;
+    }
+
     @Override
     public void onOpen(WebSocket webSocket, Response response) {
         LOGGER.debug("web socket open");
+        this.connectedCallback.onResponse(response.message());
     }
 
     @Override
@@ -95,6 +107,17 @@ public class KucoinPublicWebsocketListener extends WebSocketListener {
     @Override
     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
         LOGGER.error("Error on public socket", t);
+        this.disConnectedCallback.onResponse(response.message());
+    }
+
+    @Override
+    public void onClosing(WebSocket webSocket, int code, String reason) {
+        this.disConnectedCallback.onResponse(reason);
+    }
+
+    @Override
+    public void onClosed(WebSocket webSocket, int code, String reason) {
+        this.disConnectedCallback.onResponse(reason);
     }
 
     private JsonNode tree(String text) {
