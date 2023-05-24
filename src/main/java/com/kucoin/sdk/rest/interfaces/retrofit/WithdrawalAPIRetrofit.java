@@ -39,4 +39,12 @@ public interface WithdrawalAPIRetrofit {
                                                                            @Query("status") String status,
                                                                            @Query("startAt") Long startAt,
                                                                            @Query("endAt") Long endAt);
+
+    @GET("api/v1/hist-withdrawals")
+    Call<KucoinResponse<Pagination<WithdrawResponse>>> getHistWithdrawPageList(@Query("currentPage") int currentPage,
+                                                                               @Query("pageSize") int pageSize,
+                                                                               @Query("currency") String currency,
+                                                                               @Query("status") String status,
+                                                                               @Query("startAt") Long startAt,
+                                                                               @Query("endAt") Long endAt);
 }

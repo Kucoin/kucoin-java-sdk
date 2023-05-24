@@ -17,6 +17,8 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
+import java.util.List;
+
 /**
  * Created by ezreal on 2020/12/08.
  */
@@ -35,5 +37,5 @@ public interface MarginAPIRetrofit {
     Call<KucoinResponse<MarginOrderCreateResponse>> createMarginOrder(@Body MarginOrderCreateRequest request);
 
     @GET("api/v1/risk/limit/strategy")
-    Call<KucoinResponse<MarginPriceStrategyResponse>> getMarginPriceStrategy(@Query("marginModel") String marginModel);
+    Call<KucoinResponse<List<MarginPriceStrategyResponse>>> getMarginPriceStrategy(@Query("marginModel") String marginModel);
 }

@@ -8,6 +8,7 @@ import com.kucoin.sdk.rest.response.*;
 import retrofit2.Call;
 import retrofit2.http.*;
 
+import java.util.List;
 import java.util.Map;
 
 public interface StopOrderAPIRetrofit {
@@ -28,8 +29,8 @@ public interface StopOrderAPIRetrofit {
     Call<KucoinResponse<Pagination<StopOrderResponse>>> queryStopOrders(@QueryMap Map<String, String> params);
 
     @DELETE("api/v1/stop-order/cancelOrderByClientOid")
-    Call<KucoinResponse<OrderCancelResponse>> cancelStopOrderByClientOid(String clientOid);
+    Call<KucoinResponse<OrderCancelResponse>> cancelStopOrderByClientOid(@Query("clientOid") String clientOid);
 
     @GET("api/v1/stop-order/queryOrderByClientOid")
-    Call<KucoinResponse<StopOrderResponse>> getStopOrderByClientOid(String clientOid);
+    Call<KucoinResponse<List<StopOrderResponse>>> getStopOrderByClientOid(@Query("clientOid") String clientOid, @Query("symbol") String symbol);
 }

@@ -46,4 +46,9 @@ public class WithdrawalAPIAdapter extends AuthRetrofitAPIImpl<WithdrawalAPIRetro
     public Pagination<WithdrawResponse> getWithdrawList(String currency, String status, long startAt, long endAt, int currentPage, int pageSize) throws IOException {
         return super.executeSync(getAPIImpl().getWithdrawPageList(currentPage, pageSize, currency, status, startAt, endAt));
     }
+
+    @Override
+    public Pagination<WithdrawResponse> getHistWithdrawPageList(String currency, String status, long startAt, long endAt, int currentPage, int pageSize) throws IOException {
+        return super.executeSync(getAPIImpl().getHistWithdrawPageList(currentPage, pageSize, currency, status, startAt, endAt));
+    }
 }

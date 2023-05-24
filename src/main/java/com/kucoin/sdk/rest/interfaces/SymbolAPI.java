@@ -3,10 +3,7 @@
  */
 package com.kucoin.sdk.rest.interfaces;
 
-import com.kucoin.sdk.rest.response.AllTickersResponse;
-import com.kucoin.sdk.rest.response.SymbolResponse;
-import com.kucoin.sdk.rest.response.SymbolTickResponse;
-import com.kucoin.sdk.rest.response.TickerResponse;
+import com.kucoin.sdk.rest.response.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -21,6 +18,7 @@ public interface SymbolAPI {
      *
      * @return The available symbols.
      */
+    @Deprecated
     List<SymbolResponse> getSymbols() throws IOException;
 
     /**
@@ -53,4 +51,12 @@ public interface SymbolAPI {
      * @return market list
      */
     List<String> getMarketList() throws IOException;
+
+    /**
+     * Request via this endpoint to get a list of available currency pairs for trading.
+     *
+     * @param market [Optional] The trading market
+     * @return The available symbols.
+     */
+    List<SymbolResponse> getSymbolList(String market) throws IOException;
 }

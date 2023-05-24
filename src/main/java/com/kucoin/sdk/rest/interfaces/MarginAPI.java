@@ -11,6 +11,7 @@ import com.kucoin.sdk.rest.response.MarginPriceStrategyResponse;
 import com.kucoin.sdk.rest.response.MarkPriceResponse;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by ezreal on 2020/12/08.
@@ -62,5 +63,5 @@ public interface MarginAPI {
      * @param marginModel
      * @return
      */
-    MarginPriceStrategyResponse getMarginPriceStrategy(String marginModel) throws IOException;
+    List<MarginPriceStrategyResponse> getMarginPriceStrategy(String marginModel) throws IOException;
 }

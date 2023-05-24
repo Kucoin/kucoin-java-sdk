@@ -12,6 +12,7 @@ import com.kucoin.sdk.rest.response.Pagination;
 import com.kucoin.sdk.rest.response.StopOrderResponse;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface StopOrderAPI {
 
@@ -62,9 +63,10 @@ public interface StopOrderAPI {
      * Get a single stop order which have not been triggered by order id and symbol.
      *
      * @param clientOid
+     * @param symbol [optional]
      * @return The requested stop order.
      */
-    StopOrderResponse getStopOrderByClientOid(String clientOid) throws IOException;
+    List<StopOrderResponse> getStopOrderByClientOid(String clientOid, String symbol) throws IOException;
 
     /**
      * Query un-triggered stop orders which requested.

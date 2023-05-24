@@ -6,18 +6,12 @@ package com.kucoin.sdk.rest.adapter;
 import com.kucoin.sdk.rest.impl.retrofit.AuthRetrofitAPIImpl;
 import com.kucoin.sdk.rest.interfaces.AccountAPI;
 import com.kucoin.sdk.rest.interfaces.retrofit.AccountAPIRetrofit;
-import com.kucoin.sdk.rest.request.AccountCreateRequest;
-import com.kucoin.sdk.rest.request.AccountTransferV2Request;
-import com.kucoin.sdk.rest.request.SubMasterTransferV2Request;
-import com.kucoin.sdk.rest.response.AccountBalanceResponse;
-import com.kucoin.sdk.rest.response.AccountBalancesResponse;
-import com.kucoin.sdk.rest.response.AccountDetailResponse;
-import com.kucoin.sdk.rest.response.Pagination;
-import com.kucoin.sdk.rest.response.SubAccountBalanceResponse;
-import com.kucoin.sdk.rest.response.TransferableBalanceResponse;
+import com.kucoin.sdk.rest.request.*;
+import com.kucoin.sdk.rest.response.*;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -89,4 +83,74 @@ public class AccountAPIAdapter extends AuthRetrofitAPIImpl<AccountAPIRetrofit> i
         return super.executeSync(getAPIImpl().transferable(currency, type));
     }
 
+    @Override
+    public UserSummaryInfoResponse getUserSummaryInfo() throws IOException {
+        return super.executeSync(getAPIImpl().getUserSummaryInfo());
+    }
+
+    @Override
+    public SubUserCreateResponse createSubUser(String subName, String password, String access, String remarks) throws IOException {
+        SubUserCreateRequest request = new SubUserCreateRequest();
+        request.setSubName(subName);
+        request.setPassword(password);
+        request.setAccess(access);
+        request.setRemarks(remarks);
+        return super.executeSync(getAPIImpl().createSubUser(request));
+    }
+
+    @Override
+    public List<SubApiKeyResponse> getSubApiKey(String subName, String apiKey) throws IOException {
+        return super.executeSync(getAPIImpl().getSubApiKey(subName, apiKey));
+    }
+
+    @Override
+    public SubApiKeyResponse createSubApiKey(String subName, String passphrase, String remark, String permission, String ipWhitelist, String expire) throws IOException {
+        SubApiKeyCreateRequest request = new SubApiKeyCreateRequest();
+        request.setSubName(subName);
+        request.setPassphrase(passphrase);
+        request.setRemark(remark);
+        request.setPermission(permission);
+        request.setIpWhitelist(ipWhitelist);
+        request.setExpire(expire);
+        return super.executeSync(getAPIImpl().createSubApiKey(request));
+    }
+
+    @Override
+    public SubApiKeyResponse updateSubApiKey(String subName, String apiKey, String passphrase, String permission, String ipWhitelist, String expire) throws IOException {
+        SubApiKeyUpdateRequest request = new SubApiKeyUpdateRequest();
+        request.setSubName(subName);
+        request.setPassphrase(passphrase);
+        request.setApiKey(apiKey);
+        request.setPermission(permission);
+        request.setIpWhitelist(ipWhitelist);
+        request.setExpire(expire);
+        return super.executeSync(getAPIImpl().updateSubApiKey(request));
+    }
+
+    @Override
+    public SubApiKeyResponse deleteSubApiKey(String subName, String apiKey, String passphrase) throws IOException {
+        Map<String, String> params = new HashMap<>();
+        params.put("subName", subName);
+        params.put("apiKey", apiKey);
+        params.put("passphrase", passphrase);
+        return super.executeSync(getAPIImpl().deleteSubApiKey(params));
+    }
+
+    @Override
+    public Pagination<SubAccountBalanceResponse> getSubAccountPageList(int currentPage, int pageSize) throws IOException {
+        return super.executeSync(getAPIImpl().getSubAccountPageList(currentPage, pageSize));
+    }
+
+    @Override
+    public List<AccountBalancesResponse> transferToHFAccount(String clientOid, String currency, String from, BigDecimal amount) throws IOException {
+        AccountTransferV2Request request = new AccountTransferV2Request(clientOid, currency, from, "trade_hf", amount);
+        super.executeSync(getAPIImpl().applyTransfer2(request));
+
+        return super.executeSync(getAPIImpl().getAccountList(currency, "trade_hf"));
+    }
+
+    @Override
+    public List<AccountDetailResponse> getHFAccountLedgers(String currency, String direction, String bizType, Long lastId, Integer limit, Long startAt, Long endAt) throws IOException {
+        return super.executeSync(getAPIImpl().getHFAccountLedgers(currency, direction, bizType, lastId, limit, startAt, endAt));
+    }
 }

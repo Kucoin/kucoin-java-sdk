@@ -33,4 +33,7 @@ public interface SymbolAPIRetrofit {
 
     @GET("api/v1/markets")
     Call<KucoinResponse<List<String>>> getMarketList();
+
+    @GET("api/v2/symbols")
+    Call<KucoinResponse<List<SymbolResponse>>> getSymbolList(@Query("market") String market);
 }

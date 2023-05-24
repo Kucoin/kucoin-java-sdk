@@ -19,4 +19,6 @@ public class SubAccountBalanceResponse {
     private List<AccountBalancesResponse> tradeAccounts;
 
     private List<AccountBalancesResponse> mainAccounts;
+
+    private List<AccountBalancesResponse> marginAccounts;
 }

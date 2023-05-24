@@ -53,4 +53,17 @@ public interface WithdrawalAPI {
     Pagination<WithdrawResponse> getWithdrawList(String currency, String status, long startAt,
                                                  long endAt, int currentPage, int pageSize) throws IOException;
 
+    /**
+     * List of KuCoin V1 historical withdrawals.
+     *
+     * @param currency    [Optional] Currency code
+     * @param status      [Optional] Status. Available value: PROCESSING, WALLET_PROCESSING, SUCCESS, and FAILURE
+     * @param startAt     [Optional] Start time. unix timestamp calculated in milliseconds, the creation time queried shall posterior to the start time.
+     * @param endAt       [Optional] End time. unix timestamp calculated in milliseconds, the creation time queried shall prior to the end time.
+     * @param currentPage [Optional]
+     * @param pageSize    [Optional]
+     * @return A page of withdrawals.
+     */
+    Pagination<WithdrawResponse> getHistWithdrawPageList(String currency, String status, long startAt,
+                                                         long endAt, int currentPage, int pageSize) throws IOException;
 }

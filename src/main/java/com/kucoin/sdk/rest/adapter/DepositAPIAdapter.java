@@ -12,6 +12,7 @@ import com.kucoin.sdk.rest.response.DepositResponse;
 import com.kucoin.sdk.rest.response.Pagination;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by chenshiwei on 2019/1/15.
@@ -43,5 +44,15 @@ public class DepositAPIAdapter extends AuthRetrofitAPIImpl<DepositAPIRetrofit> i
     public Pagination<DepositResponse> getDepositPageList(String currency, long startAt, long endAt, String status,
                                                           int currentPage, int pageSize) throws IOException {
         return super.executeSync(getAPIImpl().getDepositPageList(currentPage, pageSize, currency, status, startAt, endAt));
+    }
+
+    @Override
+    public List<DepositAddressResponse> getDepositAddresses(String currency) throws IOException {
+        return super.executeSync(getAPIImpl().getDepositAddresses(currency));
+    }
+
+    @Override
+    public Pagination<DepositResponse> getHistDepositPageList(String currency, String status, long startAt, long endAt, int currentPage, int pageSize) throws IOException {
+        return super.executeSync(getAPIImpl().getHistDepositPageList(currentPage, pageSize, currency, status, startAt, endAt));
     }
 }

@@ -34,4 +34,5 @@ public class AccountDetailResponse {
 
     private String context;
 
+    private String accountType;
 }

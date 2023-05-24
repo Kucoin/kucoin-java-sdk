@@ -3,6 +3,7 @@ package com.kucoin.sdk.rest.adapter;
 import com.kucoin.sdk.rest.impl.retrofit.AuthRetrofitAPIImpl;
 import com.kucoin.sdk.rest.interfaces.UserAPI;
 import com.kucoin.sdk.rest.interfaces.retrofit.UserAPIRetrofit;
+import com.kucoin.sdk.rest.response.Pagination;
 import com.kucoin.sdk.rest.response.SubUserInfoResponse;
 
 import java.io.IOException;
@@ -25,5 +26,10 @@ public class UserAPIAdapter extends AuthRetrofitAPIImpl<UserAPIRetrofit> impleme
     @Override
     public List<SubUserInfoResponse> listSubUsers() throws IOException {
         return super.executeSync(getAPIImpl().getSubUserList());
+    }
+
+    @Override
+    public Pagination<SubUserInfoResponse> pageListSubUsers(int currentPage, int pageSize) throws IOException {
+        return super.executeSync(getAPIImpl().getSubUserPageList(currentPage, pageSize));
     }
 }

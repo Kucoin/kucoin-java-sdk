@@ -3,17 +3,8 @@
  */
 package com.kucoin.sdk.rest.interfaces.retrofit;
 
-import com.kucoin.sdk.rest.request.MultiOrderCreateRequest;
-import com.kucoin.sdk.rest.request.OrderCreateApiRequest;
-import com.kucoin.sdk.rest.request.StopOrderCreateRequest;
-import com.kucoin.sdk.rest.response.ActiveOrderResponse;
-import com.kucoin.sdk.rest.response.KucoinResponse;
-import com.kucoin.sdk.rest.response.MultiOrderCreateResponse;
-import com.kucoin.sdk.rest.response.OrderCancelResponse;
-import com.kucoin.sdk.rest.response.OrderCreateResponse;
-import com.kucoin.sdk.rest.response.OrderResponse;
-import com.kucoin.sdk.rest.response.Pagination;
-import com.kucoin.sdk.rest.response.UserFeeResponse;
+import com.kucoin.sdk.rest.request.*;
+import com.kucoin.sdk.rest.response.*;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -66,4 +57,75 @@ public interface OrderAPIRetrofit {
     @GET("api/v1/trade-fees")
     Call<KucoinResponse<List<UserFeeResponse>>> getUserTradeFees(@Query("symbols") String symbols);
 
+    @GET("api/v1/base-fee")
+    Call<KucoinResponse<UserFeeResponse>> getUserBaseFee(@Query("currencyType") String currencyType);
+
+    @GET("api/v1/limit/orders")
+    Call<KucoinResponse<Pagination<OrderResponse>>> queryLimitOrderPageList(@Query("pageSize") int pageSize,
+                                                                            @Query("currentPage") int currentPage);
+
+    @POST("api/v1/hf/orders")
+    Call<KucoinResponse<HFOrderCreateResponse>> createHFOrder(@Body HFOrderCreateRequest createRequest);
+
+    @POST("api/v1/hf/orders/sync")
+    Call<KucoinResponse<HFOrderSyncCreateResponse>> syncCreateHFOrder(@Body HFOrderCreateRequest createRequest);
+
+    @POST("api/v1/hf/orders/multi")
+    Call<KucoinResponse<List<HFOrderMultiCreateResponse>>> createMultipleHFOrders(@Body HFOrderMultiCreateRequest multiCreateRequest);
+
+    @POST("api/v1/hf/orders/multi/sync")
+    Call<KucoinResponse<List<HFOrderSyncMultiCreateResponse>>> syncCreateMultipleHFOrders(@Body HFOrderMultiCreateRequest multiCreateRequest);
+
+    @POST("api/v1/hf/orders/alter")
+    Call<KucoinResponse<HFOrderAlterResponse>> alterHFOrder(@Body HFOrderAlterRequest alterRequest);
+
+    @DELETE("api/v1/hf/orders/{orderId}")
+    Call<KucoinResponse<HFOrderCancelResponse>> cancelHFOrder(@Path("orderId") String orderId,
+                                                              @Query("symbol") String symbol);
+
+    @DELETE("api/v1/hf/orders/sync/{orderId}")
+    Call<KucoinResponse<HFOrderSyncCancelResponse>> syncCancelHFOrder(@Path("orderId") String orderId,
+                                                                      @Query("symbol") String symbol);
+
+    @DELETE("api/v1/hf/orders/client-order/{clientOid}")
+    Call<KucoinResponse<HFOrderCancelByClientOidResponse>> cancelHFOrderByClientOid(@Path("clientOid") String clientOid,
+                                                                                    @Query("symbol") String symbol);
+
+    @DELETE("api/v1/hf/orders/sync/client-order/{clientOid}")
+    Call<KucoinResponse<HFOrderSyncCancelResponse>> syncCancelHFOrderByClientOid(@Path("clientOid") String clientOid,
+                                                                                 @Query("symbol") String symbol);
+
+    @DELETE("api/v1/hf/orders/cancel/{orderId}")
+    Call<KucoinResponse<HFOrderCancelSizeResponse>> cancelHFOrderSize(@Path("orderId") String orderId, @Query("symbol") String symbol, @Query("cancelSize") String cancelSize);
+
+    @DELETE("api/v1/hf/orders")
+    Call<KucoinResponse<String>> cancelHFOrdersBySymbol(@Query("symbol") String symbol);
+
+    @GET("api/v1/hf/orders/active")
+    Call<KucoinResponse<List<HFOrderResponse>>> getActiveHFOrders(@Query("symbol") String symbol);
+
+    @GET("api/v1/hf/orders/active/symbols")
+    Call<KucoinResponse<HFOrderActiveSymbolQueryResponse>> getActiveHFOrderSymbols();
+
+    @GET("api/v1/hf/orders/done")
+    Call<KucoinResponse<HFDoneOrderQueryResponse>> getDoneHFOrders(@Query("symbol") String symbol,
+                                                                   @Query("side") String side,
+                                                                   @Query("type") String type,
+                                                                   @Query("startAt") Long startAt,
+                                                                   @Query("endAt") Long endAt,
+                                                                   @Query("lastId") Long lastId,
+                                                                   @Query("limit") Integer limit);
+
+    @GET("api/v1/hf/orders/{orderId}")
+    Call<KucoinResponse<HFOrderResponse>> getHFOrder(@Path("orderId") String orderId, @Query("symbol") String symbol);
+
+    @GET("api/v1/hf/orders/client-order/{clientOid}")
+    Call<KucoinResponse<HFOrderResponse>> getHFOrderByClientOid(@Path("clientOid") String clientOid,
+                                                                @Query("symbol") String symbol);
+
+    @POST("api/v1/hf/orders/dead-cancel-all")
+    Call<KucoinResponse<HFOrderDeadCancelResponse>> deadCancelHFOrder(@Body HFOrderDeadCancelRequest request);
+
+    @GET("api/v1/hf/orders/dead-cancel-all/query")
+    Call<KucoinResponse<HFOrderDeadCancelQueryResponse>> queryHFOrderDeadCancel();
 }

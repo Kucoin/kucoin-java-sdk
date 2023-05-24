@@ -69,6 +69,8 @@ public class KucoinClientBuilder {
 
     private LoanAPI loanAPI;
 
+    private IsolatedAPI isolatedAPI;
+
     public KucoinRestClient buildRestClient() {
         if (StringUtils.isBlank(baseUrl)) baseUrl = APIConstants.API_BASE_URL;
         if (userAPI == null) userAPI = new UserAPIAdapter(baseUrl, apiKey, secret, passPhrase, apiKeyVersion);
@@ -80,6 +82,7 @@ public class KucoinClientBuilder {
         if (stopOrderAPI == null) stopOrderAPI = new StopOrderAPIAdapter(baseUrl, apiKey, secret, passPhrase, apiKeyVersion);
         if (marginAPI == null) marginAPI = new MarginAPIAdapter(baseUrl, apiKey, secret, passPhrase, apiKeyVersion);
         if (loanAPI == null) loanAPI = new LoanAPIAdapter(baseUrl, apiKey, secret, passPhrase, apiKeyVersion);
+        if (isolatedAPI == null) isolatedAPI = new IsolatedAPIAdapter(baseUrl, apiKey, secret, passPhrase, apiKeyVersion);
         if (currencyAPI == null) currencyAPI = new CurrencyAPIAdaptor(baseUrl);
         if (timeAPI == null) timeAPI = new TimeAPIAdapter(baseUrl);
         if (commonAPI == null) commonAPI = new CommonAPIAdapter(baseUrl);

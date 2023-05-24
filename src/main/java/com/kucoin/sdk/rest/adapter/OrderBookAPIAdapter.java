@@ -39,4 +39,9 @@ public class OrderBookAPIAdapter extends PublicRetrofitAPIImpl<OrderBookAPIRetro
     public Level3Response getFullOrderBook(String symbol) throws IOException {
         return super.executeSync(getAPIImpl().getFullOrderBook(symbol));
     }
+
+    @Override
+    public OrderBookResponse getAllLevel2OrderBook(String symbol) throws IOException {
+        return super.executeSync(getAPIImpl().getAllLevel2OrderBook(symbol));
+    }
 }

@@ -16,6 +16,7 @@ import com.kucoin.sdk.rest.response.StopOrderResponse;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class StopOrderAPIAdapter extends AuthRetrofitAPIImpl<StopOrderAPIRetrofit> implements StopOrderAPI {
@@ -59,8 +60,8 @@ public class StopOrderAPIAdapter extends AuthRetrofitAPIImpl<StopOrderAPIRetrofi
     }
 
     @Override
-    public StopOrderResponse getStopOrderByClientOid(String clientOid) throws IOException {
-        return executeSync(getAPIImpl().getStopOrderByClientOid(clientOid));
+    public List<StopOrderResponse> getStopOrderByClientOid(String clientOid, String symbol) throws IOException {
+        return executeSync(getAPIImpl().getStopOrderByClientOid(clientOid, symbol));
     }
 
     @Override

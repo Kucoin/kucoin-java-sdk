@@ -3,22 +3,10 @@
  */
 package com.kucoin.sdk.rest.interfaces.retrofit;
 
-import com.kucoin.sdk.rest.request.AccountCreateRequest;
-import com.kucoin.sdk.rest.request.AccountTransferV2Request;
-import com.kucoin.sdk.rest.request.SubMasterTransferV2Request;
-import com.kucoin.sdk.rest.response.AccountBalanceResponse;
-import com.kucoin.sdk.rest.response.AccountBalancesResponse;
-import com.kucoin.sdk.rest.response.AccountDetailResponse;
-import com.kucoin.sdk.rest.response.KucoinResponse;
-import com.kucoin.sdk.rest.response.Pagination;
-import com.kucoin.sdk.rest.response.SubAccountBalanceResponse;
-import com.kucoin.sdk.rest.response.TransferableBalanceResponse;
+import com.kucoin.sdk.rest.request.*;
+import com.kucoin.sdk.rest.response.*;
 import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
+import retrofit2.http.*;
 
 import java.util.List;
 import java.util.Map;
@@ -64,4 +52,34 @@ public interface AccountAPIRetrofit {
     @GET("api/v1/accounts/transferable")
     Call<KucoinResponse<TransferableBalanceResponse>> transferable(@Query("currency") String currency, @Query("type") String type);
 
+    @GET("api/v2/user-info")
+    Call<KucoinResponse<UserSummaryInfoResponse>> getUserSummaryInfo();
+
+    @POST("api/v2/sub/user/created")
+    Call<KucoinResponse<SubUserCreateResponse>> createSubUser(@Body SubUserCreateRequest request);
+
+    @GET("api/v1/sub/api-key")
+    Call<KucoinResponse<List<SubApiKeyResponse>>> getSubApiKey(@Query("subName") String subName, @Query("apiKey") String apiKey);
+
+    @POST("api/v1/sub/api-key")
+    Call<KucoinResponse<SubApiKeyResponse>> createSubApiKey(@Body SubApiKeyCreateRequest request);
+
+    @POST("api/v1/sub/api-key/update")
+    Call<KucoinResponse<SubApiKeyResponse>> updateSubApiKey(@Body SubApiKeyUpdateRequest request);
+
+    @DELETE("api/v1/sub/api-key")
+    Call<KucoinResponse<SubApiKeyResponse>> deleteSubApiKey(@QueryMap Map<String, String> params);
+
+    @GET("api/v2/sub-accounts")
+    Call<KucoinResponse<Pagination<SubAccountBalanceResponse>>> getSubAccountPageList(@Query("currentPage") int currentPage,
+                                                                                      @Query("pageSize") int pageSize);
+
+    @GET("api/v1/hf/accounts/ledgers")
+    Call<KucoinResponse<List<AccountDetailResponse>>> getHFAccountLedgers(@Query("currency") String currency,
+                                                                          @Query("direction") String direction,
+                                                                          @Query("bizType") String bizType,
+                                                                          @Query("lastId") Long lastId,
+                                                                          @Query("limit") Integer limit,
+                                                                          @Query("startAt") Long startAt,
+                                                                          @Query("endAt") Long endAt);
 }

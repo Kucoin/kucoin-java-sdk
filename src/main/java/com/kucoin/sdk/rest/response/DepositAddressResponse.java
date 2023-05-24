@@ -20,4 +20,6 @@ public class DepositAddressResponse {
 
     private String chain;
 
+    private String contractAddress;
+
 }

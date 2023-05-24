@@ -47,6 +47,7 @@ public interface OrderBookAPI {
      * @param symbol
      * @return The aggregated full order book.
      */
+    @Deprecated
     OrderBookResponse getFullLevel2OrderBook(String symbol) throws IOException;
 
     /**
@@ -58,6 +59,18 @@ public interface OrderBookAPI {
      * @param symbol
      * @return The full atomic order book.
      */
+    @Deprecated
     Level3Response getFullOrderBook(String symbol) throws IOException;
+
+    /**
+     * Request via this endpoint to get the order book of the specified symbol.
+     * Level 2 order book includes all bids and asks (aggregated by price).
+     * This level returns only one aggregated size for each price (as if there was only one single order for that price).
+     * This API will return data with full depth.
+     *
+     * @param symbol
+     * @return The aggregated full order book.
+     */
+    OrderBookResponse getAllLevel2OrderBook(String symbol) throws IOException ;
 
 }

@@ -12,7 +12,17 @@ public class SubUserInfoResponse {
 
     private String userId;
 
+    private String uid;
+
     private String subName;
+
+    private String status;
+
+    private String type;
+
+    private String access;
+
+    private String createdAt;
 
     private String remarks;
 }

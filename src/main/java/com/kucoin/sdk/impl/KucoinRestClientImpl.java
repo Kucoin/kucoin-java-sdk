@@ -42,6 +42,8 @@ public class KucoinRestClientImpl implements KucoinRestClient {
 
     private LoanAPI loanAPI;
 
+    private IsolatedAPI isolatedAPI;
+
     public KucoinRestClientImpl(KucoinClientBuilder kucoinBuilder) {
         this.userAPI = kucoinBuilder.getUserAPI();
         this.accountAPI = kucoinBuilder.getAccountAPI();
@@ -58,6 +60,7 @@ public class KucoinRestClientImpl implements KucoinRestClient {
         this.commonAPI = kucoinBuilder.getCommonAPI();
         this.marginAPI = kucoinBuilder.getMarginAPI();
         this.loanAPI = kucoinBuilder.getLoanAPI();
+        this.isolatedAPI = kucoinBuilder.getIsolatedAPI();
     }
 
     @Override
@@ -133,6 +136,11 @@ public class KucoinRestClientImpl implements KucoinRestClient {
     @Override
     public LoanAPI loanAPI() {
         return loanAPI;
+    }
+
+    @Override
+    public IsolatedAPI isolatedAPI() {
+        return isolatedAPI;
     }
 
 }
