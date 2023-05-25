@@ -87,7 +87,7 @@ public class KucoinClientBuilder {
         if (timeAPI == null) timeAPI = new TimeAPIAdapter(baseUrl);
         if (commonAPI == null) commonAPI = new CommonAPIAdapter(baseUrl);
         if (symbolAPI == null) symbolAPI = new SymbolAPIAdaptor(baseUrl);
-        if (orderBookAPI == null) orderBookAPI = new OrderBookAPIAdapter(baseUrl);
+        if (orderBookAPI == null) orderBookAPI = new OrderBookAPIAdapter(baseUrl, apiKey, secret, passPhrase, apiKeyVersion);
         if (historyAPI == null) historyAPI = new HistoryAPIAdapter(baseUrl);
         return new KucoinRestClientImpl(this);
     }

@@ -133,32 +133,112 @@ wsClient.close();
 ##### Listen for changes to the order boock for ETH-BTC and KCS-BTC
 
 ```java
-kucoinPublicWSClient.onTicker(response -> {
-            System.out.println(response);
-        }, "ETH-BTC", "KCS-BTC");
-kucoinPublicWSClient.onLevel2Data(response -> {
-            System.out.println(response);
-        }, "ETH-BTC", "KCS-BTC");
-kucoinPublicWSClient.onMatchExecutionData(response -> {
-            System.out.println(response);
-        });
-kucoinPublicWSClient.onLevel3Data(response -> {
-            System.out.println(response);
-        }, "ETH-BTC", "KCS-BTC");
+kucoinPublicWSClient.onTicker(new KucoinAPICallback<KucoinEvent<TickerChangeEvent>>() {
+
+	@Override
+	public void onResponse(KucoinEvent<TickerChangeEvent> response) throws KucoinApiException {
+		System.out.println(response);
+	}
+
+	@Override
+	public void onFailure(Throwable cause) {
+		System.out.println("WS connection failed. Reconnecting. cause:" + cause.getMessage());
+		//reinitializeWSConnection();	//implement this method
+	}
+        	
+}, "ETH-BTC", "KCS-BTC");
+
+kucoinPublicWSClient.onLevel2Data(new KucoinAPICallback<KucoinEvent<Level2ChangeEvent>>() {
+
+	@Override
+	public void onResponse(KucoinEvent<Level2ChangeEvent> response) throws KucoinApiException {
+		System.out.println(response);
+	}
+
+	@Override
+	public void onFailure(Throwable cause) {
+		System.out.println("WS connection failed. Reconnecting. cause:" + cause.getMessage());
+		//reinitializeWSConnection();	//implement this method
+	}
+        	
+}, "ETH-BTC", "KCS-BTC");
+
+
+kucoinPublicWSClient.onMatchExecutionData(new KucoinAPICallback<KucoinEvent<MatchExcutionChangeEvent>>() {
+
+	@Override
+	public void onResponse(KucoinEvent<MatchExcutionChangeEvent> response) throws KucoinApiException {
+		System.out.println(response);
+	}
+
+	@Override
+	public void onFailure(Throwable cause) {
+		System.out.println("WS connection failed. Reconnecting. cause:" + cause.getMessage());
+		//reinitializeWSConnection();	//implement this method
+	}
+        	
+}, "ETH-BTC", "KCS-BTC");
+
+
+kucoinPublicWSClient.onLevel3Data(new KucoinAPICallback<KucoinEvent<Level3ChangeEvent>>() {
+
+	@Override
+	public void onResponse(KucoinEvent<Level3ChangeEvent> response) throws KucoinApiException {
+		System.out.println(response);
+	}
+
+	@Override
+	public void onFailure(Throwable cause) {
+		System.out.println("WS connection failed. Reconnecting. cause:" + cause.getMessage());
+		//reinitializeWSConnection();	//implement this method
+	}
+
+}, "ETH-BTC", "KCS-BTC");
+
 ```
+
 #### Private Channels
 
 ##### Listen for account balance changes
+
 ```java
-kucoinPrivateWSClient.onAccountBalance(response -> {
-            System.out.println(response);
-        });
+
+kucoinPrivateWSClient.onAccountBalance(new KucoinAPICallback<KucoinEvent<AccountChangeEvent>>() {
+
+	@Override
+	public void onResponse(KucoinEvent<AccountChangeEvent> response) throws KucoinApiException {
+		System.out.println(response);
+	}
+
+	@Override
+	public void onFailure(Throwable cause) {
+		System.out.println("WS connection failed. Reconnecting. cause:" + cause.getMessage());
+		//reinitializeWSConnection();	//implement this method
+	}
+        	
+});
+
 ```
+
 ##### Listen for order activate message
+
 ```java
-kucoinPrivateWSClient.onOrderActivate(response -> {
-            System.out.println(response);
-        }, "ETH-BTC", "KCS-BTC");
+
+kucoinPrivateWSClient.onOrderActivate(new KucoinAPICallback<KucoinEvent<OrderActivateEvent>>() {
+
+	@Override
+	public void onResponse(KucoinEvent<OrderActivateEvent> response) throws KucoinApiException {
+		System.out.println(response);
+	}
+
+	@Override
+	public void onFailure(Throwable cause) {
+		System.out.println("WS connection failed. Reconnecting. cause:" + cause.getMessage());
+		//reinitializeWSConnection();	//implement this method
+	}
+
+}, "ETH-BTC", "KCS-BTC");
+
 ```
 
 ## Testing

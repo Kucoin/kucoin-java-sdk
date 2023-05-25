@@ -3,6 +3,8 @@
  */
 package com.kucoin.sdk.factory;
 
+import java.util.concurrent.TimeUnit;
+
 import com.kucoin.sdk.rest.interceptor.AuthenticationInterceptor;
 import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
@@ -26,7 +28,7 @@ public class HttpClientFactory {
         dispatcher.setMaxRequestsPerHost(100);
         dispatcher.setMaxRequests(100);
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .dispatcher(dispatcher);
+                .dispatcher(dispatcher).pingInterval(30, TimeUnit.SECONDS);
         if (interceptor != null) {
             builder.addInterceptor(interceptor);
         }

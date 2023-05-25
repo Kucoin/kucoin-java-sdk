@@ -20,4 +20,9 @@ public class PrintCallback<T> implements KucoinAPICallback<T> {
         LOGGER.debug("Got response: {}", response);
     }
 
+	@Override
+	public void onFailure(Throwable cause) {
+		LOGGER.debug("Got exception: {}", cause);
+	}
+
 }
