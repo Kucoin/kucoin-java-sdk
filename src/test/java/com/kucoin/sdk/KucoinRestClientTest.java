@@ -386,8 +386,6 @@ public class KucoinRestClientTest {
 
     @Test
     public void orderBookAPI() throws Exception {
-        Level3Response fullOrderBook = sandboxKucoinRestClient.orderBookAPI().getFullOrderBook("ETH-BTC");
-        assertThat(fullOrderBook, notNullValue());
 
         OrderBookResponse fullLevel2OrderBook = sandboxKucoinRestClient.orderBookAPI().getAllLevel2OrderBook("ETH-BTC");
         assertThat(fullLevel2OrderBook, notNullValue());
