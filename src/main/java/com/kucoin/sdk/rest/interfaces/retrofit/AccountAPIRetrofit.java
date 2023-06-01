@@ -50,7 +50,7 @@ public interface AccountAPIRetrofit {
     Call<KucoinResponse<Map<String, String>>> transferBetweenSubAndMasterV2(@Body SubMasterTransferV2Request request);
 
     @GET("api/v1/accounts/transferable")
-    Call<KucoinResponse<TransferableBalanceResponse>> transferable(@Query("currency") String currency, @Query("type") String type);
+    Call<KucoinResponse<TransferableBalanceResponse>> transferable(@Query("currency") String currency, @Query("type") String type, @Query("tag") String tag);
 
     @GET("api/v2/user-info")
     Call<KucoinResponse<UserSummaryInfoResponse>> getUserSummaryInfo();

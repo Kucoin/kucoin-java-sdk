@@ -79,8 +79,8 @@ public class AccountAPIAdapter extends AuthRetrofitAPIImpl<AccountAPIRetrofit> i
     }
 
     @Override
-    public TransferableBalanceResponse transferable(String currency, String type) throws IOException {
-        return super.executeSync(getAPIImpl().transferable(currency, type));
+    public TransferableBalanceResponse transferable(String currency, String type, String tag) throws IOException {
+        return super.executeSync(getAPIImpl().transferable(currency, type, tag));
     }
 
     @Override

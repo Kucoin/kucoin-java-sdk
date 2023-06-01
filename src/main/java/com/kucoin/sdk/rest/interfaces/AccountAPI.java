@@ -127,9 +127,10 @@ public interface AccountAPI {
      * This endpoint returns the transferable balance of a specified account.
      * @param currency
      * @param type   The account type: MAIN, TRADE, TRADE_HF, MARGIN or POOL
+     * @param tag   [Optional] Trading pair, required when the account type is ISOLATED; other types are not passed, e.g.: BTC-USDT
      * @return
      */
-    TransferableBalanceResponse transferable(String currency,String type) throws IOException;
+    TransferableBalanceResponse transferable(String currency, String type, String tag) throws IOException;
 
     /**
      * This endpoint can be used to obtain account summary information.
