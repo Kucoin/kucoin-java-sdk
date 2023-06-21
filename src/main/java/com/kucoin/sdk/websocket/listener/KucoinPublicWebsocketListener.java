@@ -18,8 +18,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-
-import static com.kucoin.sdk.constants.APIConstants.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Created by chenshiwei on 2019/1/10.
@@ -30,14 +31,7 @@ public class KucoinPublicWebsocketListener extends WebSocketListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KucoinPublicWebsocketListener.class);
 
-    private KucoinAPICallback<KucoinEvent<TickerChangeEvent>> tickerCallback = new PrintCallback<>();
-    private KucoinAPICallback<KucoinEvent<Level2ChangeEvent>> level2Callback = new PrintCallback<>();
-    private KucoinAPICallback<KucoinEvent<Level2Event>> level2Depth5Callback = new PrintCallback<>();
-    private KucoinAPICallback<KucoinEvent<Level2Event>> level2Depth50Callback = new PrintCallback<>();
-    private KucoinAPICallback<KucoinEvent<MatchExcutionChangeEvent>> matchDataCallback = new PrintCallback<>();
-    private KucoinAPICallback<KucoinEvent<Level3ChangeEvent>> level3Callback = new PrintCallback<>();
-    private KucoinAPICallback<KucoinEvent<Level3Event>> level3V2Callback = new PrintCallback<>();
-    private KucoinAPICallback<KucoinEvent<SnapshotEvent>> snapshotCallback = new PrintCallback<>();
+    private Map<String, KucoinAPICallback> callbackMap = new HashMap<>();
 
     @Override
     public void onOpen(WebSocket webSocket, Response response) {
@@ -57,44 +51,19 @@ public class KucoinPublicWebsocketListener extends WebSocketListener {
         }
 
         String topic = jsonObject.get("topic").asText();
-        if (topic.contains(API_TICKER_TOPIC_PREFIX)) {
-            KucoinEvent<TickerChangeEvent> kucoinEvent = deserialize(text, new TypeReference<KucoinEvent<TickerChangeEvent>>() {
-            });
-            tickerCallback.onResponse(kucoinEvent);
-        } else if (topic.contains(API_LEVEL2_TOPIC_PREFIX)) {
-            KucoinEvent<Level2ChangeEvent> kucoinEvent = deserialize(text, new TypeReference<KucoinEvent<Level2ChangeEvent>>() {
-            });
-            level2Callback.onResponse(kucoinEvent);
-        } else if (topic.contains(API_MATCH_TOPIC_PREFIX)) {
-            KucoinEvent<MatchExcutionChangeEvent> kucoinEvent = deserialize(text, new TypeReference<KucoinEvent<MatchExcutionChangeEvent>>() {
-            });
-            matchDataCallback.onResponse(kucoinEvent);
-        } else if (topic.contains(API_LEVEL3_TOPIC_PREFIX)) {
-            KucoinEvent<Level3ChangeEvent> kucoinEvent = deserialize(text, new TypeReference<KucoinEvent<Level3ChangeEvent>>() {
-            });
-            level3Callback.onResponse(kucoinEvent);
-        } else if (topic.contains(API_SNAPSHOT_PREFIX)) {
-            KucoinEvent<SnapshotEvent> kucoinEvent = deserialize(text, new TypeReference<KucoinEvent<SnapshotEvent>>() {
-            });
-            snapshotCallback.onResponse(kucoinEvent);
-        } else if (topic.contains(API_LEVEL3_V2_TOPIC_PREFIX)) {
-            KucoinEvent<Level3Event> kucoinEvent = deserialize(text, new TypeReference<KucoinEvent<Level3Event>>() {
-            });
-            level3V2Callback.onResponse(kucoinEvent);
-        } else if (topic.contains(API_DEPTH5_LEVEL2_TOPIC_PREFIX)) {
-            KucoinEvent<Level2Event> kucoinEvent = deserialize(text, new TypeReference<KucoinEvent<Level2Event>>() {
-            });
-            level2Depth5Callback.onResponse(kucoinEvent);
-        } else if (topic.contains(API_DEPTH50_LEVEL2_TOPIC_PREFIX)) {
-            KucoinEvent<Level2Event> kucoinEvent = deserialize(text, new TypeReference<KucoinEvent<Level2Event>>() {
-            });
-            level2Depth50Callback.onResponse(kucoinEvent);
+
+        Optional<String> first = callbackMap.keySet().stream().filter(topic::contains).findFirst();
+
+        KucoinEvent kucoinEvent = deserialize(text, new TypeReference<KucoinEvent>() {});
+        if(first.isPresent()){
+            callbackMap.getOrDefault(first.get(), new PrintCallback()).onResponse(kucoinEvent);
         }
+
     }
 
     @Override
     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-        LOGGER.error("Error on private socket", t);
+        LOGGER.error("Error on public socket", t);
     }
 
     private JsonNode tree(String text) {

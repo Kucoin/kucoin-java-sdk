@@ -26,6 +26,15 @@ public interface KucoinPublicWSClient {
     String onTicker(KucoinAPICallback<KucoinEvent<TickerChangeEvent>> callback, String... symbols);
 
     /**
+     * Subscribe to this topic to get the K-line data of the specified type for the specified symbol.
+     *
+     * @param callback
+     * @param symbolAndType
+     * @return
+     */
+    String onCandles(KucoinAPICallback<KucoinEvent<CandlesEvent>> callback, String symbolAndType);
+
+    /**
      * Subscribe this topic to get Level2 order book data.
      * After the conducts, the system would send the increment change data pushed by websocket to you.
      *
@@ -115,5 +124,31 @@ public interface KucoinPublicWSClient {
      */
     String onSnapshot(KucoinAPICallback<KucoinEvent<SnapshotEvent>> callback, String target);
 
+    /**
+     * Subscribe to this topic to get the index prices used for leveraged trading.
+     *
+     * @param callback
+     * @param symbols
+     * @return
+     */
+    String onIndicatorIndex(KucoinAPICallback<KucoinEvent<IndicatorEvent>> callback, String... symbols);
+
+    /**
+     * Subscribe to this topic to get the mark prices used for leveraged trading.
+     *
+     * @param callback
+     * @param symbols
+     * @return
+     */
+    String onIndicatorMarkPrice(KucoinAPICallback<KucoinEvent<IndicatorEvent>> callback, String... symbols);
+
+    /**
+     * Subscribe to this topic to get the changes of leveraged trading borrowing and selling orders.
+     *
+     * @param callback
+     * @param currency
+     * @return
+     */
+    String onMarginFundingBook(KucoinAPICallback<KucoinEvent<FundingBookEvent>> callback, String... currency);
 
 }

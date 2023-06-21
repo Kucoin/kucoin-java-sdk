@@ -60,7 +60,7 @@ public class KucoinPrivateWSClientImpl extends BaseWebsocketImpl implements Kuco
     @Deprecated
     public String onOrderActivate(KucoinAPICallback<KucoinEvent<OrderActivateEvent>> callback, String... symbols) {
         if (callback != null) {
-            this.listener.setOrderActivateCallback(callback);
+            this.listener.getCallbackMap().put(APIConstants.API_ACTIVATE_TOPIC_PREFIX, callback);
         }
         String topic = APIConstants.API_ACTIVATE_TOPIC_PREFIX + String.join(",", symbols);
         return subscribe(topic, true, true);
@@ -69,23 +69,47 @@ public class KucoinPrivateWSClientImpl extends BaseWebsocketImpl implements Kuco
     @Override
     public String onAccountBalance(KucoinAPICallback<KucoinEvent<AccountChangeEvent>> callback) {
         if (callback != null) {
-            this.listener.setAccountChangeCallback(callback);
+            this.listener.getCallbackMap().put(APIConstants.API_BALANCE_TOPIC_PREFIX, callback);
         }
         return subscribe(APIConstants.API_BALANCE_TOPIC_PREFIX, true, true);
     }
 
     @Override
-    public String onOrderChange(KucoinAPICallback<KucoinEvent<OrderChangeEvent>> callback, String... symbols) {
+    public String onOrderChange(KucoinAPICallback<KucoinEvent<OrderChangeEvent>> callback) {
         if (callback != null) {
-            this.listener.setOrderChangeCallback(callback);
+            this.listener.getCallbackMap().put(APIConstants.API_ORDER_TOPIC_PREFIX, callback);
         }
         return subscribe(APIConstants.API_ORDER_TOPIC_PREFIX, true, true);
     }
 
     @Override
+    public String onOrderV2Change(KucoinAPICallback<KucoinEvent<OrderChangeEvent>> callback) {
+        if (callback != null) {
+            this.listener.getCallbackMap().put(APIConstants.API_ORDER_V2_TOPIC_PREFIX, callback);
+        }
+        return subscribe(APIConstants.API_ORDER_V2_TOPIC_PREFIX, true, true);
+    }
+
+    @Override
+    public String onMarginPosition(KucoinAPICallback<KucoinEvent<MarginPositionEvent>> callback) {
+        if (callback != null) {
+            this.listener.getCallbackMap().put(APIConstants.API_MARGIN_POSITION_TOPIC_PREFIX, callback);
+        }
+        return subscribe(APIConstants.API_MARGIN_POSITION_TOPIC_PREFIX, true, true);
+    }
+
+    @Override
+    public String onMarginLoan(KucoinAPICallback<KucoinEvent<MarginLoanEvent>> callback, String symbol) {
+        if (callback != null) {
+            this.listener.getCallbackMap().put(APIConstants.API_MARGIN_LOAN_TOPIC_PREFIX, callback);
+        }
+        return subscribe(APIConstants.API_MARGIN_LOAN_TOPIC_PREFIX+symbol, true, true);
+    }
+
+    @Override
     public String onAdvancedOrder(KucoinAPICallback<KucoinEvent<? extends AdvancedOrderEvent>> callback, String... symbols) {
         if (callback != null) {
-            this.listener.setAdvancedOrderCallback(callback);
+            this.listener.getCallbackMap().put(APIConstants.API_ADVANCED_ORDER_TOPIC_PREFIX, callback);
         }
         return subscribe(APIConstants.API_ADVANCED_ORDER_TOPIC_PREFIX, true, true);
     }

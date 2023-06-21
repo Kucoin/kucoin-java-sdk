@@ -4,6 +4,7 @@
 package com.kucoin.sdk.rest.interfaces;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.kucoin.sdk.rest.response.HFTradeResponse;
 import com.kucoin.sdk.rest.response.Pagination;
@@ -38,7 +39,16 @@ public interface FillAPI {
      * @param currentPage
      * @return Trades.
      */
+    @Deprecated
     Pagination<TradeResponse> queryLimitFillsPageList(int pageSize, int currentPage) throws IOException;
+
+    /**
+     * Request via this endpoint to get a list of 1000 fills in the last 24 hours.
+     *
+     * @return
+     * @throws IOException
+     */
+    List<TradeResponse> queryLimitFillsList() throws IOException;
 
     /**
      * This endpoint can be used to obtain a list of the latest HF transaction details.

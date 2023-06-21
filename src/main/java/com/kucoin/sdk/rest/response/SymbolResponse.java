@@ -40,6 +40,10 @@ public class SymbolResponse {
 
     private BigDecimal priceIncrement;
 
+    private BigDecimal priceLimitRate;
+
+    private BigDecimal minFunds;
+
     private String feeCurrency;
 
     private Boolean enableTrading;

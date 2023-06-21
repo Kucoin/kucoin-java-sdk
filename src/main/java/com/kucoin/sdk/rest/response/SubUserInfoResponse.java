@@ -3,6 +3,8 @@ package com.kucoin.sdk.rest.response;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * Created by Reeta on 2019-05-20
  */
@@ -25,4 +27,6 @@ public class SubUserInfoResponse {
     private String createdAt;
 
     private String remarks;
+
+    private List<String> tradeTypes;
 }

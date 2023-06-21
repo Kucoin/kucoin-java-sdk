@@ -24,14 +24,16 @@ public class CurrencyResponse {
 
     private int precision;
 
+    private int confirms;
+
+    private String contractAddress;
+
     private BigDecimal withdrawalMinSize;
 
     private BigDecimal withdrawalMinFee;
 
-    @JsonProperty("isWithdrawEnabled")
     private Boolean isWithdrawEnabled;
 
-    @JsonProperty("isDepositEnabled")
     private Boolean isDepositEnabled;
 
     private Boolean isMarginEnabled;

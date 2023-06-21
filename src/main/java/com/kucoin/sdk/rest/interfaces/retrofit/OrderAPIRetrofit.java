@@ -60,9 +60,13 @@ public interface OrderAPIRetrofit {
     @GET("api/v1/base-fee")
     Call<KucoinResponse<UserFeeResponse>> getUserBaseFee(@Query("currencyType") String currencyType);
 
+    @Deprecated
     @GET("api/v1/limit/orders")
     Call<KucoinResponse<Pagination<OrderResponse>>> queryLimitOrderPageList(@Query("pageSize") int pageSize,
                                                                             @Query("currentPage") int currentPage);
+
+    @GET("api/v1/limit/orders")
+    Call<KucoinResponse<List<OrderResponse>>> queryLimitOrderList();
 
     @POST("api/v1/hf/orders")
     Call<KucoinResponse<HFOrderCreateResponse>> createHFOrder(@Body HFOrderCreateRequest createRequest);

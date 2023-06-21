@@ -135,7 +135,16 @@ public interface OrderAPI {
      * @param currentPage
      * @return A page of orders.
      */
+    @Deprecated
     Pagination<OrderResponse> queryLimitOrderPageList(int pageSize, int currentPage) throws IOException;
+
+    /**
+     * Request via this endpoint to get 1000 orders in the last 24 hours.
+     *
+     * @return
+     * @throws IOException
+     */
+    List<OrderResponse> queryLimitOrderList() throws IOException;
 
     /**
      * Place hf order

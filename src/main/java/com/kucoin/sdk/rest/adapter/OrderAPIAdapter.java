@@ -100,6 +100,11 @@ public class OrderAPIAdapter extends AuthRetrofitAPIImpl<OrderAPIRetrofit> imple
     }
 
     @Override
+    public List<OrderResponse> queryLimitOrderList() throws IOException {
+        return executeSync(getAPIImpl().queryLimitOrderList());
+    }
+
+    @Override
     public HFOrderCreateResponse createHFOrder(HFOrderCreateRequest createRequest) throws IOException {
         return executeSync(getAPIImpl().createHFOrder(createRequest));
     }

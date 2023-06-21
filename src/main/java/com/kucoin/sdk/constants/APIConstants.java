@@ -22,6 +22,7 @@ public class APIConstants {
     public static final String API_HEADER_KEY_VERSION = "KC-API-KEY-VERSION";
 
     public static final String API_TICKER_TOPIC_PREFIX = "/market/ticker:";
+    public static final String API_CANDLES_TOPIC_PREFIX = "/market/candles:";
     public static final String API_LEVEL2_TOPIC_PREFIX = "/market/level2:";
     public static final String API_DEPTH5_LEVEL2_TOPIC_PREFIX = "/spotMarket/level2Depth5:";
     public static final String API_DEPTH50_LEVEL2_TOPIC_PREFIX = "/spotMarket/level2Depth50:";
@@ -34,5 +35,11 @@ public class APIConstants {
     public static final String API_BALANCE_TOPIC_PREFIX = "/account/balance";
     public static final String API_ADVANCED_ORDER_TOPIC_PREFIX = "/spotMarket/advancedOrders";
     public static final String API_ORDER_TOPIC_PREFIX = "/spotMarket/tradeOrders";
-    public static final String API_SNAPSHOT_PREFIX = "/market/snapshot:";
+    public static final String API_ORDER_V2_TOPIC_PREFIX = "/spotMarket/tradeOrdersV2";
+    public static final String API_MARGIN_POSITION_TOPIC_PREFIX = "/margin/position";
+    public static final String API_MARGIN_LOAN_TOPIC_PREFIX = "/margin/loan:";
+    public static final String API_SNAPSHOT_TOPIC_PREFIX = "/market/snapshot:";
+    public static final String API_INDICATOR_INDEX_TOPIC_PREFIX = "/indicator/index:";
+    public static final String API_INDICATOR_MARKPRICE_TOPIC_PREFIX = "/indicator/markPrice:";
+    public static final String API_MARGIN_FUNDINGBOOK_TOPIC_PREFIX = "/margin/fundingBook:";
 }

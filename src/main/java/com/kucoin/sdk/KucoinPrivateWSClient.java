@@ -37,10 +37,35 @@ public interface KucoinPrivateWSClient {
      * You will receive the message when order changes. The message contains the details of the change.
      *
      * @param callback
-     * @param symbols
      * @return The subscription UUID, or null if sending failed.
      */
-    String onOrderChange(KucoinAPICallback<KucoinEvent<OrderChangeEvent>> callback, String... symbols);
+    String onOrderChange(KucoinAPICallback<KucoinEvent<OrderChangeEvent>> callback);
+
+    /**
+     * You will receive the message when order changes. The message contains the details of the change.
+     *
+     * @param callback
+     * @return The subscription UUID, or null if sending failed.
+     */
+    String onOrderV2Change(KucoinAPICallback<KucoinEvent<OrderChangeEvent>> callback);
+
+    /**
+     * When the position status changes, a status change event will be pushed.
+     * When there is a liability, the system will push the current liability information at regular intervals.
+     *
+     * @param callback
+     * @return
+     */
+    String onMarginPosition(KucoinAPICallback<KucoinEvent<MarginPositionEvent>> callback);
+
+    /**
+     * Borrowing change message push
+     *
+     * @param callback
+     * @param symbol
+     * @return
+     */
+    String onMarginLoan(KucoinAPICallback<KucoinEvent<MarginLoanEvent>> callback, String symbol);
 
     /**
      * You will receive the message when the status of advanced order changes. The message contains the details of the change.

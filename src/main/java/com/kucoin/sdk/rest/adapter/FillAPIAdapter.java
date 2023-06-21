@@ -11,6 +11,7 @@ import com.kucoin.sdk.rest.response.Pagination;
 import com.kucoin.sdk.rest.response.TradeResponse;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by chenshiwei on 2019/1/18.
@@ -35,6 +36,11 @@ public class FillAPIAdapter extends AuthRetrofitAPIImpl<FillAPIRetrofit> impleme
     @Override
     public Pagination<TradeResponse> queryLimitFillsPageList(int pageSize, int currentPage) throws IOException {
         return executeSync(getAPIImpl().queryLimitTradePageList(pageSize, currentPage));
+    }
+
+    @Override
+    public List<TradeResponse> queryLimitFillsList() throws IOException {
+        return executeSync(getAPIImpl().queryLimitTradeList());
     }
 
     @Override
