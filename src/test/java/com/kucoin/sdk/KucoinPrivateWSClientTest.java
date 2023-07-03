@@ -46,12 +46,15 @@ public class KucoinPrivateWSClientTest {
 
     @BeforeClass
     public static void setupClass() throws Exception {
-        KucoinClientBuilder builder = new KucoinClientBuilder().withBaseUrl("https://openapi-sandbox.kucoin.com")
-                .withApiKey("5f927beac1cfb50006afcd3c", "943aede3-1dd2-46fe-9654-7df9f275e118", "12121212")
+
+        KucoinClientBuilder builder = new KucoinClientBuilder().withBaseUrl("https://openapi-v2.kucoin.com")
+                .withApiKey("", "", "")
                 // Version number of api-key
                 .withApiKeyVersion(ApiKeyVersionEnum.V2.getVersion());
+
         kucoinRestClient = builder.buildRestClient();
         kucoinPrivateWSClient = builder.buildPrivateWSClient();
+
     }
 
     @AfterClass
@@ -96,9 +99,9 @@ public class KucoinPrivateWSClientTest {
         kucoinPrivateWSClient.onOrderChange(response -> {
             LOGGER.info("Got response");
             event.set(response.getData());
-            kucoinPrivateWSClient.unsubscribe(PrivateChannelEnum.ORDER_CHANGE, "ETH-BTC", "BTC-USDT");
+            kucoinPrivateWSClient.unsubscribe(PrivateChannelEnum.ORDER_CHANGE);
             gotEvent.countDown();
-        }, "ETH-BTC", "BTC-USDT");
+        });
 
         Thread.sleep(1000);
 
@@ -115,6 +118,33 @@ public class KucoinPrivateWSClientTest {
         LOGGER.info("Waiting...");
         assertTrue(gotEvent.await(20, TimeUnit.SECONDS));
         System.out.println(event.get());
+    }
+
+    @Test
+    public void onOrderV2Change() throws Exception {
+        kucoinPrivateWSClient.onOrderV2Change(response -> {
+            System.out.println(response.getData());
+            kucoinPrivateWSClient.unsubscribe(PrivateChannelEnum.ORDER_V2_CHANGE);
+        });
+        Thread.sleep(100000);
+    }
+
+    @Test
+    public void onMarginPosition() throws Exception {
+        kucoinPrivateWSClient.onMarginPosition(response -> {
+            System.out.println(response.getData());
+            kucoinPrivateWSClient.unsubscribe(PrivateChannelEnum.MARGIN_POSITION_CHANGE);
+        });
+        Thread.sleep(100000);
+    }
+
+    @Test
+    public void onMarginLoan() throws Exception {
+        kucoinPrivateWSClient.onMarginLoan(response -> {
+            System.out.println(response.getData());
+            kucoinPrivateWSClient.unsubscribe(PrivateChannelEnum.MARGIN_LOAN_CHANGE,"USDT");
+        },"USDT");
+        Thread.sleep(100000);
     }
 
     @Test
