@@ -12,9 +12,6 @@ import java.util.List;
 /**
  * @author Jason Yao
  * @version 1.0.0
- * @ClassName IsolatedAPIRetrofit.java
- * @Description
- * @createTime 2023/05/17日 11:16:00
  */
 public interface IsolatedAPIRetrofit {
 

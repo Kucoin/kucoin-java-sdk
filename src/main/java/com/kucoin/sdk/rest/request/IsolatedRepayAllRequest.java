@@ -7,9 +7,6 @@ import java.math.BigDecimal;
 /**
  * @author Jason Yao
  * @version 1.0.0
- * @ClassName IsolatedRepayRequest.java
- * @Description
- * @createTime 2023/05/17日 14:37:00
  */
 @Data
 public class IsolatedRepayAllRequest {

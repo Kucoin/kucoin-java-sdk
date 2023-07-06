@@ -13,7 +13,7 @@ The detailed document [https://docs.kucoin.com](https://docs.kucoin.com).
 <dependency>
     <groupId>com.kucoin</groupId>
     <artifactId>kucoin-java-sdk</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.8</version>
 </dependency>
 ```
 ## Usage

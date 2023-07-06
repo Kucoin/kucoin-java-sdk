@@ -87,7 +87,7 @@ public interface KucoinPublicWSClient {
      * @param callback
      * @param symbols
      * @return The subscription UUID, or null if sending failed.
-     * @deprecated instead use the method <code>onLevel3Data_V2(KucoinAPICallback<KucoinEvent<Level3Event>> callback, String... symbols)</code>
+     * @deprecated instead use the method <code>onLevel3Data_V2</code>
      */
     @Deprecated
     String onLevel3Data(KucoinAPICallback<KucoinEvent<Level3ChangeEvent>> callback, String... symbols);

@@ -15,9 +15,6 @@ import java.util.List;
 /**
  * @author Jason Yao
  * @version 1.0.0
- * @ClassName IsolatedAPIAdapter.java
- * @Description
- * @createTime 2023/05/17日 16:12:00
  */
 public class IsolatedAPIAdapter extends AuthRetrofitAPIImpl<IsolatedAPIRetrofit> implements IsolatedAPI {
 

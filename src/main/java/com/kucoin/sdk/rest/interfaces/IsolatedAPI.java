@@ -10,9 +10,6 @@ import java.util.List;
 /**
  * @author Jason Yao
  * @version 1.0.0
- * @ClassName IsolatedAPI.java
- * @Description
- * @createTime 2023/05/17日 15:54:00
  */
 public interface IsolatedAPI {
 
@@ -81,7 +78,6 @@ public interface IsolatedAPI {
      * @param currency    Repayment coin type
      * @param size        Repayment amount
      * @param seqStrategy Repayment sequence strategy, RECENTLY_EXPIRE_FIRST: Maturity date priority (the loan with the closest maturity is repaid first), HIGHEST_RATE_FIRST: Interest rate priority (the loan with the highest interest rate is repaid first)
-     * @return
      */
     void repayAll(String symbol, String currency, BigDecimal size, String seqStrategy) throws IOException;
 
@@ -92,7 +88,6 @@ public interface IsolatedAPI {
      * @param currency Repayment coin type
      * @param size     Repayment amount
      * @param loanId   Trade order number; when this field is configured, the sequence strategy is invalidated
-     * @return
      */
     void repaySingle(String symbol, String currency, BigDecimal size, String loanId) throws IOException;
 }

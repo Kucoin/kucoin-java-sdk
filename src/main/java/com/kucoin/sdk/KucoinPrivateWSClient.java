@@ -20,7 +20,7 @@ public interface KucoinPrivateWSClient {
      * @param callback
      * @param symbols
      * @return The subscription UUID, or null if sending failed.
-     * @deprecated instead use the method <code>onStopOrderChange(KucoinAPICallback<KucoinEvent<OrderChangeEvent>> callback, String... symbols)</code>
+     * @deprecated instead use the method {@code onStopOrderChange(KucoinAPICallback<KucoinEvent<OrderChangeEvent>> callback, String... symbols)}
      */
     @Deprecated
     String onOrderActivate(KucoinAPICallback<KucoinEvent<OrderActivateEvent>> callback, String... symbols);

@@ -7,9 +7,6 @@ import java.util.List;
 /**
  * @author Jason Yao
  * @version 1.0.0
- * @ClassName HFTradeResponse.java
- * @Description
- * @createTime 2023/05/23日 16:45:00
  */
 @Data
 public class HFTradeResponse {

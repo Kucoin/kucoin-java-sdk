@@ -5,9 +5,6 @@ import lombok.Data;
 /**
  * @author Jason Yao
  * @version 1.0.0
- * @ClassName OrderHFSyncCreateResponse.java
- * @Description
- * @createTime 2023/05/23日 15:19:00
  */
 @Data
 public class HFOrderSyncMultiCreateResponse {

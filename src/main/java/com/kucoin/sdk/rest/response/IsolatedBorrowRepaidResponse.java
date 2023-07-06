@@ -5,9 +5,6 @@ import lombok.Data;
 /**
  * @author Jason Yao
  * @version 1.0.0
- * @ClassName IsolatedBorrowRepaidResponse.java
- * @Description
- * @createTime 2023/05/17日 11:54:00
  */
 @Data
 public class IsolatedBorrowRepaidResponse {

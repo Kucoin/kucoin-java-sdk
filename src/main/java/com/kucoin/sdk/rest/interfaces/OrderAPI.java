@@ -119,7 +119,6 @@ public interface OrderAPI {
 
     /**
      * This interface is for the basic fee rate of users
-     * </p>
      *
      * @param currencyType [Optional] Currency type: 0-crypto currency, 1-fiat currency. default is 0-crypto currency
      * @return
@@ -327,7 +326,7 @@ public interface OrderAPI {
      * https://docs.kucoin.com/spot-hf/#hf-auto-cancel-setting
      *
      * @param timeout Auto cancel order trigger setting time,
-     *                the unit is second. range: timeout=-1 (meaning unset) or 5 <= timeout <= 86400.
+     *                the unit is second. range: timeout=-1 (meaning unset) or 5 &lt;= timeout &lt;= 86400.
      *                For example, timeout=5 means that the order will be automatically canceled if no user request is received for more than 5 seconds.
      *                When this parameter is changed, the previous setting will be overwritten.
      * @param symbols List of trading pairs. When this parameter is not empty, separate it with commas and support up to 50 trading pairs.
