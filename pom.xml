@@ -25,8 +25,16 @@
     </scm>
     <developers>
         <developer>
-            <name>blaze.tan</name>
+            <name>Blaze Tan</name>
             <email>blaze.tan@kupotech.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <timezone>+8</timezone>
+        </developer>
+        <developer>
+            <name>Jason Yao</name>
+            <email>jason.yao@kupotech.com</email>
             <roles>
                 <role>Developer</role>
             </roles>
