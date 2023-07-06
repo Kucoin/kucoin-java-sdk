@@ -130,7 +130,6 @@
                     </archive>
                 </configuration>
             </plugin>
-            <!-- 必须配置 source-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
