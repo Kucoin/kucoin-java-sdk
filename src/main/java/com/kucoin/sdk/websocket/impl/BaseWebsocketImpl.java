@@ -18,6 +18,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 
 /**
@@ -33,6 +35,8 @@ public abstract class BaseWebsocketImpl implements Closeable {
 
     private WebSocket webSocket;
 
+    private final Timer pingTimer = new Timer("SPOT-WS-PING-TIMER");
+
     protected BaseWebsocketImpl(OkHttpClient client, WebSocketListener listener, ChooseServerStrategy chooseServerStrategy) {
         this.client = client;
         this.listener = listener;
@@ -40,16 +44,24 @@ public abstract class BaseWebsocketImpl implements Closeable {
     }
 
     public void connect() throws IOException {
-        this.webSocket = createNewWebSocket();
-    }
-
-    protected abstract WebsocketTokenResponse requestToken() throws IOException;
-
-    private WebSocket createNewWebSocket() throws IOException {
         WebsocketTokenResponse websocketToken = requestToken();
         InstanceServer instanceServer = chooseServerStrategy.choose(websocketToken.getInstanceServers());
         String streamingUrl = String.format("%s", instanceServer.getEndpoint()
                 + "?token=" + websocketToken.getToken());
+        this.webSocket = createNewWebSocket(streamingUrl);
+
+        pingTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                ping(UUID.randomUUID().toString());
+            }
+        },0, instanceServer.getPingInterval());
+
+    }
+
+    protected abstract WebsocketTokenResponse requestToken() throws IOException;
+
+    private WebSocket createNewWebSocket(String streamingUrl) throws IOException {
         Request request = new Request.Builder().url(streamingUrl).build();
         return client.newWebSocket(request, listener);
     }
@@ -95,6 +107,7 @@ public abstract class BaseWebsocketImpl implements Closeable {
     @Override
     public void close() throws IOException {
         LOGGER.debug("Web Socket Close");
+        pingTimer.cancel();
         client.dispatcher().executorService().shutdown();
     }
 

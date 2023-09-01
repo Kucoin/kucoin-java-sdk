@@ -52,6 +52,15 @@ public interface CurrencyAPI {
     CurrencyDetailV2Response getCurrencyDetailV2(String currency, String chain) throws IOException;
 
     /**
+     * List known currencies detail.
+     *
+     * @return Currencies.
+     * @throws IOException on socket errors.
+     * @throws KucoinApiException when errors are returned from the exchange.
+     */
+    List<CurrencyDetailV2Response> getCurrenciesV3() throws IOException;
+
+    /**
      * Get fiat price for currency
      *
      * @param base       [optional] Fiat,eg.USD,EUR, default is USD

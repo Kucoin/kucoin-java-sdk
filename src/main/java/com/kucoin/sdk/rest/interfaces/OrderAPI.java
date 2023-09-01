@@ -3,11 +3,11 @@
  */
 package com.kucoin.sdk.rest.interfaces;
 
-import java.io.IOException;
-import java.util.List;
-
 import com.kucoin.sdk.rest.request.*;
 import com.kucoin.sdk.rest.response.*;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by chenshiwei on 2019/1/9.
@@ -29,10 +29,19 @@ public interface OrderAPI {
     OrderCreateResponse createOrder(OrderCreateApiRequest opsRequest) throws IOException;
 
     /**
+     * Place a new test order
+     *
+     * @param opsRequest
+     * @return A response containing the order id.
+     */
+    OrderCreateResponse createOrderTest(OrderCreateApiRequest opsRequest) throws IOException;
+
+    /**
      * Place Bulk Orders
      * <p>
      * Request via this endpoint to place 5 orders at the same time. The order type must be a limit order of the same symbol. The interface currently only supports spot trading
      * </p>
+     *
      * @param multiOrderCreateRequest
      * @return
      * @throws IOException
@@ -54,6 +63,7 @@ public interface OrderAPI {
      * <p>
      * Request via this interface to cancel an order via the clientOid.
      * </p>
+     *
      * @param clientOid
      * @return
      * @throws IOException
@@ -82,6 +92,7 @@ public interface OrderAPI {
      * Request via this interface to check the information of a single active order via clientOid.
      * The system will prompt that the order does not exists if the order does not exist or has been settled.
      * </p>
+     *
      * @param clientOid Unique order id created by users to identify their orders
      * @return
      * @throws IOException
@@ -112,6 +123,7 @@ public interface OrderAPI {
      * You can inquire about fee rates of 10 trading pairs each time at most.
      * The fee rate of your sub-account is the same as that of the master account.
      * </p>
+     *
      * @param symbols
      * @return
      */
@@ -291,7 +303,7 @@ public interface OrderAPI {
      * @param type    [optional] Order type: limit (limit order), market(market order)
      * @param startAt [optional] Start time (ms)，last update(filled) time of the limit order
      * @param endAt   [optional] End time (ms)，last update(filled) time of limit order
-     * @param lastId [optional] The id of the last data item from the previous batch，defaults to obtaining the latest data
+     * @param lastId  [optional] The id of the last data item from the previous batch，defaults to obtaining the latest data
      * @param limit   [optional] Default20，maximum100
      * @return
      * @throws IOException
@@ -344,4 +356,7 @@ public interface OrderAPI {
      * @throws IOException
      */
     HFOrderDeadCancelQueryResponse queryHFOrderDeadCancel() throws IOException;
+
+
+    ServerStatusResponse queryServerStatus() throws IOException;
 }

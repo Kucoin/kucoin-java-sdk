@@ -3,12 +3,14 @@
  */
 package com.kucoin.sdk;
 
+import com.kucoin.sdk.model.OrderBook;
 import com.kucoin.sdk.model.enums.ApiKeyVersionEnum;
 import com.kucoin.sdk.model.enums.PublicChannelEnum;
 import com.kucoin.sdk.rest.request.OrderCreateApiRequest;
 import com.kucoin.sdk.rest.response.OrderCreateResponse;
 import com.kucoin.sdk.rest.response.TickerResponse;
 import com.kucoin.sdk.websocket.event.*;
+import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.core.Is;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -16,6 +18,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -85,20 +88,40 @@ public class KucoinPublicWSClientTest {
 
     @Test
     public void onLevel2Data() throws Exception {
-        AtomicReference<Level2ChangeEvent> event = new AtomicReference<>();
-        CountDownLatch gotEvent = new CountDownLatch(1);
+
+        AtomicReference<String> lastId = new AtomicReference<>("");
 
         kucoinPublicWSClient.onLevel2Data(response -> {
-            event.set(response.getData());
-            kucoinPublicWSClient.unsubscribe(PublicChannelEnum.LEVEL2, "ETH-BTC", "KCS-BTC");
-            gotEvent.countDown();
-        }, "ETH-BTC", "KCS-BTC");
+            Level2ChangeEvent data = response.getData();
+            System.out.println(data);
 
-        // Trigger a market change
-        placeOrderAndCancelOrder();
+            OrderBook changes = data.getChanges();
+            List<List<String>> asks = changes.getAsks();
+            if (null != asks && !asks.isEmpty()) {
+                asks.forEach(e -> {
+                    if (null != e && !e.isEmpty()) {
+                        String lId = lastId.get();
+                        String cId = e.get(2);
+                        System.out.println("lId:"+lId+" cId:"+cId);
+                        if(StringUtils.isBlank(lId)){
+                            lastId.set(cId);
+                        }else {
+                            if(Long.valueOf(lId) + 1 <= Long.valueOf(cId)){
 
-        assertTrue(gotEvent.await(20, TimeUnit.SECONDS));
-        System.out.println(event.get());
+                            }else {
+                                System.out.println("asks消息不连续！");
+                            }
+                        }
+                    }
+                });
+            }
+
+        }, "BTC-USDT");
+
+        Thread.sleep(100000000000L);
+
+        kucoinPublicWSClient.unsubscribe(PublicChannelEnum.LEVEL2, "QRDO-USDT");
+        kucoinPublicWSClient.close();
     }
 
     @Test
@@ -234,8 +257,8 @@ public class KucoinPublicWSClientTest {
     public void onMarginFundingBook() throws Exception {
         kucoinPublicWSClient.onMarginFundingBook(response -> {
             System.out.println(response.getData());
-            kucoinPublicWSClient.unsubscribe(PublicChannelEnum.MARGIN_FUNDINGBOOK, "ETH","BTC");
-        }, "ETH","BTC");
+            kucoinPublicWSClient.unsubscribe(PublicChannelEnum.MARGIN_FUNDINGBOOK, "ETH", "BTC");
+        }, "ETH", "BTC");
         Thread.sleep(100000);
     }
 

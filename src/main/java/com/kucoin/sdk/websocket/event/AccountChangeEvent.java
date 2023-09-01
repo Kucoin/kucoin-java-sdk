@@ -4,8 +4,11 @@
 package com.kucoin.sdk.websocket.event;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 /**
  * Created by chenshiwei on 2019/1/23.
@@ -27,12 +30,23 @@ public class AccountChangeEvent {
 
     private String relationEvent;
 
-    private String relationContext;
+    private RelationContext relationContext;
 
     private String relationEventId;
 
     private String time;
 
     private String accountId;
+
+    @Data
+    public static class RelationContext {
+
+        private String tradeId;
+
+        private String orderId;
+
+        private String symbol;
+
+    }
 
 }

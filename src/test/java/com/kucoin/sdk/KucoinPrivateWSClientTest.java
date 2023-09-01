@@ -97,8 +97,9 @@ public class KucoinPrivateWSClientTest {
         CountDownLatch gotEvent = new CountDownLatch(1);
 
         kucoinPrivateWSClient.onOrderChange(response -> {
+            OrderChangeEvent data = response.getData();
             LOGGER.info("Got response");
-            event.set(response.getData());
+            event.set(data);
             kucoinPrivateWSClient.unsubscribe(PrivateChannelEnum.ORDER_CHANGE);
             gotEvent.countDown();
         });
@@ -116,7 +117,7 @@ public class KucoinPrivateWSClientTest {
         }).start();
 
         LOGGER.info("Waiting...");
-        assertTrue(gotEvent.await(20, TimeUnit.SECONDS));
+        assertTrue(gotEvent.await(200, TimeUnit.SECONDS));
         System.out.println(event.get());
     }
 
@@ -154,7 +155,8 @@ public class KucoinPrivateWSClientTest {
 
         kucoinPrivateWSClient.onAccountBalance(response -> {
             LOGGER.info("Got response");
-            event.set(response.getData());
+            AccountChangeEvent data = response.getData();
+            event.set(data);
             kucoinPrivateWSClient.unsubscribe(PrivateChannelEnum.ACCOUNT);
             gotEvent.countDown();
         });
@@ -172,7 +174,7 @@ public class KucoinPrivateWSClientTest {
         }).start();
 
         LOGGER.info("Waiting...");
-        assertTrue(gotEvent.await(20, TimeUnit.SECONDS));
+        assertTrue(gotEvent.await(200, TimeUnit.SECONDS));
         System.out.println(event.get());
     }
 

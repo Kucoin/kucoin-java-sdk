@@ -31,7 +31,10 @@ public class KucoinPublicWebsocketListener extends WebSocketListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KucoinPublicWebsocketListener.class);
 
+    private KucoinAPICallback<KucoinEvent> defaultCallback = new PrintCallback<>();
+
     private Map<String, KucoinAPICallback> callbackMap = new HashMap<>();
+    private Map<String, TypeReference> typeReferenceMap = new HashMap<>();
 
     @Override
     public void onOpen(WebSocket webSocket, Response response) {
@@ -53,10 +56,12 @@ public class KucoinPublicWebsocketListener extends WebSocketListener {
         String topic = jsonObject.get("topic").asText();
 
         Optional<String> first = callbackMap.keySet().stream().filter(topic::contains).findFirst();
+        KucoinEvent kucoinEvent = (KucoinEvent) deserialize(text, typeReferenceMap.getOrDefault(first.get(), new TypeReference<KucoinEvent>() {}));
 
-        KucoinEvent kucoinEvent = deserialize(text, new TypeReference<KucoinEvent>() {});
         if(first.isPresent()){
-            callbackMap.getOrDefault(first.get(), new PrintCallback()).onResponse(kucoinEvent);
+            callbackMap.get(first.get()).onResponse(kucoinEvent);
+        }else {
+            defaultCallback.onResponse(kucoinEvent);
         }
 
     }

@@ -18,10 +18,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
@@ -42,10 +39,12 @@ public class KucoinRestClientTest {
 
     @BeforeClass
     public static void setUpClass() {
-        liveKucoinRestClient = new KucoinClientBuilder().withBaseUrl("https://openapi-v2.kucoin.com").withApiKey("", "", "")
+        liveKucoinRestClient = new KucoinClientBuilder().withBaseUrl("https://openapi-v2.kucoin.com")
+                .withApiKey("", "", "")
                 // Version number of api-key
                 .withApiKeyVersion(ApiKeyVersionEnum.V2.getVersion())
                 .buildRestClient();
+
         startAt = LocalDateTime.of(2023, 6, 16, 0, 0, 0).toEpochSecond(ZoneOffset.of("+8"));
         endAt = LocalDateTime.of(2023, 6, 30, 0, 0, 0).toEpochSecond(ZoneOffset.of("+8"));
     }
@@ -63,7 +62,7 @@ public class KucoinRestClientTest {
     @Test
     public void accountLedgers() throws IOException {
         Pagination<AccountDetailResponse> accountHistory = liveKucoinRestClient.accountAPI().getAccountLedgers("USDT",
-                null, null, startAt*1000, System.currentTimeMillis(), 1, 10);
+                null, null, startAt * 1000, System.currentTimeMillis(), 1, 10);
         assertThat(accountHistory, notNullValue());
     }
 
@@ -73,8 +72,14 @@ public class KucoinRestClientTest {
     @Test
     public void accountAPIMulti() throws Exception {
         List<AccountBalancesResponse> accountBalancesResponses
-                = liveKucoinRestClient.accountAPI().listAccounts(null, null);
+                = liveKucoinRestClient.accountAPI().listAccounts("USDT", null);
         assertThat(accountBalancesResponses.size(), Is.is(6));
+    }
+
+    @Test
+    public void subAccountAPIQuery()  throws Exception {
+        List<SubApiKeyResponse> subApiKeyResponses = liveKucoinRestClient.accountAPI().getSubApiKey("tcwspot01", null);
+        assertThat(subApiKeyResponses, notNullValue());
     }
 
     @Test
@@ -92,7 +97,7 @@ public class KucoinRestClientTest {
         AccountBalanceResponse account = liveKucoinRestClient.accountAPI().getAccount(tradeAccountId);
         assertThat(account, notNullValue());
 
-        Map<String, String> result = liveKucoinRestClient.accountAPI().innerTransfer2(new AccountTransferV2Request(String.valueOf(System.currentTimeMillis()),"BTC", "main", "trade", BigDecimal.ONE));
+        Map<String, String> result = liveKucoinRestClient.accountAPI().innerTransfer2(new AccountTransferV2Request(String.valueOf(System.currentTimeMillis()), "BTC", "main", "trade", BigDecimal.ONE));
         assertThat(result, notNullValue());
 
         TransferableBalanceResponse transferable = liveKucoinRestClient.accountAPI().transferable("BTC", "MARGIN", null);
@@ -113,7 +118,7 @@ public class KucoinRestClientTest {
 
         Map<String, String> transferResult = liveKucoinRestClient.accountAPI().transferBetweenSubAndMasterV2(
                 String.valueOf(System.currentTimeMillis()), "BTC", BigDecimal.valueOf(0.00000001),
-                "OUT", subUserId,"MAIN", "MAIN");
+                "OUT", subUserId, "MAIN", "MAIN");
         assertThat(transferResult, notNullValue());
 
         exception.expect(KucoinApiException.class);
@@ -125,7 +130,7 @@ public class KucoinRestClientTest {
         UserSummaryInfoResponse userSummaryInfo = liveKucoinRestClient.accountAPI().getUserSummaryInfo();
         assertThat(userSummaryInfo, notNullValue());
 
-        SubUserCreateResponse subUserCreateResponse = liveKucoinRestClient.accountAPI().createSubUser("TestSubUser001","1234abcd", "Spot", "testRemark");
+        SubUserCreateResponse subUserCreateResponse = liveKucoinRestClient.accountAPI().createSubUser("TestSubUser001", "1234abcd", "Spot", "testRemark");
         assertThat(subUserCreateResponse, notNullValue());
 
         List<SubApiKeyResponse> subApiKeyResponses = liveKucoinRestClient.accountAPI().getSubApiKey("TestSubUser001", null);
@@ -153,7 +158,7 @@ public class KucoinRestClientTest {
     @Test
     public void fillAPI() throws Exception {
         Pagination<TradeResponse> fills = liveKucoinRestClient.fillAPI().listFills("KCS-USDT", null, "buy",
-                null,"TRADE", startAt, endAt, 10, 10);
+                null, "TRADE", startAt, endAt, 10, 10);
         assertThat(fills, notNullValue());
 
         List<TradeResponse> limitFillsPageList = liveKucoinRestClient.fillAPI().queryLimitFillsList();
@@ -167,6 +172,41 @@ public class KucoinRestClientTest {
     public void queryLimitOrderPageList() throws IOException {
         List<OrderResponse> limitOrderPageList = liveKucoinRestClient.orderAPI().queryLimitOrderList();
         assertThat(limitOrderPageList, notNullValue());
+    }
+
+    @Test
+    public void createOrderTest() throws Exception {
+        String clientOid = UUID.randomUUID().toString();
+        OrderCreateApiRequest request = OrderCreateApiRequest.builder()
+                .price(BigDecimal.valueOf(0.0359)).size(BigDecimal.TEN).side("buy").tradeType("TRADE")
+                .symbol("QRDO-USDT").type("limit").clientOid(clientOid).build();
+        OrderCreateResponse order = liveKucoinRestClient.orderAPI().createOrder(request);
+        System.out.println("clientOid:"+clientOid+" orderId:"+order.getOrderId());
+        Thread.sleep(10000);
+        liveKucoinRestClient.orderAPI().cancelOrder(order.getOrderId());
+    }
+
+    @Test
+    public void createTestOrder() throws Exception {
+        String clientOid = UUID.randomUUID().toString();
+        OrderCreateApiRequest request = OrderCreateApiRequest.builder()
+                .price(BigDecimal.valueOf(0.0359)).size(BigDecimal.TEN).side("buy").tradeType("TRADE")
+                .symbol("QRDO-USDT").type("limit").clientOid(clientOid).build();
+        OrderCreateResponse order = liveKucoinRestClient.orderAPI().createOrderTest(request);
+        System.out.println("clientOid:"+clientOid+" orderId:"+order.getOrderId());
+        Thread.sleep(10000);
+    }
+
+    @Test
+    public void cancelOrderTest() throws IOException {
+        OrderCancelResponse orderCancelResponse = liveKucoinRestClient.orderAPI().cancelOrder("64dded91f715e60007a10c4e");
+        System.out.println(orderCancelResponse);
+    }
+
+    @Test
+    public void queryServerStatus() throws Exception {
+        ServerStatusResponse status = liveKucoinRestClient.orderAPI().queryServerStatus();
+        System.out.println(status);
     }
 
     @Test
@@ -193,12 +233,12 @@ public class KucoinRestClientTest {
                 .price(BigDecimal.valueOf(0.000001)).size(BigDecimal.ONE).side("buy").tradeType("TRADE")
                 .symbol("ETH-BTC").type("limit").clientOid(String.valueOf(System.currentTimeMillis())).build();
         request.setClientOid(String.valueOf(System.currentTimeMillis()));
-        multiOrderRequest.setOrderList(Lists.newArrayList(request,request2));
+        multiOrderRequest.setOrderList(Lists.newArrayList(request, request2));
         MultiOrderCreateResponse multiOrderResponse = liveKucoinRestClient.orderAPI().createMultipleOrders(multiOrderRequest);
         assertThat(multiOrderResponse, notNullValue());
 
         Pagination<OrderResponse> orderResponsePagination = liveKucoinRestClient.orderAPI().listOrders("ETH-BTC",
-                null, null,"TRADE", "active", null, null, 10, 1);
+                null, null, "TRADE", "active", null, null, 10, 1);
         assertThat(orderResponsePagination, notNullValue());
 
         OrderResponse orderResponse = liveKucoinRestClient.orderAPI().getOrder(order.getOrderId());
@@ -366,6 +406,41 @@ public class KucoinRestClientTest {
         assertThat(hrStats, notNullValue());
     }
 
+    @Test
+    public void getAllTickers() throws Exception{
+
+        SymbolTickResponse hrStats = liveKucoinRestClient.symbolAPI().get24hrStats("GO-USDT");
+        assertThat(hrStats, notNullValue());
+
+        List<String> invalidCurrency = Arrays.asList("GO", "ITAMCUBE", "RPC", "BURP", "ETHO", "MXW", "COMB", "SOV", "ALBT",
+                "CARR", "CBC", "DINO", "DPI", "EPS", "EXRD", "KIN", "MFT", "NIF", "PIVX", "PLATO", "RBS", "SRBS", "SPI", "TKY", "UMB");
+
+        List<SymbolResponse> symbolList = liveKucoinRestClient.symbolAPI().getSymbolList(null);
+        symbolList.forEach(symbolResponse -> {
+            if(symbolResponse.getSymbol().equals("BTC-USDT")){
+                System.out.println(symbolResponse);
+            }
+        });
+        assertThat(symbolList, notNullValue());
+        symbolList.forEach(symbolResponse -> {
+            String cur1 = symbolResponse.getSymbol().split("-")[0];
+            String cur2 = symbolResponse.getSymbol().split("-")[1];
+            if(invalidCurrency.contains(cur1) || invalidCurrency.contains(cur2)){
+                System.out.println(symbolResponse.getSymbol());
+            }
+        });
+
+        AllTickersResponse allTickers = liveKucoinRestClient.symbolAPI().getAllTickers();
+        allTickers.getTicker().forEach(marketTickerResponse -> {
+            String cur1 = marketTickerResponse.getSymbol().split("-")[0];
+            String cur2 = marketTickerResponse.getSymbol().split("-")[1];
+            if(invalidCurrency.contains(cur1) || invalidCurrency.contains(cur2)){
+                System.out.println(marketTickerResponse.getSymbol());
+            }
+        });
+        assertThat(allTickers, notNullValue());
+    }
+
     /**
      * The live and sandbox APIs seem to be divergent. Test against the live API too where
      * possible
@@ -428,13 +503,18 @@ public class KucoinRestClientTest {
         assertThat(kcs, notNullValue());
 
 
-
         CurrencyDetailV2Response kcsv2 = liveKucoinRestClient.currencyAPI().getCurrencyDetailV2("KCS", null);
         assertThat(kcsv2, notNullValue());
 
         Map<String, BigDecimal> fiatPrice = liveKucoinRestClient.currencyAPI().getFiatPrice("USD", "KCS, BTC");
         assertThat(fiatPrice, notNullValue());
         assertThat(fiatPrice.keySet().size(), greaterThan(1));
+    }
+
+    @Test
+    public void getCurrenciesTest() throws IOException {
+        List<CurrencyDetailV2Response> currencyDetailV2ResponseList = liveKucoinRestClient.currencyAPI().getCurrenciesV3();
+        assertThat(currencyDetailV2ResponseList, notNullValue());
     }
 
     @Test

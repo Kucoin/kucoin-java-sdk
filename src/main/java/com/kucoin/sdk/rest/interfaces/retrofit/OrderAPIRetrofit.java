@@ -6,12 +6,7 @@ package com.kucoin.sdk.rest.interfaces.retrofit;
 import com.kucoin.sdk.rest.request.*;
 import com.kucoin.sdk.rest.response.*;
 import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.DELETE;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
+import retrofit2.http.*;
 
 import java.util.List;
 
@@ -22,6 +17,9 @@ public interface OrderAPIRetrofit {
 
     @POST("api/v1/orders")
     Call<KucoinResponse<OrderCreateResponse>> createOrder(@Body OrderCreateApiRequest opsRequest);
+
+    @POST("api/v1/orders/test")
+    Call<KucoinResponse<OrderCreateResponse>> createOrderTest(@Body OrderCreateApiRequest opsRequest);
 
     @POST("api/v1/orders/multi")
     Call<KucoinResponse<MultiOrderCreateResponse>> createMultipleOrders(@Body MultiOrderCreateRequest multiOrderCreateRequest);
@@ -132,4 +130,7 @@ public interface OrderAPIRetrofit {
 
     @GET("api/v1/hf/orders/dead-cancel-all/query")
     Call<KucoinResponse<HFOrderDeadCancelQueryResponse>> queryHFOrderDeadCancel();
+
+    @GET("/api/v1/status")
+    Call<KucoinResponse<ServerStatusResponse>> queryServerStatus();
 }

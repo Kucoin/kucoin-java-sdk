@@ -3,6 +3,7 @@
  */
 package com.kucoin.sdk.impl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.kucoin.sdk.KucoinClientBuilder;
 import com.kucoin.sdk.KucoinPrivateWSClient;
 import com.kucoin.sdk.constants.APIConstants;
@@ -61,6 +62,9 @@ public class KucoinPrivateWSClientImpl extends BaseWebsocketImpl implements Kuco
     public String onOrderActivate(KucoinAPICallback<KucoinEvent<OrderActivateEvent>> callback, String... symbols) {
         if (callback != null) {
             this.listener.getCallbackMap().put(APIConstants.API_ACTIVATE_TOPIC_PREFIX, callback);
+            this.listener.getTypeReferenceMap().put(APIConstants.API_ACTIVATE_TOPIC_PREFIX,
+                    new TypeReference<KucoinEvent<OrderActivateEvent>>() {
+                    });
         }
         String topic = APIConstants.API_ACTIVATE_TOPIC_PREFIX + String.join(",", symbols);
         return subscribe(topic, true, true);
@@ -70,6 +74,9 @@ public class KucoinPrivateWSClientImpl extends BaseWebsocketImpl implements Kuco
     public String onAccountBalance(KucoinAPICallback<KucoinEvent<AccountChangeEvent>> callback) {
         if (callback != null) {
             this.listener.getCallbackMap().put(APIConstants.API_BALANCE_TOPIC_PREFIX, callback);
+            this.listener.getTypeReferenceMap().put(APIConstants.API_BALANCE_TOPIC_PREFIX,
+                    new TypeReference<KucoinEvent<AccountChangeEvent>>() {
+                    });
         }
         return subscribe(APIConstants.API_BALANCE_TOPIC_PREFIX, true, true);
     }
@@ -78,6 +85,9 @@ public class KucoinPrivateWSClientImpl extends BaseWebsocketImpl implements Kuco
     public String onOrderChange(KucoinAPICallback<KucoinEvent<OrderChangeEvent>> callback) {
         if (callback != null) {
             this.listener.getCallbackMap().put(APIConstants.API_ORDER_TOPIC_PREFIX, callback);
+            this.listener.getTypeReferenceMap().put(APIConstants.API_ORDER_TOPIC_PREFIX,
+                    new TypeReference<KucoinEvent<OrderChangeEvent>>() {
+                    });
         }
         return subscribe(APIConstants.API_ORDER_TOPIC_PREFIX, true, true);
     }
@@ -86,6 +96,9 @@ public class KucoinPrivateWSClientImpl extends BaseWebsocketImpl implements Kuco
     public String onOrderV2Change(KucoinAPICallback<KucoinEvent<OrderChangeEvent>> callback) {
         if (callback != null) {
             this.listener.getCallbackMap().put(APIConstants.API_ORDER_V2_TOPIC_PREFIX, callback);
+            this.listener.getTypeReferenceMap().put(APIConstants.API_ORDER_V2_TOPIC_PREFIX,
+                    new TypeReference<KucoinEvent<OrderChangeEvent>>() {
+                    });
         }
         return subscribe(APIConstants.API_ORDER_V2_TOPIC_PREFIX, true, true);
     }
@@ -94,6 +107,9 @@ public class KucoinPrivateWSClientImpl extends BaseWebsocketImpl implements Kuco
     public String onMarginPosition(KucoinAPICallback<KucoinEvent<MarginPositionEvent>> callback) {
         if (callback != null) {
             this.listener.getCallbackMap().put(APIConstants.API_MARGIN_POSITION_TOPIC_PREFIX, callback);
+            this.listener.getTypeReferenceMap().put(APIConstants.API_MARGIN_POSITION_TOPIC_PREFIX,
+                    new TypeReference<KucoinEvent<MarginPositionEvent>>() {
+                    });
         }
         return subscribe(APIConstants.API_MARGIN_POSITION_TOPIC_PREFIX, true, true);
     }
@@ -102,14 +118,20 @@ public class KucoinPrivateWSClientImpl extends BaseWebsocketImpl implements Kuco
     public String onMarginLoan(KucoinAPICallback<KucoinEvent<MarginLoanEvent>> callback, String symbol) {
         if (callback != null) {
             this.listener.getCallbackMap().put(APIConstants.API_MARGIN_LOAN_TOPIC_PREFIX, callback);
+            this.listener.getTypeReferenceMap().put(APIConstants.API_MARGIN_LOAN_TOPIC_PREFIX,
+                    new TypeReference<KucoinEvent<MarginLoanEvent>>() {
+                    });
         }
-        return subscribe(APIConstants.API_MARGIN_LOAN_TOPIC_PREFIX+symbol, true, true);
+        return subscribe(APIConstants.API_MARGIN_LOAN_TOPIC_PREFIX + symbol, true, true);
     }
 
     @Override
     public String onAdvancedOrder(KucoinAPICallback<KucoinEvent<? extends AdvancedOrderEvent>> callback, String... symbols) {
         if (callback != null) {
             this.listener.getCallbackMap().put(APIConstants.API_ADVANCED_ORDER_TOPIC_PREFIX, callback);
+            this.listener.getTypeReferenceMap().put(APIConstants.API_ADVANCED_ORDER_TOPIC_PREFIX,
+                    new TypeReference<KucoinEvent<? extends AdvancedOrderEvent>>() {
+                    });
         }
         return subscribe(APIConstants.API_ADVANCED_ORDER_TOPIC_PREFIX, true, true);
     }

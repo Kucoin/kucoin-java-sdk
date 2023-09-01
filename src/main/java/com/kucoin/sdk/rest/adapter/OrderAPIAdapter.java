@@ -8,13 +8,12 @@ import com.kucoin.sdk.rest.interfaces.OrderAPI;
 import com.kucoin.sdk.rest.interfaces.retrofit.OrderAPIRetrofit;
 import com.kucoin.sdk.rest.request.*;
 import com.kucoin.sdk.rest.response.*;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by chenshiwei on 2019/1/18.
@@ -31,22 +30,30 @@ public class OrderAPIAdapter extends AuthRetrofitAPIImpl<OrderAPIRetrofit> imple
 
     @Override
     public OrderCreateResponse createOrder(OrderCreateApiRequest opsRequest) throws IOException {
-		if (Objects.nonNull(opsRequest) && StringUtils.isEmpty(opsRequest.getTradeType())) {
-			opsRequest.setTradeType("TRADE");
-		}
+        if (Objects.nonNull(opsRequest) && StringUtils.isEmpty(opsRequest.getTradeType())) {
+            opsRequest.setTradeType("TRADE");
+        }
         return executeSync(getAPIImpl().createOrder(opsRequest));
     }
 
     @Override
+    public OrderCreateResponse createOrderTest(OrderCreateApiRequest opsRequest) throws IOException {
+        if (Objects.nonNull(opsRequest) && StringUtils.isEmpty(opsRequest.getTradeType())) {
+            opsRequest.setTradeType("TRADE");
+        }
+        return executeSync(getAPIImpl().createOrderTest(opsRequest));
+    }
+
+    @Override
     public MultiOrderCreateResponse createMultipleOrders(MultiOrderCreateRequest multiOrderCreateRequest) throws IOException {
-		if (Objects.nonNull(multiOrderCreateRequest)
-				&& CollectionUtils.isNotEmpty(multiOrderCreateRequest.getOrderList())) {
-			multiOrderCreateRequest.getOrderList().forEach(order -> {
-				if (StringUtils.isEmpty(order.getTradeType())) {
-					order.setTradeType("TRADE");
-				}
-			});
-		}
+        if (Objects.nonNull(multiOrderCreateRequest)
+                && CollectionUtils.isNotEmpty(multiOrderCreateRequest.getOrderList())) {
+            multiOrderCreateRequest.getOrderList().forEach(order -> {
+                if (StringUtils.isEmpty(order.getTradeType())) {
+                    order.setTradeType("TRADE");
+                }
+            });
+        }
         return executeSync(getAPIImpl().createMultipleOrders(multiOrderCreateRequest));
     }
 
@@ -195,5 +202,10 @@ public class OrderAPIAdapter extends AuthRetrofitAPIImpl<OrderAPIRetrofit> imple
     @Override
     public HFOrderDeadCancelQueryResponse queryHFOrderDeadCancel() throws IOException {
         return executeSync(getAPIImpl().queryHFOrderDeadCancel());
+    }
+
+    @Override
+    public ServerStatusResponse queryServerStatus() throws IOException {
+        return executeSync(getAPIImpl().queryServerStatus());
     }
 }

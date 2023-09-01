@@ -41,6 +41,11 @@ public class CurrencyAPIAdaptor extends PublicRetrofitAPIImpl<CurrencyAPIRetrofi
     }
 
     @Override
+    public List<CurrencyDetailV2Response> getCurrenciesV3() throws IOException {
+        return super.executeSync(getAPIImpl().getCurrenciesV3());
+    }
+
+    @Override
     public Map<String, BigDecimal> getFiatPrice(String base, String currencies) throws IOException {
         return super.executeSync(getAPIImpl().getFiatPrice(base, currencies));
     }
