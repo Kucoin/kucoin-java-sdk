@@ -506,6 +506,9 @@ public class KucoinRestClientTest {
         CurrencyDetailV2Response kcsv2 = liveKucoinRestClient.currencyAPI().getCurrencyDetailV2("KCS", null);
         assertThat(kcsv2, notNullValue());
 
+        CurrencyDetailV3Response kcsv3 = liveKucoinRestClient.currencyAPI().getCurrencyDetailV3("KCS", null);
+        assertThat(kcsv3, notNullValue());
+
         Map<String, BigDecimal> fiatPrice = liveKucoinRestClient.currencyAPI().getFiatPrice("USD", "KCS, BTC");
         assertThat(fiatPrice, notNullValue());
         assertThat(fiatPrice.keySet().size(), greaterThan(1));

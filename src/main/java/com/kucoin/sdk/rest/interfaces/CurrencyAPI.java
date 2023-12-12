@@ -9,6 +9,7 @@ import java.util.List;
 import com.kucoin.sdk.exception.KucoinApiException;
 import com.kucoin.sdk.rest.response.CurrencyDetailResponse;
 import com.kucoin.sdk.rest.response.CurrencyDetailV2Response;
+import com.kucoin.sdk.rest.response.CurrencyDetailV3Response;
 import com.kucoin.sdk.rest.response.CurrencyResponse;
 
 import java.math.BigDecimal;
@@ -41,7 +42,7 @@ public interface CurrencyAPI {
 
 
     /**
-     * Get single currency detail.return all chain if chain is null.
+     * Get single currency detail. Return all chains if chain is null.
      *
      * @param currency the code of the currency
      * @param chain the name of the chain
@@ -50,6 +51,18 @@ public interface CurrencyAPI {
      * @throws KucoinApiException when errors are returned from the exchange.
      */
     CurrencyDetailV2Response getCurrencyDetailV2(String currency, String chain) throws IOException;
+
+
+    /**
+     * Get single currency detail. Return all chains if chain is null.
+     *
+     * @param currency the code of the currency
+     * @param chain the name of the chain
+     * @return Currency detail.
+     * @throws IOException on socket errors.
+     * @throws KucoinApiException when errors are returned from the exchange.
+     */
+    CurrencyDetailV3Response getCurrencyDetailV3(String currency, String chain) throws IOException;
 
     /**
      * List known currencies detail.
