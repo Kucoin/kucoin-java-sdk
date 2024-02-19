@@ -77,7 +77,7 @@ public class KucoinRestClientTest {
     }
 
     @Test
-    public void subAccountAPIQuery()  throws Exception {
+    public void subAccountAPIQuery() throws Exception {
         List<SubApiKeyResponse> subApiKeyResponses = liveKucoinRestClient.accountAPI().getSubApiKey("tcwspot01", null);
         assertThat(subApiKeyResponses, notNullValue());
     }
@@ -181,7 +181,7 @@ public class KucoinRestClientTest {
                 .price(BigDecimal.valueOf(0.0359)).size(BigDecimal.TEN).side("buy").tradeType("TRADE")
                 .symbol("QRDO-USDT").type("limit").clientOid(clientOid).build();
         OrderCreateResponse order = liveKucoinRestClient.orderAPI().createOrder(request);
-        System.out.println("clientOid:"+clientOid+" orderId:"+order.getOrderId());
+        System.out.println("clientOid:" + clientOid + " orderId:" + order.getOrderId());
         Thread.sleep(10000);
         liveKucoinRestClient.orderAPI().cancelOrder(order.getOrderId());
     }
@@ -193,7 +193,7 @@ public class KucoinRestClientTest {
                 .price(BigDecimal.valueOf(0.0359)).size(BigDecimal.TEN).side("buy").tradeType("TRADE")
                 .symbol("QRDO-USDT").type("limit").clientOid(clientOid).build();
         OrderCreateResponse order = liveKucoinRestClient.orderAPI().createOrderTest(request);
-        System.out.println("clientOid:"+clientOid+" orderId:"+order.getOrderId());
+        System.out.println("clientOid:" + clientOid + " orderId:" + order.getOrderId());
         Thread.sleep(10000);
     }
 
@@ -319,6 +319,10 @@ public class KucoinRestClientTest {
 
         HFOrderDeadCancelQueryResponse hfOrderDeadCancelQueryResponse = liveKucoinRestClient.orderAPI().queryHFOrderDeadCancel();
         assertThat(hfOrderDeadCancelQueryResponse, notNullValue());
+
+        HFOrderCancelAllResponse response = liveKucoinRestClient.orderAPI().cancelAllHFOrders();
+        assertThat(response, notNullValue());
+
     }
 
     @Test
@@ -407,7 +411,7 @@ public class KucoinRestClientTest {
     }
 
     @Test
-    public void getAllTickers() throws Exception{
+    public void getAllTickers() throws Exception {
 
         SymbolTickResponse hrStats = liveKucoinRestClient.symbolAPI().get24hrStats("GO-USDT");
         assertThat(hrStats, notNullValue());
@@ -417,7 +421,7 @@ public class KucoinRestClientTest {
 
         List<SymbolResponse> symbolList = liveKucoinRestClient.symbolAPI().getSymbolList(null);
         symbolList.forEach(symbolResponse -> {
-            if(symbolResponse.getSymbol().equals("BTC-USDT")){
+            if (symbolResponse.getSymbol().equals("BTC-USDT")) {
                 System.out.println(symbolResponse);
             }
         });
@@ -425,7 +429,7 @@ public class KucoinRestClientTest {
         symbolList.forEach(symbolResponse -> {
             String cur1 = symbolResponse.getSymbol().split("-")[0];
             String cur2 = symbolResponse.getSymbol().split("-")[1];
-            if(invalidCurrency.contains(cur1) || invalidCurrency.contains(cur2)){
+            if (invalidCurrency.contains(cur1) || invalidCurrency.contains(cur2)) {
                 System.out.println(symbolResponse.getSymbol());
             }
         });
@@ -434,7 +438,7 @@ public class KucoinRestClientTest {
         allTickers.getTicker().forEach(marketTickerResponse -> {
             String cur1 = marketTickerResponse.getSymbol().split("-")[0];
             String cur2 = marketTickerResponse.getSymbol().split("-")[1];
-            if(invalidCurrency.contains(cur1) || invalidCurrency.contains(cur2)){
+            if (invalidCurrency.contains(cur1) || invalidCurrency.contains(cur2)) {
                 System.out.println(marketTickerResponse.getSymbol());
             }
         });
@@ -471,7 +475,7 @@ public class KucoinRestClientTest {
     @Test
     public void orderBookAPI() throws Exception {
 
-        OrderBookResponse fullLevel2OrderBook = liveKucoinRestClient.orderBookAPI().getAllLevel2OrderBook("ETH-BTC");
+        OrderBookResponse fullLevel2OrderBook = liveKucoinRestClient.orderBookAPI().getAllLevel2OrderBook("STRK-BTC");
         assertThat(fullLevel2OrderBook, notNullValue());
 
         OrderBookResponse top20Level2OrderBook = liveKucoinRestClient.orderBookAPI().getTop20Level2OrderBook("BTC-USDT");
@@ -551,6 +555,16 @@ public class KucoinRestClientTest {
 
         List<MarginPriceStrategyResponse> marginPriceStrategy = liveKucoinRestClient.marginAPI().getMarginPriceStrategy("cross");
         assertThat(marginPriceStrategy, notNullValue());
+
+        List<EtfInfoResponse> etfInfoResponseList = liveKucoinRestClient.marginAPI().getEtfInfo("BTCUP");
+        assertThat(etfInfoResponseList, notNullValue());
+
+        List<CrossMarginCurrencyResponse> marginCurrencies = liveKucoinRestClient.marginAPI().getMarginCurrencies("", "XEM");
+        assertThat(marginCurrencies, notNullValue());
+
+        MarginAccountResponse marginAccountResponse = liveKucoinRestClient.marginAPI().getMarginAccounts("BTC", "");
+        assertThat(marginAccountResponse, notNullValue());
+
     }
 
     @Test
@@ -660,6 +674,108 @@ public class KucoinRestClientTest {
         liveKucoinRestClient.isolatedAPI().repayAll("BTC-USDT", "USDT", BigDecimal.TEN, "RECENTLY_EXPIRE_FIRST");
 
         liveKucoinRestClient.isolatedAPI().repaySingle("BTC-USDT", "USDT", BigDecimal.TEN, "loadId123456789000000000");
+
+        List<IsolatedMarginCurrencyResponse> isolatedMarginCurrencyResponseList = liveKucoinRestClient.isolatedAPI().getIsolatedCurrencies("NKN-USDT");
+        assertThat(isolatedMarginCurrencyResponseList, notNullValue());
+
+        IsolatedAccountV3Response isolatedAccountsV3 = liveKucoinRestClient.isolatedAPI().getIsolatedAccountsV3("NKN-USDT", null , null);
+        assertThat(isolatedAccountsV3, notNullValue());
+
+    }
+
+    @Test
+    public void ocoOrderAPI() throws Exception {
+        OrderCreateResponse ocoResp = liveKucoinRestClient.ocoOrderAPI().createOcoOrder(
+                OcoOrderCreateRequest
+                        .builder()
+                        .symbol("BTC-USDT")
+                        .side("buy")
+                        .price(new BigDecimal("40000"))
+                        .size(new BigDecimal("0.00001"))
+                        .limitPrice(new BigDecimal("40000"))
+                        .stopPrice(new BigDecimal("43500"))
+                        .clientOid(UUID.randomUUID().toString())
+                        .build());
+        assertThat(ocoResp, notNullValue());
+        OcoOrderResponse ocoOrder = liveKucoinRestClient.ocoOrderAPI().getOcoOrder(ocoResp.getOrderId());
+        assertThat(ocoOrder, notNullValue());
+        OrderCancelResponse orderCancelResponse = liveKucoinRestClient.ocoOrderAPI().cancelOcoOrder(ocoOrder.getOrderId());
+        assertThat(orderCancelResponse, notNullValue());
+        ocoResp = liveKucoinRestClient.ocoOrderAPI().createOcoOrder(
+                OcoOrderCreateRequest
+                        .builder()
+                        .symbol("BTC-USDT")
+                        .side("sell")
+                        .price(new BigDecimal("43500"))
+                        .size(new BigDecimal("0.00001"))
+                        .limitPrice(new BigDecimal("40000"))
+                        .stopPrice(new BigDecimal("40000"))
+                        .clientOid(UUID.randomUUID().toString())
+                        .build());
+        assertThat(ocoResp, notNullValue());
+        OcoOrderDetailResponse ocoOrderDetails = liveKucoinRestClient.ocoOrderAPI().getOcoOrderDetails(ocoResp.getOrderId());
+        assertThat(ocoOrderDetails, notNullValue());
+        OcoOrderResponse ocoOrderByClientOid = liveKucoinRestClient.ocoOrderAPI().getOcoOrderByClientOid(ocoOrderDetails.getClientOid());
+        assertThat(ocoOrderByClientOid, notNullValue());
+        orderCancelResponse = liveKucoinRestClient.ocoOrderAPI().cancelOcoOrderByClientOid(ocoOrderDetails.getClientOid());
+        assertThat(orderCancelResponse, notNullValue());
+
+        ocoResp = liveKucoinRestClient.ocoOrderAPI().createOcoOrder(
+                OcoOrderCreateRequest
+                        .builder()
+                        .symbol("BTC-USDT")
+                        .side("buy")
+                        .price(new BigDecimal("40000"))
+                        .size(new BigDecimal("0.00001"))
+                        .limitPrice(new BigDecimal("40000"))
+                        .stopPrice(new BigDecimal("43500"))
+                        .clientOid(UUID.randomUUID().toString())
+                        .build());
+        ocoResp = liveKucoinRestClient.ocoOrderAPI().createOcoOrder(
+                OcoOrderCreateRequest
+                        .builder()
+                        .symbol("BTC-USDT")
+                        .side("sell")
+                        .price(new BigDecimal("43500"))
+                        .size(new BigDecimal("0.00001"))
+                        .limitPrice(new BigDecimal("40000"))
+                        .stopPrice(new BigDecimal("40000"))
+                        .clientOid(UUID.randomUUID().toString())
+                        .build());
+        OcoOrderCancelRequest cancelRequest = new OcoOrderCancelRequest();
+        cancelRequest.setSymbol("BTC-USDT");
+        orderCancelResponse = liveKucoinRestClient.ocoOrderAPI().cancelOcoOrders(cancelRequest);
+        assertThat(orderCancelResponse, notNullValue());
+        List<String> ocoIdList = new ArrayList<>();
+        ocoResp = liveKucoinRestClient.ocoOrderAPI().createOcoOrder(
+                OcoOrderCreateRequest
+                        .builder()
+                        .symbol("BTC-USDT")
+                        .side("buy")
+                        .price(new BigDecimal("40000"))
+                        .size(new BigDecimal("0.00001"))
+                        .limitPrice(new BigDecimal("40000"))
+                        .stopPrice(new BigDecimal("43500"))
+                        .clientOid(UUID.randomUUID().toString())
+                        .build());
+        ocoIdList.add(ocoResp.getOrderId());
+        ocoResp = liveKucoinRestClient.ocoOrderAPI().createOcoOrder(
+                OcoOrderCreateRequest
+                        .builder()
+                        .symbol("BTC-USDT")
+                        .side("sell")
+                        .price(new BigDecimal("43500"))
+                        .size(new BigDecimal("0.00001"))
+                        .limitPrice(new BigDecimal("40000"))
+                        .stopPrice(new BigDecimal("40000"))
+                        .clientOid(UUID.randomUUID().toString())
+                        .build());
+        ocoIdList.add(ocoResp.getOrderId());
+        cancelRequest = new OcoOrderCancelRequest();
+        cancelRequest.setOrderIds(ocoIdList);
+        orderCancelResponse = liveKucoinRestClient.ocoOrderAPI().cancelOcoOrders(cancelRequest);
+        assertThat(orderCancelResponse, notNullValue());
+
     }
 
 }

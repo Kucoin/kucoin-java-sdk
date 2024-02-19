@@ -44,4 +44,12 @@ public interface IsolatedAPIRetrofit {
 
     @POST("api/v1/isolated/repay/single")
     Call<KucoinResponse<Void>> repaySingle(@Body IsolatedRepaySingleRequest request);
+
+    @GET("api/v3/margin/currencies")
+    Call<KucoinResponse<List<IsolatedMarginCurrencyResponse>>> getIsolatedCurrencies(@Query("isIsolated") Boolean isIsolated, @Query("symbol") String symbol);
+
+    @GET("api/v3/isolated/accounts")
+    Call<KucoinResponse<IsolatedAccountV3Response>> getIsolatedAccountsV3(@Query("symbol") String symbol,
+                                                                                   @Query("quoteCurrency") String quoteCurrency,
+                                                                                   @Query("queryType") String queryType);
 }

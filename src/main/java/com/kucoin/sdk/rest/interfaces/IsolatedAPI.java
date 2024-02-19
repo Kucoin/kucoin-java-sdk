@@ -90,4 +90,25 @@ public interface IsolatedAPI {
      * @param loanId   Trade order number; when this field is configured, the sequence strategy is invalidated
      */
     void repaySingle(String symbol, String currency, BigDecimal size, String loanId) throws IOException;
+
+    /**
+     * This interface can obtain the risk limit and currency configuration of isolated margin.
+     *
+     * @param symbol
+     * @return
+     * @throws IOException
+     */
+    List<IsolatedMarginCurrencyResponse> getIsolatedCurrencies(String symbol) throws IOException;
+
+    /**
+     * Get Account Detail - Isolated Margin V3
+     * @param symbol For isolated trading pairs, query all without passing
+     * @param quoteCurrency currently only supports USDT, KCS, BTC, default is USDT
+     * @param queryType Query account type (default MARGIN), ISOLATED- - only query low frequency isolated margin account, ISOLATED_V2-only query high frequency isolated margin account, ALL - consistent aggregate query with the web side
+     * @return
+     */
+    IsolatedAccountV3Response getIsolatedAccountsV3(String symbol,
+                                                            String quoteCurrency,
+                                                            String queryType) throws IOException;
+
 }

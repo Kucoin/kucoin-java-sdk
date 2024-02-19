@@ -167,6 +167,11 @@ public class OrderAPIAdapter extends AuthRetrofitAPIImpl<OrderAPIRetrofit> imple
     }
 
     @Override
+    public HFOrderCancelAllResponse cancelAllHFOrders() throws IOException {
+        return executeSync(getAPIImpl().cancelAllHFOrders());
+    }
+
+    @Override
     public List<HFOrderResponse> getActiveHFOrders(String symbol) throws IOException {
         return executeSync(getAPIImpl().getActiveHFOrders(symbol));
     }

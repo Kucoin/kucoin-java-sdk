@@ -82,4 +82,14 @@ public class IsolatedAPIAdapter extends AuthRetrofitAPIImpl<IsolatedAPIRetrofit>
         request.setLoanId(loanId);
         executeSync(getAPIImpl().repaySingle(request));
     }
+
+    @Override
+    public List<IsolatedMarginCurrencyResponse> getIsolatedCurrencies(String symbol) throws IOException {
+        return executeSync(getAPIImpl().getIsolatedCurrencies(true, symbol));
+    }
+
+    @Override
+    public IsolatedAccountV3Response getIsolatedAccountsV3(String symbol, String quoteCurrency, String queryType) throws IOException {
+        return executeSync(getAPIImpl().getIsolatedAccountsV3(symbol, quoteCurrency, queryType));
+    }
 }

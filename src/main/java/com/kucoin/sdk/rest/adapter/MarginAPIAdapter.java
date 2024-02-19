@@ -7,11 +7,7 @@ import com.kucoin.sdk.rest.impl.retrofit.AuthRetrofitAPIImpl;
 import com.kucoin.sdk.rest.interfaces.MarginAPI;
 import com.kucoin.sdk.rest.interfaces.retrofit.MarginAPIRetrofit;
 import com.kucoin.sdk.rest.request.MarginOrderCreateRequest;
-import com.kucoin.sdk.rest.response.MarginAccountResponse;
-import com.kucoin.sdk.rest.response.MarginConfigResponse;
-import com.kucoin.sdk.rest.response.MarginOrderCreateResponse;
-import com.kucoin.sdk.rest.response.MarginPriceStrategyResponse;
-import com.kucoin.sdk.rest.response.MarkPriceResponse;
+import com.kucoin.sdk.rest.response.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -54,4 +50,20 @@ public class MarginAPIAdapter extends AuthRetrofitAPIImpl<MarginAPIRetrofit> imp
     public List<MarginPriceStrategyResponse> getMarginPriceStrategy(String marginModel) throws IOException {
         return executeSync(getAPIImpl().getMarginPriceStrategy(marginModel));
     }
+
+    @Override
+    public List<EtfInfoResponse> getEtfInfo(String currency) throws IOException {
+        return executeSync(getAPIImpl().getEtfInfo(currency));
+    }
+
+    @Override
+    public List<CrossMarginCurrencyResponse> getMarginCurrencies(String symbol, String currency) throws IOException {
+        return executeSync(getAPIImpl().getMarginCurrencies(symbol, currency));
+    }
+
+    @Override
+    public MarginAccountResponse getMarginAccounts(String quoteCurrency, String queryType) throws IOException {
+        return executeSync(getAPIImpl().getMarginAccounts(quoteCurrency, queryType));
+    }
+
 }

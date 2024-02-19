@@ -13,13 +13,13 @@ The detailed document [https://docs.kucoin.com](https://docs.kucoin.com).
 <dependency>
     <groupId>com.kucoin</groupId>
     <artifactId>kucoin-java-sdk</artifactId>
-    <version>1.0.9</version>
+    <version>1.0.10</version>
 </dependency>
 ```
 ## Usage
 ### Build Client
 ```java
-KucoinClientBuilder builder = new KucoinClientBuilder().withBaseUrl("https://openapi-sandbox.kucoin.com").withApiKey("YOUR_API_KEY", "YOUR_SECRET", "YOUR_PASS_PHRASE");
+KucoinClientBuilder builder = new KucoinClientBuilder().withBaseUrl("https://openapi-v2.kucoin.com").withApiKey("YOUR_API_KEY", "YOUR_SECRET", "YOUR_PASS_PHRASE");
 KucoinRestClient kucoinRestClient = builder.buildRestClient();
 KucoinPrivateWSClient kucoinPrivateWSClient = builder.buildPrivateWSClient();
 KucoinPublicWSClient kucoinPublicWSClient = builder.buildPublicWSClient();
@@ -30,7 +30,6 @@ You can use `withBaseUrl` method to change evironment.
 | **Environment** | **BaseUri** |
 | -------- | -------- |
 | *Production* `DEFAULT` | https://openapi-v2.kucoin.com |
-| *Sandbox* | https://openapi-sandbox.kucoin.com |
 
 If you only need to use the public web socket client or REST client public method, you can igonre `withApiKey` method. To customize your own API implementation, you may use the `with*API` method we provided for you.
 

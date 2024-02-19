@@ -4,11 +4,8 @@
 package com.kucoin.sdk.rest.interfaces;
 
 import com.kucoin.sdk.rest.request.MarginOrderCreateRequest;
-import com.kucoin.sdk.rest.response.MarginAccountResponse;
-import com.kucoin.sdk.rest.response.MarginConfigResponse;
-import com.kucoin.sdk.rest.response.MarginOrderCreateResponse;
-import com.kucoin.sdk.rest.response.MarginPriceStrategyResponse;
-import com.kucoin.sdk.rest.response.MarkPriceResponse;
+import com.kucoin.sdk.rest.response.*;
+import retrofit2.http.Query;
 
 import java.io.IOException;
 import java.util.List;
@@ -64,4 +61,30 @@ public interface MarginAPI {
      * @return
      */
     List<MarginPriceStrategyResponse> getMarginPriceStrategy(String marginModel) throws IOException;
+
+    /**
+     * Get Leveraged Token Info
+     * @param currency
+     * @return EtfInfoResponse
+     * @throws IOException
+     */
+    List<EtfInfoResponse> getEtfInfo(String currency) throws IOException;
+
+    /**
+     * This interface can obtain the risk limit and currency configuration of cross margin.
+     *
+     * @param symbol
+     * @param currency
+     * @return
+     */
+    List<CrossMarginCurrencyResponse> getMarginCurrencies(String symbol, String currency) throws IOException;
+
+    /**
+     * Get Account Detail - Cross Margin
+     * @param quoteCurrency currently only supports USDT, KCS, BTC, USDT as default
+     * @param queryType Query account type (default MARGIN), MARGIN - only query low frequency cross margin account, MARGIN_V2-only query high frequency cross margin account, ALL - consistent aggregate query with the web side
+     * @return
+     */
+    MarginAccountResponse getMarginAccounts(String quoteCurrency, String queryType) throws IOException;
+
 }

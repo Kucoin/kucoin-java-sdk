@@ -36,13 +36,15 @@ public class KucoinRestClientImpl implements KucoinRestClient {
 
     private final StopOrderAPI stopOrderAPI;
 
-    private CommonAPI commonAPI;
+    private final CommonAPI commonAPI;
 
-    private MarginAPI marginAPI;
+    private final MarginAPI marginAPI;
 
-    private LoanAPI loanAPI;
+    private final LoanAPI loanAPI;
 
-    private IsolatedAPI isolatedAPI;
+    private final IsolatedAPI isolatedAPI;
+
+    private final OcoOrderAPI ocoOrderAPI;
 
     public KucoinRestClientImpl(KucoinClientBuilder kucoinBuilder) {
         this.userAPI = kucoinBuilder.getUserAPI();
@@ -61,6 +63,7 @@ public class KucoinRestClientImpl implements KucoinRestClient {
         this.marginAPI = kucoinBuilder.getMarginAPI();
         this.loanAPI = kucoinBuilder.getLoanAPI();
         this.isolatedAPI = kucoinBuilder.getIsolatedAPI();
+        this.ocoOrderAPI = kucoinBuilder.getOcoOrderAPI();
     }
 
     @Override
@@ -141,6 +144,11 @@ public class KucoinRestClientImpl implements KucoinRestClient {
     @Override
     public IsolatedAPI isolatedAPI() {
         return isolatedAPI;
+    }
+
+    @Override
+    public OcoOrderAPI ocoOrderAPI() {
+        return ocoOrderAPI;
     }
 
 }

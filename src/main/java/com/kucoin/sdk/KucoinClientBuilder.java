@@ -71,6 +71,8 @@ public class KucoinClientBuilder {
 
     private IsolatedAPI isolatedAPI;
 
+    private OcoOrderAPI ocoOrderAPI;
+
     public KucoinRestClient buildRestClient() {
         if (StringUtils.isBlank(baseUrl)) baseUrl = APIConstants.API_BASE_URL;
         if (userAPI == null) userAPI = new UserAPIAdapter(baseUrl, apiKey, secret, passPhrase, apiKeyVersion);
@@ -89,6 +91,7 @@ public class KucoinClientBuilder {
         if (symbolAPI == null) symbolAPI = new SymbolAPIAdaptor(baseUrl);
         if (orderBookAPI == null) orderBookAPI = new OrderBookAPIAdapter(baseUrl, apiKey, secret, passPhrase, apiKeyVersion);
         if (historyAPI == null) historyAPI = new HistoryAPIAdapter(baseUrl);
+        if (ocoOrderAPI == null) ocoOrderAPI = new OcoOrderAPIAdapter(baseUrl, apiKey, secret, passPhrase, apiKeyVersion);
         return new KucoinRestClientImpl(this);
     }
 
@@ -142,6 +145,11 @@ public class KucoinClientBuilder {
 
     public KucoinClientBuilder withStopOrderAPI(StopOrderAPI stopOrderAPI) {
         this.stopOrderAPI = stopOrderAPI;
+        return this;
+    }
+
+    public KucoinClientBuilder withOcoOrderAPI(OcoOrderAPI ocoOrderAPI) {
+        this.ocoOrderAPI = ocoOrderAPI;
         return this;
     }
 

@@ -276,6 +276,14 @@ public interface OrderAPI {
     String cancelHFOrdersBySymbol(String symbol) throws IOException;
 
     /**
+     * This endpoint can cancel all HF orders for all symbol.
+     *
+     * @return HFOrderCancelAllResponse
+     * @throws IOException
+     */
+    HFOrderCancelAllResponse cancelAllHFOrders() throws IOException;
+
+    /**
      * This endpoint obtains a list of all active HF orders. The return data is sorted in descending order based on the latest update times.
      * https://docs.kucoin.com/spot-hf/#obtain-list-of-active-hf-orders
      *

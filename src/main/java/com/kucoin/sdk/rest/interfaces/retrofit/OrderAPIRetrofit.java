@@ -103,6 +103,9 @@ public interface OrderAPIRetrofit {
     @DELETE("api/v1/hf/orders")
     Call<KucoinResponse<String>> cancelHFOrdersBySymbol(@Query("symbol") String symbol);
 
+    @DELETE("api/v1/hf/orders/cancelAll")
+    Call<KucoinResponse<HFOrderCancelAllResponse>> cancelAllHFOrders();
+
     @GET("api/v1/hf/orders/active")
     Call<KucoinResponse<List<HFOrderResponse>>> getActiveHFOrders(@Query("symbol") String symbol);
 

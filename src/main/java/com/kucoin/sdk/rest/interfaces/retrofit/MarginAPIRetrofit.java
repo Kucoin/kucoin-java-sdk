@@ -4,12 +4,7 @@
 package com.kucoin.sdk.rest.interfaces.retrofit;
 
 import com.kucoin.sdk.rest.request.MarginOrderCreateRequest;
-import com.kucoin.sdk.rest.response.KucoinResponse;
-import com.kucoin.sdk.rest.response.MarginAccountResponse;
-import com.kucoin.sdk.rest.response.MarginConfigResponse;
-import com.kucoin.sdk.rest.response.MarginOrderCreateResponse;
-import com.kucoin.sdk.rest.response.MarginPriceStrategyResponse;
-import com.kucoin.sdk.rest.response.MarkPriceResponse;
+import com.kucoin.sdk.rest.response.*;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -38,4 +33,14 @@ public interface MarginAPIRetrofit {
 
     @GET("api/v1/risk/limit/strategy")
     Call<KucoinResponse<List<MarginPriceStrategyResponse>>> getMarginPriceStrategy(@Query("marginModel") String marginModel);
+
+    @GET("api/v3/etf/info")
+    Call<KucoinResponse<List<EtfInfoResponse>>> getEtfInfo(@Query("currency") String currency);
+
+    @GET("/api/v3/margin/currencies")
+    Call<KucoinResponse<List<CrossMarginCurrencyResponse>>> getMarginCurrencies(@Query("symbol") String symbol, @Query("currency") String currency);
+
+    @GET("/api/v3/margin/accounts")
+    Call<KucoinResponse<MarginAccountResponse>> getMarginAccounts(@Query("quoteCurrency") String quoteCurrency, @Query("queryType") String queryType);
+
 }
