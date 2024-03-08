@@ -28,6 +28,7 @@ public class AuthRetrofitAPIImpl<T> extends AbstractRetrofitAPIImpl<T> {
             T t = RetrofitFactory.getAuthRetorfit(baseUrl, apiKey, secret, passPhrase, apiKeyVersion)
                     .create(tClass);
             apiImpl = t;
+            inited = true;
             return t;
         }
     }

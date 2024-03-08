@@ -27,6 +27,7 @@ public class PublicRetrofitAPIImpl<T> extends AbstractRetrofitAPIImpl<T> {
                     .getActualTypeArguments()[0];
             T t = RetrofitFactory.getPublicRetorfit(baseUrl).create(tClass);
             apiImpl = t;
+            inited = true;
             return t;
         }
     }

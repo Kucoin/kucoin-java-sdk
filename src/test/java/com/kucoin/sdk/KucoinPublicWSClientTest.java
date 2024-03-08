@@ -79,8 +79,8 @@ public class KucoinPublicWSClientTest {
 
         kucoinPublicWSClient.onCandles(response -> {
             System.out.println(response.getData());
-            kucoinPublicWSClient.unsubscribe(PublicChannelEnum.CANDLES, "BTC-USDT_1min");
-        }, "BTC-USDT_1min");
+            kucoinPublicWSClient.unsubscribe(PublicChannelEnum.CANDLES, "BTC-USDT_1month");
+        }, "BTC-USDT_1month");
 
         Thread.sleep(10000);
 

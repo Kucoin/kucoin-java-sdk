@@ -107,6 +107,9 @@ public abstract class BaseWebsocketImpl implements Closeable {
     @Override
     public void close() throws IOException {
         LOGGER.debug("Web Socket Close");
+        if (webSocket != null) {
+            webSocket.close(1000, "Normal closure"); // 1000 is a normal closure status code
+        }
         pingTimer.cancel();
         client.dispatcher().executorService().shutdown();
     }
