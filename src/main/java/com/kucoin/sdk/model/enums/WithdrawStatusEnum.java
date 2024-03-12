@@ -8,6 +8,7 @@ package com.kucoin.sdk.model.enums;
  */
 public enum WithdrawStatusEnum {
     PROCESSING,
+    WALLET_PROCESSING,
     SUCCESS,
     FAILURE
 }
