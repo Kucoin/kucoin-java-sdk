@@ -45,7 +45,7 @@ public interface FillAPI {
     /**
      * Request via this endpoint to get a list of 1000 fills in the last 24 hours.
      *
-     * @return
+     * @return TradeResponse
      * @throws IOException
      */
     List<TradeResponse> queryLimitFillsList() throws IOException;
@@ -63,7 +63,7 @@ public interface FillAPI {
      * @param endAt [optional] End time（ms），puts a restriction on the transaction(creation) time of the transaction records
      * @param lastId [optional] The id of the last data item from the previous batch, defaults to obtaining the latest data
      * @param limit [optional] Default100，maximum 200
-     * @return
+     * @return TradeResponse
      * @throws IOException
      */
     HFTradeResponse queryHFTrades(String symbol, String orderId, String side, String type,

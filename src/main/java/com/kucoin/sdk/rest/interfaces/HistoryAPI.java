@@ -16,15 +16,16 @@ public interface HistoryAPI {
     /**
      * List the latest trades for a symbol.
      *
-     * @param symbol
+     * @param symbol Trading pair, e.g.: BTC-USDT
      * @return The trades for the symbol.
+     * @throws IOException IOException
      */
     List<TradeHistoryResponse> getTradeHistories(String symbol) throws IOException;
 
     /**
      * Historic rates for a symbol. Rates are returned in grouped buckets based on requested type.
      *
-     * @param symbol
+     * @param symbol Trading pair, e.g.: BTC-USDT
      * @param startAt Start time, unix timestamp calculated in seconds not millisecond
      * @param endAt   End time, unix timestamp calculated in seconds not millisecond
      * @param type    Type of candlestick patterns, The type field must be one of the following values:
@@ -40,6 +41,7 @@ public interface HistoryAPI {
      *  turnover Turnover of a period of time.
      *           The turnover is the sum of the transaction volumes of all orders (Turnover of each order=price*quantity).
      * ]
+     * @throws IOException IOException
      */
     List<List<String>> getHistoricRates(String symbol, long startAt, long endAt, String type) throws IOException;
 

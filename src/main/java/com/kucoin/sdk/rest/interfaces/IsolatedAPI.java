@@ -17,6 +17,7 @@ public interface IsolatedAPI {
      * This API endpoint returns the current isolated margin trading pair configuration.
      *
      * @return Isolated symbol configuration
+     * @throws IOException IOException
      */
     List<IsolatedSymbolResponse> getSymbols() throws IOException;
 
@@ -25,6 +26,7 @@ public interface IsolatedAPI {
      *
      * @param balanceCurrency [Optional] The pricing coin, currently only supports USDT, KCS, and BTC. Defaults to BTC if no value is passed.
      * @return List of isolated accounts;
+     * @throws IOException IOException
      */
     IsolatedAccountResponse getAccounts(String balanceCurrency) throws IOException;
 
@@ -33,6 +35,7 @@ public interface IsolatedAPI {
      *
      * @param symbol Trading pair, e.g.: BTC-USDT
      * @return The isolated account;
+     * @throws IOException IOException
      */
     IsolatedAssetResponse getAccount(@Path("symbol") String symbol) throws IOException;
 
@@ -45,7 +48,8 @@ public interface IsolatedAPI {
      * @param borrowStrategy Borrowing strategy: FOK, IOC
      * @param maxRate        [Optional] Max interest rate, defaults to all interest rates if left blank
      * @param period         [Optional] The term in days. Defaults to all terms if left blank. 7,14,28
-     * @return The isolated borrow result;
+     * @return The isolated borrow result
+     * @throws IOException IOException
      */
     @Deprecated
     IsolatedBorrowResponse borrow(String symbol, String currency, BigDecimal size, String borrowStrategy, BigDecimal maxRate, String period) throws IOException;
@@ -58,6 +62,7 @@ public interface IsolatedAPI {
      * @param pageSize    [Optional] Page size [10-50]
      * @param currentPage [Optional] Current page number [1-100]
      * @return The outstanding repayment records
+     * @throws IOException IOException
      */
     @Deprecated
     Pagination<IsolatedBorrowOutstandingResponse> queryBorrowOutstanding(String symbol, String currency, int pageSize, int currentPage) throws IOException;
@@ -70,6 +75,7 @@ public interface IsolatedAPI {
      * @param pageSize    [Optional] Page size [10-50]
      * @param currentPage [Optional] Current page number [1-100]
      * @return The repayment records
+     * @throws IOException IOException
      */
     @Deprecated
     Pagination<IsolatedBorrowRepaidResponse> queryBorrowRepaid(String symbol, String currency, int pageSize, int currentPage) throws IOException;
@@ -81,6 +87,7 @@ public interface IsolatedAPI {
      * @param currency    Repayment coin type
      * @param size        Repayment amount
      * @param seqStrategy Repayment sequence strategy, RECENTLY_EXPIRE_FIRST: Maturity date priority (the loan with the closest maturity is repaid first), HIGHEST_RATE_FIRST: Interest rate priority (the loan with the highest interest rate is repaid first)
+     * @throws IOException IOException
      */
     @Deprecated
     void repayAll(String symbol, String currency, BigDecimal size, String seqStrategy) throws IOException;
@@ -92,6 +99,7 @@ public interface IsolatedAPI {
      * @param currency Repayment coin type
      * @param size     Repayment amount
      * @param loanId   Trade order number; when this field is configured, the sequence strategy is invalidated
+     * @throws IOException IOException
      */
     @Deprecated
     void repaySingle(String symbol, String currency, BigDecimal size, String loanId) throws IOException;
@@ -99,9 +107,9 @@ public interface IsolatedAPI {
     /**
      * This interface can obtain the risk limit and currency configuration of isolated margin.
      *
-     * @param symbol
-     * @return
-     * @throws IOException
+     * @param symbol Trading pair, e.g.: BTC-USDT
+     * @return IsolatedMarginCurrencyResponse
+     * @throws IOException IOException
      */
     List<IsolatedMarginCurrencyResponse> getIsolatedCurrencies(String symbol) throws IOException;
 
@@ -110,7 +118,8 @@ public interface IsolatedAPI {
      * @param symbol For isolated trading pairs, query all without passing
      * @param quoteCurrency currently only supports USDT, KCS, BTC, default is USDT
      * @param queryType Query account type (default MARGIN), ISOLATED- - only query low frequency isolated margin account, ISOLATED_V2-only query high frequency isolated margin account, ALL - consistent aggregate query with the web side
-     * @return
+     * @return IsolatedAccountV3Response
+     * @throws IOException IOException
      */
     IsolatedAccountV3Response getIsolatedAccountsV3(String symbol,
                                                             String quoteCurrency,
