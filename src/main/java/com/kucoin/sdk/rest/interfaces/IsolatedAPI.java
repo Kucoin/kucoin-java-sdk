@@ -47,6 +47,7 @@ public interface IsolatedAPI {
      * @param period         [Optional] The term in days. Defaults to all terms if left blank. 7,14,28
      * @return The isolated borrow result;
      */
+    @Deprecated
     IsolatedBorrowResponse borrow(String symbol, String currency, BigDecimal size, String borrowStrategy, BigDecimal maxRate, String period) throws IOException;
 
     /**
@@ -58,6 +59,7 @@ public interface IsolatedAPI {
      * @param currentPage [Optional] Current page number [1-100]
      * @return The outstanding repayment records
      */
+    @Deprecated
     Pagination<IsolatedBorrowOutstandingResponse> queryBorrowOutstanding(String symbol, String currency, int pageSize, int currentPage) throws IOException;
 
     /**
@@ -69,6 +71,7 @@ public interface IsolatedAPI {
      * @param currentPage [Optional] Current page number [1-100]
      * @return The repayment records
      */
+    @Deprecated
     Pagination<IsolatedBorrowRepaidResponse> queryBorrowRepaid(String symbol, String currency, int pageSize, int currentPage) throws IOException;
 
     /**
@@ -79,6 +82,7 @@ public interface IsolatedAPI {
      * @param size        Repayment amount
      * @param seqStrategy Repayment sequence strategy, RECENTLY_EXPIRE_FIRST: Maturity date priority (the loan with the closest maturity is repaid first), HIGHEST_RATE_FIRST: Interest rate priority (the loan with the highest interest rate is repaid first)
      */
+    @Deprecated
     void repayAll(String symbol, String currency, BigDecimal size, String seqStrategy) throws IOException;
 
     /**
@@ -89,6 +93,7 @@ public interface IsolatedAPI {
      * @param size     Repayment amount
      * @param loanId   Trade order number; when this field is configured, the sequence strategy is invalidated
      */
+    @Deprecated
     void repaySingle(String symbol, String currency, BigDecimal size, String loanId) throws IOException;
 
     /**

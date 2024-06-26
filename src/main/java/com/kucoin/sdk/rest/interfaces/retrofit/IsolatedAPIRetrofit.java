@@ -24,24 +24,29 @@ public interface IsolatedAPIRetrofit {
     @GET("api/v1/isolated/account/{symbol}")
     Call<KucoinResponse<IsolatedAssetResponse>> getAccount(@Path("symbol") String symbol);
 
+    @Deprecated
     @POST("api/v1/isolated/borrow")
     Call<KucoinResponse<IsolatedBorrowResponse>> borrow(@Body IsolatedBorrowRequest request);
 
+    @Deprecated
     @GET("api/v1/isolated/borrow/outstanding")
     Call<KucoinResponse<Pagination<IsolatedBorrowOutstandingResponse>>> queryBorrowOutstanding(@Query("symbol") String symbol,
                                                                                                @Query("currency") String currency,
                                                                                                @Query("pageSize") int pageSize,
                                                                                                @Query("currentPage") int currentPage);
 
+    @Deprecated
     @GET("api/v1/isolated/borrow/repaid")
     Call<KucoinResponse<Pagination<IsolatedBorrowRepaidResponse>>> queryBorrowRepaid(@Query("symbol") String symbol,
                                                                                      @Query("currency") String currency,
                                                                                      @Query("pageSize") int pageSize,
                                                                                      @Query("currentPage") int currentPage);
 
+    @Deprecated
     @POST("api/v1/isolated/repay/all")
     Call<KucoinResponse<Void>> repayAll(@Body IsolatedRepayAllRequest request);
 
+    @Deprecated
     @POST("api/v1/isolated/repay/single")
     Call<KucoinResponse<Void>> repaySingle(@Body IsolatedRepaySingleRequest request);
 

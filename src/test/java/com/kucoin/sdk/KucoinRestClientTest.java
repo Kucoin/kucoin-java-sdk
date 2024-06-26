@@ -4,6 +4,9 @@
 package com.kucoin.sdk;
 
 import com.google.common.collect.Lists;
+import com.kucoin.sdk.enums.AccountTypeEnum;
+import com.kucoin.sdk.enums.LendingStatusEnum;
+import com.kucoin.sdk.enums.TimeInForceEnum;
 import com.kucoin.sdk.exception.KucoinApiException;
 import com.kucoin.sdk.model.enums.ApiKeyVersionEnum;
 import com.kucoin.sdk.rest.request.*;
@@ -45,8 +48,8 @@ public class KucoinRestClientTest {
                 .withApiKeyVersion(ApiKeyVersionEnum.V2.getVersion())
                 .buildRestClient();
 
-        startAt = LocalDateTime.of(2023, 6, 16, 0, 0, 0).toEpochSecond(ZoneOffset.of("+8"));
-        endAt = LocalDateTime.of(2023, 6, 30, 0, 0, 0).toEpochSecond(ZoneOffset.of("+8"));
+        startAt = LocalDateTime.of(2024, 6, 16, 0, 0, 0).toEpochSecond(ZoneOffset.of("+8"));
+        endAt = LocalDateTime.of(2024, 6, 30, 0, 0, 0).toEpochSecond(ZoneOffset.of("+8"));
     }
 
 
@@ -80,6 +83,20 @@ public class KucoinRestClientTest {
     public void subAccountAPIQuery() throws Exception {
         List<SubApiKeyResponse> subApiKeyResponses = liveKucoinRestClient.accountAPI().getSubApiKey("tcwspot01", null);
         assertThat(subApiKeyResponses, notNullValue());
+    }
+
+    @Test
+    public void testUniversalTransfer() throws IOException {
+        UniversalTransferRequest request = UniversalTransferRequest.builder()
+                .clientOid(UUID.randomUUID().toString())
+                .currency("USDT")
+                .amount(new BigDecimal("1"))
+                .fromAccountType(AccountTypeEnum.TRADE.name())
+                .toAccountType(AccountTypeEnum.MAIN.name())
+                .type("INTERNAL")
+                .build();
+        UniversalTransferResponse universalTransfer = liveKucoinRestClient.accountAPI().universalTransfer(request);
+        assertThat(universalTransfer, notNullValue());
     }
 
     @Test
@@ -260,6 +277,9 @@ public class KucoinRestClientTest {
                 .price(BigDecimal.valueOf(0.000001)).size(BigDecimal.ONE).side("buy")
                 .symbol("ETH-BTC").type("limit").clientOid(String.valueOf(System.currentTimeMillis())).build();
         HFOrderCreateResponse hfOrderCreateResponse = liveKucoinRestClient.orderAPI().createHFOrder(hfOrderCreateRequest);
+        assertThat(hfOrderCreateResponse, notNullValue());
+
+        hfOrderCreateResponse = liveKucoinRestClient.orderAPI().createHFOrderTest(hfOrderCreateRequest);
         assertThat(hfOrderCreateResponse, notNullValue());
 
         HFOrderSyncCreateResponse hfOrderSyncCreateResponse = liveKucoinRestClient.orderAPI().syncCreateHFOrder(hfOrderCreateRequest);
@@ -545,7 +565,6 @@ public class KucoinRestClientTest {
         MarginAccountResponse marginAccount = liveKucoinRestClient.marginAPI().getMarginAccount();
         assertThat(marginAccount, notNullValue());
 
-
         MarginOrderCreateRequest request = MarginOrderCreateRequest.builder()
                 .price(BigDecimal.valueOf(20)).size(new BigDecimal("0.0130")).side("sell")
                 .symbol("ATOM-USDT").type("limit").clientOid(String.valueOf(System.currentTimeMillis()))
@@ -553,8 +572,8 @@ public class KucoinRestClientTest {
         MarginOrderCreateResponse marginOrderResponse = liveKucoinRestClient.marginAPI().createMarginOrder(request);
         assertThat(marginOrderResponse, notNullValue());
 
-        List<MarginPriceStrategyResponse> marginPriceStrategy = liveKucoinRestClient.marginAPI().getMarginPriceStrategy("cross");
-        assertThat(marginPriceStrategy, notNullValue());
+        marginOrderResponse = liveKucoinRestClient.marginAPI().createMarginOrderTest(request);
+        assertThat(marginOrderResponse, notNullValue());
 
         List<EtfInfoResponse> etfInfoResponseList = liveKucoinRestClient.marginAPI().getEtfInfo("BTCUP");
         assertThat(etfInfoResponseList, notNullValue());
@@ -570,85 +589,57 @@ public class KucoinRestClientTest {
     @Test
     public void loanAPI() throws Exception {
 
-        List<LendAssetsResponse> lendAssets = liveKucoinRestClient.loanAPI().queryLendAssets("USDT");
-        assertThat(lendAssets, notNullValue());
-
-        List<MarketItemResponse> marketItem = liveKucoinRestClient.loanAPI().queryMarket("USDT", 7);
-        assertThat(marketItem, notNullValue());
-
-        List<LastTradeResponse> lastTrade = liveKucoinRestClient.loanAPI().queryLastTrade("USDT");
-        assertThat(lastTrade, notNullValue());
-
-        BorrowRequest borrowRequest = BorrowRequest.builder()
-                .currency("USDT").type("IOC").size(BigDecimal.TEN).maxRate(new BigDecimal("0.001")).term("7")
+        BorrowV3Request borrowRequest = BorrowV3Request.builder()
+                .currency("BOME").timeInForce(TimeInForceEnum.IOC.name()).size(BigDecimal.valueOf(100))
                 .build();
-        BorrowResponse borrow = liveKucoinRestClient.loanAPI().borrow(borrowRequest);
+        BorrowV3Response borrow = liveKucoinRestClient.loanAPI().borrowV3(borrowRequest);
         assertThat(borrow, notNullValue());
 
-        BorrowQueryResponse borrowQuery = liveKucoinRestClient.loanAPI().queryBorrow(borrow.getOrderId());
+        BorrowQueryV3Request borrowQueryV3Request = BorrowQueryV3Request.builder().currency("BOME").pageSize(20).isIsolated(true).build();
+        Pagination<BorrowQueryV3Response> borrowQuery = liveKucoinRestClient.loanAPI().queryBorrowV3(borrowQueryV3Request);
         assertThat(borrowQuery, notNullValue());
 
-        BorrowRecordQueryRequest borrowRecordQueryRequest = BorrowRecordQueryRequest.builder()
-                .currency("USDT")
+        RepayV3Request repayV3Request = RepayV3Request.builder()
+                .currency("BOME").size(BigDecimal.valueOf(100))
                 .build();
-        Pagination<BorrowOutstandingResponse> pageBorrowOutstanding = liveKucoinRestClient.loanAPI().queryBorrowOutstanding(borrowRecordQueryRequest);
-        assertThat(pageBorrowOutstanding, notNullValue());
+        RepayV3Response repayV3Response = liveKucoinRestClient.loanAPI().repayV3(repayV3Request);
+        assertThat(repayV3Response, notNullValue());
 
-        BorrowRecordQueryRequest borrowRepaidRequest = BorrowRecordQueryRequest.builder()
-                .currency("USDT")
-                .build();
-        Pagination<BorrowRepaidResponse> pageBorrowRepaid = liveKucoinRestClient.loanAPI().queryBorrowRepaid(borrowRepaidRequest);
-        assertThat(pageBorrowRepaid, notNullValue());
+        RepayQueryV3Request repayQueryV3Request = RepayQueryV3Request.builder().currency("BOME").pageSize(20).build();
+        Pagination<RepayQueryV3Response> repayQueryV3Response = liveKucoinRestClient.loanAPI().queryRepayV3(repayQueryV3Request);
+        assertThat(repayQueryV3Response, notNullValue());
 
-        RepayAllRequest repayAllRequest = RepayAllRequest.builder()
-                .currency("USDT")
-                .size(BigDecimal.TEN)
-                .sequence(RepaySeqStrategy.HIGHEST_RATE_FIRST)
-                .build();
-        liveKucoinRestClient.loanAPI().repayAll(repayAllRequest);
+        InterestQueryV3Request interestQueryV3Request = InterestQueryV3Request.builder().currency("BOME").pageSize(20).build();
+        Pagination<InterestQueryV3Response> interestQueryV3ResponsePagination = liveKucoinRestClient.loanAPI().queryInterestV3(interestQueryV3Request);
+        assertThat(interestQueryV3ResponsePagination, notNullValue());
 
-        RepaySingleRequest repaySingleRequest = RepaySingleRequest.builder()
-                .currency("USDT")
-                .size(BigDecimal.TEN)
-                .tradeId(borrowQuery.getMatchList().get(0).getTradeId())
-                .build();
-        liveKucoinRestClient.loanAPI().repaySingle(repaySingleRequest);
-        LendRequest lendRequest = LendRequest.builder()
-                .currency("USDT")
-                .dailyIntRate(new BigDecimal("0.001"))
-                .size(BigDecimal.TEN)
-                .term(7)
-                .build();
-        LendResponse lend = liveKucoinRestClient.loanAPI().lend(lendRequest);
-        assertThat(lend, notNullValue());
-        // sandboxKucoinRestClient.loanAPI().cancelLendOrder(lend.getOrderId());
+        List<MarginProjectListResponse> marginProjectListResponseList = liveKucoinRestClient.loanAPI().getProjectList("BTC");
+        assertThat(marginProjectListResponseList, notNullValue());
 
-        ToggleAutoLendRequest toggleAutoLendRequest = ToggleAutoLendRequest.builder()
-                .currency("USDT")
-                .isEnable(false)
-                .term(28)
-                .retainSize(new BigDecimal("10000000"))
-                .dailyIntRate(new BigDecimal("0.0015"))
-                .build();
-        liveKucoinRestClient.loanAPI().toggleAutoLend(toggleAutoLendRequest);
+        List<MarginMarketInterestRateResponse> marketInterestRate = liveKucoinRestClient.loanAPI().getMarketInterestRate("BOME");
+        assertThat(marketInterestRate, notNullValue());
 
-        Pagination<ActiveLendItem> pageActiveLend = liveKucoinRestClient.loanAPI().queryActiveLend(
-                "USDT", 1, 10);
-        assertThat(pageActiveLend, notNullValue());
+        PurchaseRequest purchaseRequest = PurchaseRequest.builder().currency("BOME").interestRate(marketInterestRate.get(0).getMarketInterestRate()).size(new BigDecimal("200")).build();
+        PurchaseResponse purchaseResponse = liveKucoinRestClient.loanAPI().purchase(purchaseRequest);
+        assertThat(purchaseResponse, notNullValue());
 
-        Pagination<DoneLendItem> pageDoneLend = liveKucoinRestClient.loanAPI().queryDoneLend(
-                "USDT", 1, 10);
-        assertThat(pageDoneLend, notNullValue());
+        PurchaseQueryRequest purchaseQueryRequest = PurchaseQueryRequest.builder().currency("BOME").currentPage(1).pageSize(20).status(LendingStatusEnum.PENDING).build();
+        Pagination<PurchaseQueryResponse> purchaseQueryResponsePagination = liveKucoinRestClient.loanAPI().queryPurchase(purchaseQueryRequest);
+        assertThat(purchaseQueryResponsePagination, notNullValue());
 
-        Pagination<UnsettledTradeItem> pageUnsettledTrade = liveKucoinRestClient.loanAPI().queryUnsettledTrade(
-                "USDT", 1, 10);
-        assertThat(pageUnsettledTrade, notNullValue());
+        String purchaseOrderNo = purchaseQueryResponsePagination.getItems().get(0).getPurchaseOrderNo();
 
-        Pagination<SettledTradeItem> pageSettledTrade = liveKucoinRestClient.loanAPI().querySettledTrade(
-                "USDT", 1, 10);
-        assertThat(pageSettledTrade, notNullValue());
+        UpdatePurchaseRequest updatePurchaseRequest = UpdatePurchaseRequest.builder().currency("BOME").purchaseOrderNo(purchaseOrderNo).interestRate(marketInterestRate.get(1).getMarketInterestRate()).build();
+        liveKucoinRestClient.loanAPI().updatePurchase(updatePurchaseRequest);
 
-        liveKucoinRestClient.loanAPI().cancelLendOrder("orderId");
+        RedeemRequest redeemRequest = RedeemRequest.builder().currency("BOME").purchaseOrderNo(purchaseOrderNo).size(new BigDecimal(200)).build();
+        RedeemResponse redeemResponse = liveKucoinRestClient.loanAPI().redeem(redeemRequest);
+        assertThat(redeemResponse, notNullValue());
+
+        RedeemQueryRequest redeemQueryRequest = RedeemQueryRequest.builder().currency("BOME").status(LendingStatusEnum.DONE).build();
+        Pagination<RedeemQueryResponse> redeemQueryResponsePagination = liveKucoinRestClient.loanAPI().queryRedeem(redeemQueryRequest);
+        assertThat(redeemQueryResponsePagination, notNullValue());
+
     }
 
     @Test
@@ -661,19 +652,6 @@ public class KucoinRestClientTest {
 
         IsolatedAssetResponse isolatedAssetResponse = liveKucoinRestClient.isolatedAPI().getAccount("BTC-USDT");
         assertThat(isolatedAssetResponse, notNullValue());
-
-        IsolatedBorrowResponse borrowResponse = liveKucoinRestClient.isolatedAPI().borrow("BTC-USDT", "USDT", BigDecimal.TEN, "FOK", null, null);
-        assertThat(borrowResponse, notNullValue());
-
-        Pagination<IsolatedBorrowOutstandingResponse> borrowOutstandingResponsePagination = liveKucoinRestClient.isolatedAPI().queryBorrowOutstanding("BTC-USDT", "USDT", 10, 1);
-        assertThat(borrowOutstandingResponsePagination, notNullValue());
-
-        Pagination<IsolatedBorrowRepaidResponse> borrowRepaidResponsePagination = liveKucoinRestClient.isolatedAPI().queryBorrowRepaid("BTC-USDT", "USDT", 10, 1);
-        assertThat(borrowRepaidResponsePagination, notNullValue());
-
-        liveKucoinRestClient.isolatedAPI().repayAll("BTC-USDT", "USDT", BigDecimal.TEN, "RECENTLY_EXPIRE_FIRST");
-
-        liveKucoinRestClient.isolatedAPI().repaySingle("BTC-USDT", "USDT", BigDecimal.TEN, "loadId123456789000000000");
 
         List<IsolatedMarginCurrencyResponse> isolatedMarginCurrencyResponseList = liveKucoinRestClient.isolatedAPI().getIsolatedCurrencies("NKN-USDT");
         assertThat(isolatedMarginCurrencyResponseList, notNullValue());

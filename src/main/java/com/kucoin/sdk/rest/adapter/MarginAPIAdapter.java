@@ -47,6 +47,11 @@ public class MarginAPIAdapter extends AuthRetrofitAPIImpl<MarginAPIRetrofit> imp
     }
 
     @Override
+    public MarginOrderCreateResponse createMarginOrderTest(MarginOrderCreateRequest request) throws IOException {
+        return executeSync(getAPIImpl().createMarginOrderTest(request));
+    }
+
+    @Override
     public List<MarginPriceStrategyResponse> getMarginPriceStrategy(String marginModel) throws IOException {
         return executeSync(getAPIImpl().getMarginPriceStrategy(marginModel));
     }

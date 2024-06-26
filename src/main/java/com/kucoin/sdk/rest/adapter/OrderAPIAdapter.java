@@ -117,6 +117,11 @@ public class OrderAPIAdapter extends AuthRetrofitAPIImpl<OrderAPIRetrofit> imple
     }
 
     @Override
+    public HFOrderCreateResponse createHFOrderTest(HFOrderCreateRequest createRequest) throws IOException {
+        return executeSync(getAPIImpl().createHFOrderTest(createRequest));
+    }
+
+    @Override
     public HFOrderSyncCreateResponse syncCreateHFOrder(HFOrderCreateRequest createRequest) throws IOException {
         return executeSync(getAPIImpl().syncCreateHFOrder(createRequest));
     }

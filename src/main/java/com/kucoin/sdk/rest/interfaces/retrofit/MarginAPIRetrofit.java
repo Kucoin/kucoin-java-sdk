@@ -31,16 +31,20 @@ public interface MarginAPIRetrofit {
     @POST("api/v1/margin/order")
     Call<KucoinResponse<MarginOrderCreateResponse>> createMarginOrder(@Body MarginOrderCreateRequest request);
 
+    @POST("api/v1/margin/order/test")
+    Call<KucoinResponse<MarginOrderCreateResponse>> createMarginOrderTest(@Body MarginOrderCreateRequest request);
+
+    @Deprecated
     @GET("api/v1/risk/limit/strategy")
     Call<KucoinResponse<List<MarginPriceStrategyResponse>>> getMarginPriceStrategy(@Query("marginModel") String marginModel);
 
     @GET("api/v3/etf/info")
     Call<KucoinResponse<List<EtfInfoResponse>>> getEtfInfo(@Query("currency") String currency);
 
-    @GET("/api/v3/margin/currencies")
+    @GET("api/v3/margin/currencies")
     Call<KucoinResponse<List<CrossMarginCurrencyResponse>>> getMarginCurrencies(@Query("symbol") String symbol, @Query("currency") String currency);
 
-    @GET("/api/v3/margin/accounts")
+    @GET("api/v3/margin/accounts")
     Call<KucoinResponse<MarginAccountResponse>> getMarginAccounts(@Query("quoteCurrency") String quoteCurrency, @Query("queryType") String queryType);
 
 }

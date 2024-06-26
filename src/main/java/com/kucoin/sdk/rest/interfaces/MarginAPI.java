@@ -5,7 +5,6 @@ package com.kucoin.sdk.rest.interfaces;
 
 import com.kucoin.sdk.rest.request.MarginOrderCreateRequest;
 import com.kucoin.sdk.rest.response.*;
-import retrofit2.http.Query;
 
 import java.io.IOException;
 import java.util.List;
@@ -53,6 +52,16 @@ public interface MarginAPI {
     MarginOrderCreateResponse createMarginOrder(MarginOrderCreateRequest request) throws IOException;
 
     /**
+     * Order test endpoint, the request parameters and return parameters of this endpoint are exactly the same as the order endpoint, and can be used to verify whether the signature is correct and other operations.
+     * After placing an order, the order will not enter the matching system, and the order cannot be queried.
+     *
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    MarginOrderCreateResponse createMarginOrderTest(MarginOrderCreateRequest request) throws IOException;
+
+    /**
      *  Get Margin Price Strategy
      *  <p>
      *  Request via this endpoint to get the cross/isolated margin risk limit.
@@ -60,6 +69,7 @@ public interface MarginAPI {
      * @param marginModel
      * @return
      */
+    @Deprecated
     List<MarginPriceStrategyResponse> getMarginPriceStrategy(String marginModel) throws IOException;
 
     /**

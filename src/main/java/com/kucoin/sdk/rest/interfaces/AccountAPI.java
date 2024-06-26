@@ -82,6 +82,15 @@ public interface AccountAPI {
     Map<String, String> innerTransfer2(AccountTransferV2Request request) throws IOException;
 
     /**
+     * FlexTransfer
+     *
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    UniversalTransferResponse universalTransfer(UniversalTransferRequest request) throws IOException;
+
+    /**
      * Get a list of sub-accounts.
      * <p>
      * You need to create the account by using the API-KEY of sub user firstly if the account of sub user is not exist.

@@ -3,25 +3,8 @@
  */
 package com.kucoin.sdk.rest.interfaces;
 
-import com.kucoin.sdk.rest.request.BorrowRecordQueryRequest;
-import com.kucoin.sdk.rest.request.BorrowRequest;
-import com.kucoin.sdk.rest.request.LendRequest;
-import com.kucoin.sdk.rest.request.RepayAllRequest;
-import com.kucoin.sdk.rest.request.RepaySingleRequest;
-import com.kucoin.sdk.rest.request.ToggleAutoLendRequest;
-import com.kucoin.sdk.rest.response.ActiveLendItem;
-import com.kucoin.sdk.rest.response.BorrowOutstandingResponse;
-import com.kucoin.sdk.rest.response.BorrowQueryResponse;
-import com.kucoin.sdk.rest.response.BorrowRepaidResponse;
-import com.kucoin.sdk.rest.response.BorrowResponse;
-import com.kucoin.sdk.rest.response.DoneLendItem;
-import com.kucoin.sdk.rest.response.LastTradeResponse;
-import com.kucoin.sdk.rest.response.LendAssetsResponse;
-import com.kucoin.sdk.rest.response.LendResponse;
-import com.kucoin.sdk.rest.response.MarketItemResponse;
-import com.kucoin.sdk.rest.response.Pagination;
-import com.kucoin.sdk.rest.response.SettledTradeItem;
-import com.kucoin.sdk.rest.response.UnsettledTradeItem;
+import com.kucoin.sdk.rest.request.*;
+import com.kucoin.sdk.rest.response.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -32,10 +15,119 @@ import java.util.List;
 public interface LoanAPI {
 
     /**
+     * This API endpoint is used to initiate an application for cross or isolated margin borrowing.
+     *
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    BorrowV3Response borrowV3(BorrowV3Request request) throws IOException;
+
+    /**
+     * This API endpoint is used to get the borrowing orders for cross and isolated margin accounts
+     *
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    Pagination<BorrowQueryV3Response> queryBorrowV3(BorrowQueryV3Request request) throws IOException;
+
+    /**
+     * This API endpoint is used to initiate an application for the repayment of cross or isolated margin borrowing.
+     *
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    RepayV3Response repayV3(RepayV3Request request) throws IOException;
+
+    /**
+     * This API endpoint is used to get the repayment orders for cross and isolated margin accounts.
+     *
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    Pagination<RepayQueryV3Response> queryRepayV3(RepayQueryV3Request request) throws IOException;
+
+    /**
+     * Request via this endpoint to get the interest records of the cross/isolated margin lending.
+     *
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    Pagination<InterestQueryV3Response> queryInterestV3(InterestQueryV3Request request) throws IOException;
+
+    /**
+     * Get Currency Information
+     *
+     * @param currency
+     * @return
+     * @throws IOException
+     */
+    List<MarginProjectListResponse> getProjectList(String currency) throws IOException;
+
+    /**
+     * Get Interest Rates
+     *
+     * @param currency
+     * @return
+     * @throws IOException
+     */
+    List<MarginMarketInterestRateResponse> getMarketInterestRate(String currency) throws IOException;
+
+    /**
+     * Initiate subscriptions of margin lending.
+     *
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    PurchaseResponse purchase(PurchaseRequest request) throws IOException;
+
+    /**
+     * This API endpoint is used to update the interest rates of subscription orders,
+     * which will take effect at the beginning of the next hour.
+     *
+     * @param request
+     * @throws IOException
+     */
+    void updatePurchase(UpdatePurchaseRequest request) throws IOException;
+
+    /**
+     * This API endpoint provides pagination query for the subscription orders.
+     *
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    Pagination<PurchaseQueryResponse> queryPurchase(PurchaseQueryRequest request) throws IOException;
+
+    /**
+     * Initiate redemptions of margin lending.
+     *
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    RedeemResponse redeem(RedeemRequest request) throws IOException;
+
+    /**
+     * This API endpoint provides pagination query for the redemption orders.
+     *
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    Pagination<RedeemQueryResponse> queryRedeem(RedeemQueryRequest request) throws IOException;
+
+    /**
      * Post Borrow Order
      * @param request
      * @return
      */
+    @Deprecated
     BorrowResponse borrow(BorrowRequest request) throws IOException;
 
     /**
@@ -46,6 +138,7 @@ public interface LoanAPI {
      * @param orderId
      * @return
      */
+    @Deprecated
     BorrowQueryResponse queryBorrow(String orderId) throws IOException;
 
     /**
@@ -53,6 +146,7 @@ public interface LoanAPI {
      * @param request
      * @return
      */
+    @Deprecated
     Pagination<BorrowOutstandingResponse> queryBorrowOutstanding(BorrowRecordQueryRequest request) throws IOException;
 
     /**
@@ -60,6 +154,7 @@ public interface LoanAPI {
      * @param request
      * @return
      */
+    @Deprecated
     Pagination<BorrowRepaidResponse> queryBorrowRepaid(BorrowRecordQueryRequest request) throws IOException;
 
     /**
@@ -67,6 +162,7 @@ public interface LoanAPI {
      * @param request
      * @return
      */
+    @Deprecated
     Void repayAll(RepayAllRequest request) throws IOException;
 
     /**
@@ -77,6 +173,7 @@ public interface LoanAPI {
      * @param request
      * @return
      */
+    @Deprecated
     Void repaySingle(RepaySingleRequest request) throws IOException;
 
     /**
@@ -90,6 +187,7 @@ public interface LoanAPI {
      * @param request
      * @return
      */
+    @Deprecated
     LendResponse lend(LendRequest request) throws IOException;
 
     /**
@@ -100,6 +198,7 @@ public interface LoanAPI {
      * @param orderId
      * @return
      */
+    @Deprecated
     Void cancelLendOrder(String orderId) throws IOException;
 
     /**
@@ -110,6 +209,7 @@ public interface LoanAPI {
      * @param request
      * @return
      */
+    @Deprecated
     Void toggleAutoLend(ToggleAutoLendRequest request) throws IOException;
 
     /**
@@ -125,6 +225,7 @@ public interface LoanAPI {
      * @param pageSize
      * @return
      */
+    @Deprecated
     Pagination<ActiveLendItem> queryActiveLend(
             String currency,
             Integer currentPage,
@@ -144,6 +245,7 @@ public interface LoanAPI {
      * @param pageSize
      * @return
      */
+    @Deprecated
     Pagination<DoneLendItem> queryDoneLend(
             String currency,
             Integer currentPage,
@@ -163,6 +265,7 @@ public interface LoanAPI {
      * @param pageSize
      * @return
      */
+    @Deprecated
     Pagination<UnsettledTradeItem> queryUnsettledTrade(
             String currency,
             Integer currentPage,
@@ -181,6 +284,7 @@ public interface LoanAPI {
      * @param pageSize
      * @return
      */
+    @Deprecated
     Pagination<SettledTradeItem> querySettledTrade(
             String currency,
             Integer currentPage,
@@ -194,6 +298,7 @@ public interface LoanAPI {
      * @param currency
      * @return
      */
+    @Deprecated
     List<LendAssetsResponse> queryLendAssets(String currency) throws IOException;
 
     /**
@@ -205,6 +310,7 @@ public interface LoanAPI {
      * @param term
      * @return
      */
+    @Deprecated
     List<MarketItemResponse> queryMarket(
             String currency,
             Integer term) throws IOException;
@@ -218,6 +324,7 @@ public interface LoanAPI {
      * @param currency
      * @return
      */
+    @Deprecated
     List<LastTradeResponse> queryLastTrade(String currency) throws IOException;
 
 }

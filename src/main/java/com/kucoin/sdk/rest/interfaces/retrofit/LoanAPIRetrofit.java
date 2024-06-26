@@ -3,105 +3,136 @@
  */
 package com.kucoin.sdk.rest.interfaces.retrofit;
 
-import com.kucoin.sdk.rest.request.BorrowRequest;
-import com.kucoin.sdk.rest.request.LendRequest;
-import com.kucoin.sdk.rest.request.RepayAllRequest;
-import com.kucoin.sdk.rest.request.RepaySingleRequest;
-import com.kucoin.sdk.rest.request.ToggleAutoLendRequest;
-import com.kucoin.sdk.rest.response.ActiveLendItem;
-import com.kucoin.sdk.rest.response.BorrowOutstandingResponse;
-import com.kucoin.sdk.rest.response.BorrowQueryResponse;
-import com.kucoin.sdk.rest.response.BorrowRepaidResponse;
-import com.kucoin.sdk.rest.response.BorrowResponse;
-import com.kucoin.sdk.rest.response.DoneLendItem;
-import com.kucoin.sdk.rest.response.KucoinResponse;
-import com.kucoin.sdk.rest.response.LastTradeResponse;
-import com.kucoin.sdk.rest.response.LendAssetsResponse;
-import com.kucoin.sdk.rest.response.LendResponse;
-import com.kucoin.sdk.rest.response.MarketItemResponse;
-import com.kucoin.sdk.rest.response.Pagination;
-import com.kucoin.sdk.rest.response.SettledTradeItem;
-import com.kucoin.sdk.rest.response.UnsettledTradeItem;
+import com.kucoin.sdk.rest.request.*;
+import com.kucoin.sdk.rest.response.*;
 import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.DELETE;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
+import retrofit2.http.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ezreal on 2020/12/08.
  */
 public interface LoanAPIRetrofit {
 
+    @POST("api/v3/margin/borrow")
+    Call<KucoinResponse<BorrowV3Response>> borrowV3(@Body BorrowV3Request request);
+
+    @GET("api/v3/margin/borrow")
+    Call<KucoinResponse<Pagination<BorrowQueryV3Response>>> queryBorrowV3(@QueryMap Map<String, Object> request);
+
+    @POST("api/v3/margin/repay")
+    Call<KucoinResponse<RepayV3Response>> repayV3(@Body RepayV3Request request);
+
+    @GET("api/v3/margin/repay")
+    Call<KucoinResponse<Pagination<RepayQueryV3Response>>> queryRepayV3(@QueryMap Map<String, Object> request);
+
+    @GET("api/v3/margin/interest")
+    Call<KucoinResponse<Pagination<InterestQueryV3Response>>> queryInterestV3(@QueryMap Map<String, Object> request);
+
+    @GET("api/v3/project/list")
+    Call<KucoinResponse<List<MarginProjectListResponse>>> getProjectList(@Query("currency") String currency);
+
+    @GET("api/v3/project/marketInterestRate")
+    Call<KucoinResponse<List<MarginMarketInterestRateResponse>>> getProjectMarketInterestRate(@Query("currency") String currency);
+
+    @POST("api/v3/purchase")
+    Call<KucoinResponse<PurchaseResponse>> purchase(@Body PurchaseRequest request);
+
+    @POST("api/v3/lend/purchase/update")
+    Call<KucoinResponse<Void>> updatePurchase(@Body UpdatePurchaseRequest request);
+
+    @GET("api/v3/purchase/orders")
+    Call<KucoinResponse<Pagination<PurchaseQueryResponse>>> queryPurchase(@QueryMap Map<String, Object> request);
+
+    @POST("api/v3/redeem")
+    Call<KucoinResponse<RedeemResponse>> redeem(@Body RedeemRequest request);
+
+    @GET("api/v3/redeem/orders")
+    Call<KucoinResponse<Pagination<RedeemQueryResponse>>> queryRedeem(@QueryMap Map<String, Object> request);
+
+    @Deprecated
     @POST("api/v1/margin/borrow")
     Call<KucoinResponse<BorrowResponse>> borrow(@Body BorrowRequest request);
 
+    @Deprecated
     @GET("api/v1/margin/borrow")
     Call<KucoinResponse<BorrowQueryResponse>> queryBorrow(@Query("orderId") String orderId);
 
+    @Deprecated
     @GET("api/v1/margin/borrow/outstanding")
     Call<KucoinResponse<Pagination<BorrowOutstandingResponse>>> queryBorrowOutstanding(
             @Query("currency") String currency,
             @Query("currentPage") Integer currentPage,
             @Query("pageSize") Integer pageSize);
 
+    @Deprecated
     @GET("api/v1/margin/borrow/repaid")
     Call<KucoinResponse<Pagination<BorrowRepaidResponse>>> queryBorrowRepaid(
             @Query("currency") String currency,
             @Query("currentPage") Integer currentPage,
             @Query("pageSize") Integer pageSize);
 
+    @Deprecated
     @POST("api/v1/margin/repay/all")
     Call<KucoinResponse<Void>> repayAll(@Body RepayAllRequest request);
 
+    @Deprecated
     @POST("api/v1/margin/repay/single")
     Call<KucoinResponse<Void>> repaySingle(@Body RepaySingleRequest request);
 
+    @Deprecated
     @POST("api/v1/margin/lend")
     Call<KucoinResponse<LendResponse>> lend(@Body LendRequest request);
 
+    @Deprecated
     @DELETE("api/v1/margin/lend/{orderId}")
     Call<KucoinResponse<Void>> cancelLendOrder(@Path("orderId") String orderId);
 
+    @Deprecated
     @POST("api/v1/margin/toggle-auto-lend")
     Call<KucoinResponse<Void>> toggleAutoLend(@Body ToggleAutoLendRequest request);
 
+    @Deprecated
     @GET("api/v1/margin/lend/active")
     Call<KucoinResponse<Pagination<ActiveLendItem>>> queryActiveLend(
             @Query("currency") String currency,
             @Query("currentPage") Integer currentPage,
             @Query("pageSize") Integer pageSize);
 
+    @Deprecated
     @GET("api/v1/margin/lend/done")
     Call<KucoinResponse<Pagination<DoneLendItem>>> queryDoneLend(
             @Query("currency") String currency,
             @Query("currentPage") Integer currentPage,
             @Query("pageSize") Integer pageSize);
 
+    @Deprecated
     @GET("api/v1/margin/lend/trade/unsettled")
     Call<KucoinResponse<Pagination<UnsettledTradeItem>>> queryUnsettledTrade(
             @Query("currency") String currency,
             @Query("currentPage") Integer currentPage,
             @Query("pageSize") Integer pageSize);
 
+    @Deprecated
     @GET("api/v1/margin/lend/trade/settled")
     Call<KucoinResponse<Pagination<SettledTradeItem>>> querySettledTrade(
             @Query("currency") String currency,
             @Query("currentPage") Integer currentPage,
             @Query("pageSize") Integer pageSize);
 
+    @Deprecated
     @GET("api/v1/margin/lend/assets")
     Call<KucoinResponse<List<LendAssetsResponse>>> queryLendAssets(@Query("currency") String currency);
 
+    @Deprecated
     @GET("api/v1/margin/market")
     Call<KucoinResponse<List<MarketItemResponse>>> queryMarket(
             @Query("currency") String currency,
             @Query("term") Integer term);
 
+    @Deprecated
     @GET("api/v1/margin/trade/last")
     Call<KucoinResponse<List<LastTradeResponse>>> queryLastTrade(@Query("currency") String currency);
 

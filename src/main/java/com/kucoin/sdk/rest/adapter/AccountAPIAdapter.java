@@ -59,6 +59,11 @@ public class AccountAPIAdapter extends AuthRetrofitAPIImpl<AccountAPIRetrofit> i
     }
 
     @Override
+    public UniversalTransferResponse universalTransfer(UniversalTransferRequest request) throws IOException {
+        return super.executeSync(getAPIImpl().universalTransfer(request));
+    }
+
+    @Override
     public List<SubAccountBalanceResponse> listSubAccounts() throws IOException {
         return super.executeSync(getAPIImpl().getSubAccountList());
     }

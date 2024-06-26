@@ -168,6 +168,17 @@ public interface OrderAPI {
     HFOrderCreateResponse createHFOrder(HFOrderCreateRequest createRequest) throws IOException;
 
     /**
+     * Order test endpoint, the request parameters and return parameters of this endpoint are exactly the same as the order endpoint,
+     * and can be used to verify whether the signature is correct and other operations. After placing an order,
+     * the order will not enter the matching system, and the order cannot be queried.
+     *
+     * @param createRequest
+     * @return
+     * @throws IOException
+     */
+    HFOrderCreateResponse createHFOrderTest(HFOrderCreateRequest createRequest) throws IOException;
+
+    /**
      * Sync place hf order
      * https://docs.kucoin.com/spot-hf/#sync-place-hf-order
      *

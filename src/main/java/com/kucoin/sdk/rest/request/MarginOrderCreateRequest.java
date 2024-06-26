@@ -53,17 +53,6 @@ public class MarginOrderCreateRequest {
     private final String stp = "";
 
     /**
-     * [optional] Either loss or entry. Requires stopPrice to be defined
-     */
-    @Builder.Default
-    private final String stop = "";
-
-    /**
-     * [optional] Only if stop is defined. Sets trigger price for stop order
-     */
-    private final BigDecimal stopPrice;
-
-    /**
      * [optional] GTC, GTT, IOC, or FOK (default is GTC)
      */
     @Builder.Default
@@ -115,5 +104,11 @@ public class MarginOrderCreateRequest {
      * The isolated mode will be released soon, so stay tuned!
      */
     private String marginModel = "cross";
+
+    /**
+     * [Optional] Automatically repay when placing an order, that is, the system automatically triggers repayment after the order is completed.
+     * The maximum currency repayment amount is the trade amount. The same order does not support the simultaneous use of autoBorrow and autoRepay.
+     */
+    private boolean autoRepay;
 
 }

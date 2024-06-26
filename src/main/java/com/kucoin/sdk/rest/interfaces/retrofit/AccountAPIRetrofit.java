@@ -40,6 +40,9 @@ public interface AccountAPIRetrofit {
     Call<KucoinResponse<Map<String, String>>> applyTransfer2(
             @Body AccountTransferV2Request request);
 
+    @POST("api/v3/accounts/universal-transfer")
+    Call<KucoinResponse<UniversalTransferResponse>> universalTransfer(@Body UniversalTransferRequest request);
+
     @GET("api/v1/sub-accounts")
     Call<KucoinResponse<List<SubAccountBalanceResponse>>> getSubAccountList();
 

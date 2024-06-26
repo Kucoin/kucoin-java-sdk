@@ -8,6 +8,7 @@ import lombok.Data;
  */
 @Data
 public class SubApiKeyResponse {
+
     private String subName;
 
     private String remark;
@@ -26,4 +27,6 @@ public class SubApiKeyResponse {
     private String ipWhitelist;
 
     private String createdAt;
+
+    private String apiVersion;
 }

@@ -69,6 +69,9 @@ public interface OrderAPIRetrofit {
     @POST("api/v1/hf/orders")
     Call<KucoinResponse<HFOrderCreateResponse>> createHFOrder(@Body HFOrderCreateRequest createRequest);
 
+    @POST("api/v1/hf/orders/test")
+    Call<KucoinResponse<HFOrderCreateResponse>> createHFOrderTest(@Body HFOrderCreateRequest createRequest);
+
     @POST("api/v1/hf/orders/sync")
     Call<KucoinResponse<HFOrderSyncCreateResponse>> syncCreateHFOrder(@Body HFOrderCreateRequest createRequest);
 

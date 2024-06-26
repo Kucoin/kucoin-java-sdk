@@ -4,9 +4,7 @@
 package com.kucoin.sdk.factory;
 
 import com.kucoin.sdk.rest.interceptor.AuthenticationInterceptor;
-import okhttp3.Dispatcher;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
+import okhttp3.*;
 
 /**
  * Created by chenshiwei on 2019/1/18.
@@ -30,6 +28,7 @@ public class HttpClientFactory {
         if (interceptor != null) {
             builder.addInterceptor(interceptor);
         }
+
         return builder.build();
     }
 

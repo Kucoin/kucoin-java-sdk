@@ -6,27 +6,11 @@ package com.kucoin.sdk.rest.adapter;
 import com.kucoin.sdk.rest.impl.retrofit.AuthRetrofitAPIImpl;
 import com.kucoin.sdk.rest.interfaces.LoanAPI;
 import com.kucoin.sdk.rest.interfaces.retrofit.LoanAPIRetrofit;
-import com.kucoin.sdk.rest.request.BorrowRecordQueryRequest;
-import com.kucoin.sdk.rest.request.BorrowRequest;
-import com.kucoin.sdk.rest.request.LendRequest;
-import com.kucoin.sdk.rest.request.RepayAllRequest;
-import com.kucoin.sdk.rest.request.RepaySingleRequest;
-import com.kucoin.sdk.rest.request.ToggleAutoLendRequest;
-import com.kucoin.sdk.rest.response.ActiveLendItem;
-import com.kucoin.sdk.rest.response.BorrowOutstandingResponse;
-import com.kucoin.sdk.rest.response.BorrowQueryResponse;
-import com.kucoin.sdk.rest.response.BorrowRepaidResponse;
-import com.kucoin.sdk.rest.response.BorrowResponse;
-import com.kucoin.sdk.rest.response.DoneLendItem;
-import com.kucoin.sdk.rest.response.LastTradeResponse;
-import com.kucoin.sdk.rest.response.LendAssetsResponse;
-import com.kucoin.sdk.rest.response.LendResponse;
-import com.kucoin.sdk.rest.response.MarketItemResponse;
-import com.kucoin.sdk.rest.response.Pagination;
-import com.kucoin.sdk.rest.response.SettledTradeItem;
-import com.kucoin.sdk.rest.response.UnsettledTradeItem;
+import com.kucoin.sdk.rest.request.*;
+import com.kucoin.sdk.rest.response.*;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -40,6 +24,66 @@ public class LoanAPIAdapter extends AuthRetrofitAPIImpl<LoanAPIRetrofit> impleme
         this.secret = secret;
         this.passPhrase = passPhrase;
         this.apiKeyVersion = apiKeyVersion;
+    }
+
+    @Override
+    public BorrowV3Response borrowV3(BorrowV3Request request) throws IOException {
+        return executeSync(getAPIImpl().borrowV3(request));
+    }
+
+    @Override
+    public Pagination<BorrowQueryV3Response> queryBorrowV3(BorrowQueryV3Request request) throws IOException {
+        return executeSync(getAPIImpl().queryBorrowV3(request.getMapParams()));
+    }
+
+    @Override
+    public RepayV3Response repayV3(RepayV3Request request) throws IOException {
+        return executeSync(getAPIImpl().repayV3(request));
+    }
+
+    @Override
+    public Pagination<RepayQueryV3Response> queryRepayV3(RepayQueryV3Request request) throws IOException {
+        return executeSync(getAPIImpl().queryRepayV3(request.getMapParams()));
+    }
+
+    @Override
+    public Pagination<InterestQueryV3Response> queryInterestV3(InterestQueryV3Request request) throws IOException {
+        return executeSync(getAPIImpl().queryInterestV3(request.getMapParams()));
+    }
+
+    @Override
+    public List<MarginProjectListResponse> getProjectList(String currency) throws IOException {
+        return executeSync(getAPIImpl().getProjectList(currency));
+    }
+
+    @Override
+    public List<MarginMarketInterestRateResponse> getMarketInterestRate(String currency) throws IOException {
+        return executeSync(getAPIImpl().getProjectMarketInterestRate(currency));
+    }
+
+    @Override
+    public PurchaseResponse purchase(PurchaseRequest request) throws IOException {
+        return executeSync(getAPIImpl().purchase(request));
+    }
+
+    @Override
+    public void updatePurchase(UpdatePurchaseRequest request) throws IOException {
+        executeSync(getAPIImpl().updatePurchase(request));
+    }
+
+    @Override
+    public Pagination<PurchaseQueryResponse> queryPurchase(PurchaseQueryRequest request) throws IOException {
+        return executeSync(getAPIImpl().queryPurchase(request.getMapParams()));
+    }
+
+    @Override
+    public RedeemResponse redeem(RedeemRequest request) throws IOException {
+        return executeSync(getAPIImpl().redeem(request));
+    }
+
+    @Override
+    public Pagination<RedeemQueryResponse> queryRedeem(RedeemQueryRequest request) throws IOException {
+        return executeSync(getAPIImpl().queryRedeem(request.getMapParams()));
     }
 
     @Override
