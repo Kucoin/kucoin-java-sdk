@@ -9,11 +9,11 @@ The detailed document [https://docs.kucoin.com](https://docs.kucoin.com).
 1. Install library into your Maven's local repository by running `mvn clean install`
 2. Add the following **Maven dependency** to your project's pom.xml:
 
-```java
+```
 <dependency>
     <groupId>com.kucoin</groupId>
     <artifactId>kucoin-java-sdk</artifactId>
-    <version>1.0.12</version>
+    <version>1.0.13</version>
 </dependency>
 ```
 ## Usage

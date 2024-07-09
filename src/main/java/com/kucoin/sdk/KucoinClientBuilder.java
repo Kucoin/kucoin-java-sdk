@@ -73,6 +73,8 @@ public class KucoinClientBuilder {
 
     private OcoOrderAPI ocoOrderAPI;
 
+    private EarnAPI earnAPI;
+
     public KucoinRestClient buildRestClient() {
         if (StringUtils.isBlank(baseUrl)) baseUrl = APIConstants.API_BASE_URL;
         if (userAPI == null) userAPI = new UserAPIAdapter(baseUrl, apiKey, secret, passPhrase, apiKeyVersion);
@@ -92,6 +94,7 @@ public class KucoinClientBuilder {
         if (orderBookAPI == null) orderBookAPI = new OrderBookAPIAdapter(baseUrl, apiKey, secret, passPhrase, apiKeyVersion);
         if (historyAPI == null) historyAPI = new HistoryAPIAdapter(baseUrl);
         if (ocoOrderAPI == null) ocoOrderAPI = new OcoOrderAPIAdapter(baseUrl, apiKey, secret, passPhrase, apiKeyVersion);
+        if (earnAPI == null) earnAPI = new EarnAPIAdapter(baseUrl, apiKey, secret, passPhrase, apiKeyVersion);
         return new KucoinRestClientImpl(this);
     }
 

@@ -43,4 +43,6 @@ public interface KucoinRestClient {
     IsolatedAPI isolatedAPI();
 
     OcoOrderAPI ocoOrderAPI();
+
+    EarnAPI earnAPI();
 }

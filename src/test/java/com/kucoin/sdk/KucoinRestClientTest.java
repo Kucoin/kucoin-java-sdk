@@ -756,4 +756,37 @@ public class KucoinRestClientTest {
 
     }
 
+    @Test
+    public void earnAPI() throws Exception {
+        List<EarnSavingProductResponse> bomeProduct = liveKucoinRestClient.earnAPI().getSavingProducts("BOME");
+        assertThat(bomeProduct, notNullValue());
+
+        EarnOrderResponse order = liveKucoinRestClient.earnAPI().createOrder(EarnOrderRequest.builder().productId(bomeProduct.get(0).getId()).amount("1000").accountType(AccountTypeEnum.MAIN.name()).build());
+        System.out.println("orderId:" + order.getOrderId());
+        assertThat(order, notNullValue());
+
+        Pagination<EarnHoldAssetResponse> bome = liveKucoinRestClient.earnAPI().getHoldAssets(EarnHoldAssetQueryRequest.builder().currency("BOME").build());
+        assertThat(bome, notNullValue());
+
+        EarnHoldAssetResponse holdBomeAsset = bome.getItems().get(0);
+        EarnRedeemPreviewResponse redeemPreview = liveKucoinRestClient.earnAPI().getRedeemPreview(EarnRedeemPreviewRequest.builder().orderId(holdBomeAsset.getOrderId()).build());
+        assertThat(redeemPreview, notNullValue());
+
+        EarnOrderRedemptionResponse earnOrderRedemptionResponse = liveKucoinRestClient.earnAPI().redemptionOrder(EarnOrderRedemptionRequest.builder().orderId(holdBomeAsset.getOrderId()).amount("1000").confirmPunishRedeem("1").build());
+        assertThat(earnOrderRedemptionResponse, notNullValue());
+
+        List<EarnPromotionProductResponse> bnbStaking = liveKucoinRestClient.earnAPI().getPromotionProducts("BNB");
+        assertThat(bnbStaking, notNullValue());
+
+        List<EarnStakingProductResponse> lunaStaking = liveKucoinRestClient.earnAPI().getStakingProducts("LUNA");
+        assertThat(lunaStaking, notNullValue());
+
+        List<EarnEthStakingProductResponse> ethStaking = liveKucoinRestClient.earnAPI().getEthStakingProducts();
+        assertThat(ethStaking, notNullValue());
+
+        List<EarnKcsStakingProductResponse> kcsStaking = liveKucoinRestClient.earnAPI().getKcsStakingProducts("KCS");
+        assertThat(kcsStaking, notNullValue());
+
+    }
+
 }
