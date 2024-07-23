@@ -6,7 +6,7 @@
 
     <groupId>com.kucoin</groupId>
     <artifactId>kucoin-java-sdk</artifactId>
-    <version>1.0.13</version>
+    <version>1.0.14-SNAPSHOT</version>
 
     <name>kucoin-java-sdk</name>
     <description>kucoin-java-sdk</description>
@@ -35,6 +35,14 @@
         <developer>
             <name>Jason Yao</name>
             <email>jason.yao@kupotech.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <timezone>+8</timezone>
+        </developer>
+        <developer>
+            <name>Colt Han</name>
+            <email>colt.han@kupotech.com</email>
             <roles>
                 <role>Developer</role>
             </roles>

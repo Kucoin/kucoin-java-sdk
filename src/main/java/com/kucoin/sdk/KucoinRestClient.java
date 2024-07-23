@@ -45,4 +45,6 @@ public interface KucoinRestClient {
     OcoOrderAPI ocoOrderAPI();
 
     EarnAPI earnAPI();
+
+    VipLendingAPI vipLendingAPI();
 }

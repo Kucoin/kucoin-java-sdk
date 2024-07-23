@@ -48,6 +48,8 @@ public class KucoinRestClientImpl implements KucoinRestClient {
 
     private final EarnAPI earnAPI;
 
+    private final VipLendingAPI vipLendingAPI;
+
     public KucoinRestClientImpl(KucoinClientBuilder kucoinBuilder) {
         this.userAPI = kucoinBuilder.getUserAPI();
         this.accountAPI = kucoinBuilder.getAccountAPI();
@@ -67,6 +69,7 @@ public class KucoinRestClientImpl implements KucoinRestClient {
         this.isolatedAPI = kucoinBuilder.getIsolatedAPI();
         this.ocoOrderAPI = kucoinBuilder.getOcoOrderAPI();
         this.earnAPI = kucoinBuilder.getEarnAPI();
+        this.vipLendingAPI = kucoinBuilder.getVipLendingAPI();
     }
 
     @Override
@@ -157,6 +160,11 @@ public class KucoinRestClientImpl implements KucoinRestClient {
     @Override
     public EarnAPI earnAPI() {
         return earnAPI;
+    }
+
+    @Override
+    public VipLendingAPI vipLendingAPI() {
+        return vipLendingAPI;
     }
 
 }
