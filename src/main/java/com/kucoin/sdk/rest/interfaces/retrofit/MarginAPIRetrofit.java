@@ -4,13 +4,10 @@
 package com.kucoin.sdk.rest.interfaces.retrofit;
 
 import com.kucoin.sdk.rest.request.MarginOrderCreateRequest;
+import com.kucoin.sdk.rest.request.UserLeverageUpdateRequest;
 import com.kucoin.sdk.rest.response.*;
 import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
+import retrofit2.http.*;
 
 import java.util.List;
 
@@ -46,5 +43,11 @@ public interface MarginAPIRetrofit {
 
     @GET("api/v3/margin/accounts")
     Call<KucoinResponse<MarginAccountResponse>> getMarginAccounts(@Query("quoteCurrency") String quoteCurrency, @Query("queryType") String queryType);
+
+    @GET("api/v3/margin/symbols")
+    Call<KucoinResponse<MarginSymbolsResponse>> getMarginSymbols(@Query("symbol") String symbol);
+
+    @POST("api/v3/position/update-user-leverage")
+    Call<KucoinResponse<Void>> updateUserLeverage(@Body UserLeverageUpdateRequest request);
 
 }

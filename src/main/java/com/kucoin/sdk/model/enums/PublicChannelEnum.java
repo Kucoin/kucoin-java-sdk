@@ -35,6 +35,7 @@ public enum PublicChannelEnum {
 
     INDICATOR_MARKPRICE(APIConstants.API_INDICATOR_MARKPRICE_TOPIC_PREFIX),
 
+    @Deprecated
     MARGIN_FUNDINGBOOK(APIConstants.API_MARGIN_FUNDINGBOOK_TOPIC_PREFIX);
 
     private String topicPrefix;

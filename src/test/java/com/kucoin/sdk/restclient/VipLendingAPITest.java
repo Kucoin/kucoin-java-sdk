@@ -8,7 +8,16 @@ import com.kucoin.sdk.rest.response.OtcLoanLoanResponse;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import static org.junit.Assert.assertNotNull;
+
+/**
+ * VIP Lending API Test
+ *
+ * @author Colt Han
+ * @since 2024/7/23
+ */
 public class VipLendingAPITest {
+
     private static KucoinRestClient liveKucoinRestClient;
 
     @BeforeClass
@@ -21,9 +30,11 @@ public class VipLendingAPITest {
     }
 
     @Test
-    public void vipLendingAPI_() throws Exception {
+    public void vipLendingAPI_test_normal() throws Exception {
         OtcLoanLoanResponse otcLoanLoanResponse = liveKucoinRestClient.vipLendingAPI().getOtcLoanLoan();
+        assertNotNull("otcLoanLoanResponse is null", otcLoanLoanResponse);
 
         OtcLoanAccountResponse otcLoanAccountResponse = liveKucoinRestClient.vipLendingAPI().getOtcLoanAccounts();
+        assertNotNull("otcLoanAccountResponse is null", otcLoanAccountResponse);
     }
 }

@@ -115,6 +115,17 @@ public class KucoinPrivateWSClientImpl extends BaseWebsocketImpl implements Kuco
     }
 
     @Override
+    public String onMarginIsolatedPosition(KucoinAPICallback<KucoinEvent<MarginIsolatedPositionEvent>> callback) {
+        if (callback != null) {
+            this.listener.getCallbackMap().put(APIConstants.API_MARGIN_ISOLATED_POSITION_TOPIC_PREFIX, callback);
+            this.listener.getTypeReferenceMap().put(APIConstants.API_MARGIN_ISOLATED_POSITION_TOPIC_PREFIX,
+                    new TypeReference<KucoinEvent<MarginIsolatedPositionEvent>>() {
+                    });
+        }
+        return subscribe(APIConstants.API_MARGIN_ISOLATED_POSITION_TOPIC_PREFIX, true, true);
+    }
+
+    @Override
     public String onMarginLoan(KucoinAPICallback<KucoinEvent<MarginLoanEvent>> callback, String symbol) {
         if (callback != null) {
             this.listener.getCallbackMap().put(APIConstants.API_MARGIN_LOAN_TOPIC_PREFIX, callback);

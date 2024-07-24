@@ -1,10 +1,12 @@
 package com.kucoin.sdk.rest.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
+/**
+ * @author Colt Han
+ * @since 2024/7/23
+ */
 @Data
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class OtcLoanAccountResponse {
 
     /**

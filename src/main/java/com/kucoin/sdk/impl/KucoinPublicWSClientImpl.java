@@ -189,6 +189,7 @@ public class KucoinPublicWSClientImpl extends BaseWebsocketImpl implements Kucoi
     }
 
     @Override
+    @Deprecated
     public String onMarginFundingBook(KucoinAPICallback<KucoinEvent<FundingBookEvent>> callback, String... currency) {
         if (callback != null) {
             this.listener.getCallbackMap().put(APIConstants.API_MARGIN_FUNDINGBOOK_TOPIC_PREFIX, callback);

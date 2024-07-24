@@ -7,7 +7,10 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 
 /**
- * Created by colt.han on 2024/07/23.
+ * VipLendingAPIRetrofit
+ *
+ * @author Colt Han
+ * @since 2024/7/23
  */
 public interface VipLendingAPIRetrofit {
 

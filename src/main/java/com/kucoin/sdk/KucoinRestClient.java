@@ -47,4 +47,6 @@ public interface KucoinRestClient {
     EarnAPI earnAPI();
 
     VipLendingAPI vipLendingAPI();
+
+    HFMarginAPI HFMarginAPI();
 }

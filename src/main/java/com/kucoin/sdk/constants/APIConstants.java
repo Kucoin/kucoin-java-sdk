@@ -41,5 +41,7 @@ public class APIConstants {
     public static final String API_SNAPSHOT_TOPIC_PREFIX = "/market/snapshot:";
     public static final String API_INDICATOR_INDEX_TOPIC_PREFIX = "/indicator/index:";
     public static final String API_INDICATOR_MARKPRICE_TOPIC_PREFIX = "/indicator/markPrice:";
+    @Deprecated
     public static final String API_MARGIN_FUNDINGBOOK_TOPIC_PREFIX = "/margin/fundingBook:";
+    public static final String API_MARGIN_ISOLATED_POSITION_TOPIC_PREFIX = "/margin/isolatedPosition:";
 }

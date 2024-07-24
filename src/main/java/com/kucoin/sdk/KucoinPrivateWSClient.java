@@ -59,6 +59,15 @@ public interface KucoinPrivateWSClient {
     String onMarginPosition(KucoinAPICallback<KucoinEvent<MarginPositionEvent>> callback);
 
     /**
+     * Isolated Margin Position Event
+     * <a href="https://www.kucoin.com/docs/websocket/margin-trading/private-channels/isoleted-margin-position-event">ApiDoc</a>
+     *
+     * @param callback callback
+     * @return String
+     */
+    String onMarginIsolatedPosition(KucoinAPICallback<KucoinEvent<MarginIsolatedPositionEvent>> callback);
+
+    /**
      * Borrowing change message push
      *
      * @param callback

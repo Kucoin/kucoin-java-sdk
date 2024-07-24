@@ -7,6 +7,7 @@ import com.kucoin.sdk.rest.impl.retrofit.AuthRetrofitAPIImpl;
 import com.kucoin.sdk.rest.interfaces.MarginAPI;
 import com.kucoin.sdk.rest.interfaces.retrofit.MarginAPIRetrofit;
 import com.kucoin.sdk.rest.request.MarginOrderCreateRequest;
+import com.kucoin.sdk.rest.request.UserLeverageUpdateRequest;
 import com.kucoin.sdk.rest.response.*;
 
 import java.io.IOException;
@@ -71,4 +72,13 @@ public class MarginAPIAdapter extends AuthRetrofitAPIImpl<MarginAPIRetrofit> imp
         return executeSync(getAPIImpl().getMarginAccounts(quoteCurrency, queryType));
     }
 
+    @Override
+    public MarginSymbolsResponse getMarginSymbols(String symbol) throws IOException {
+        return executeSync(getAPIImpl().getMarginSymbols(symbol));
+    }
+
+    @Override
+    public Void updateUserLeverage(UserLeverageUpdateRequest request) throws IOException {
+        return executeSync(getAPIImpl().updateUserLeverage(request));
+    }
 }

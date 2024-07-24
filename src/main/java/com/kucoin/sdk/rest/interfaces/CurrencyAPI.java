@@ -3,15 +3,15 @@
  */
 package com.kucoin.sdk.rest.interfaces;
 
-import java.io.IOException;
-import java.util.List;
-
 import com.kucoin.sdk.exception.KucoinApiException;
 import com.kucoin.sdk.rest.response.CurrencyDetailResponse;
 import com.kucoin.sdk.rest.response.CurrencyDetailV2Response;
+import com.kucoin.sdk.rest.response.CurrencyDetailV3Response;
 import com.kucoin.sdk.rest.response.CurrencyResponse;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -69,4 +69,14 @@ public interface CurrencyAPI {
      * @throws KucoinApiException when errors are returned from the exchange.
      */
     Map<String, BigDecimal> getFiatPrice(String base, String currencies) throws IOException;
+
+    /**
+     * Get Currency Detail (V3)
+     * <a href="https://www.kucoin.com/docs/rest/spot-trading/market-data/get-currency-detail">ApiDoc</a>
+     *
+     * @param currency Path parameter, Currency
+     * @param chain Support for querying the chain of currency, e.g. The available value for USDT are OMNI, ERC20, TRC20. This only apply for multi-chain currency, and there is no need for single chain currency.
+     * @return The currency details of a specified currency
+     */
+    CurrencyDetailV3Response getCurrencyDetailV3(String currency, String chain) throws IOException;
 }

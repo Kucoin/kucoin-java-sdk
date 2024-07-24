@@ -50,6 +50,8 @@ public class KucoinRestClientImpl implements KucoinRestClient {
 
     private final VipLendingAPI vipLendingAPI;
 
+    private final HFMarginAPI hfMarginAPI;
+
     public KucoinRestClientImpl(KucoinClientBuilder kucoinBuilder) {
         this.userAPI = kucoinBuilder.getUserAPI();
         this.accountAPI = kucoinBuilder.getAccountAPI();
@@ -70,6 +72,7 @@ public class KucoinRestClientImpl implements KucoinRestClient {
         this.ocoOrderAPI = kucoinBuilder.getOcoOrderAPI();
         this.earnAPI = kucoinBuilder.getEarnAPI();
         this.vipLendingAPI = kucoinBuilder.getVipLendingAPI();
+        this.hfMarginAPI = kucoinBuilder.getHfMarginAPI();
     }
 
     @Override
@@ -165,6 +168,11 @@ public class KucoinRestClientImpl implements KucoinRestClient {
     @Override
     public VipLendingAPI vipLendingAPI() {
         return vipLendingAPI;
+    }
+
+    @Override
+    public HFMarginAPI HFMarginAPI() {
+        return hfMarginAPI;
     }
 
 }

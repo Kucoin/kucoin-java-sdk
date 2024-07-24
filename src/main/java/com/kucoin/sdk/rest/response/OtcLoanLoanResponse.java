@@ -1,12 +1,14 @@
 package com.kucoin.sdk.rest.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import java.util.List;
 
+/**
+ * @author Colt Han
+ * @since 2024/7/23
+ */
 @Data
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class OtcLoanLoanResponse {
     /**
      * Master account UID
@@ -34,7 +36,6 @@ public class OtcLoanLoanResponse {
     private List<Margin> margins;
 
     @Data
-    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Order {
         /**
          * Loan Order ID
@@ -55,7 +56,6 @@ public class OtcLoanLoanResponse {
     }
 
     @Data
-    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Ltv {
         /**
          * LTV of Restricted Transfers to Funding Account
@@ -80,7 +80,6 @@ public class OtcLoanLoanResponse {
     }
 
     @Data
-    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Margin {
         /**
          * Margin Currency

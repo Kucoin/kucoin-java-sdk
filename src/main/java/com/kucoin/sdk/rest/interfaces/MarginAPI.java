@@ -4,6 +4,7 @@
 package com.kucoin.sdk.rest.interfaces;
 
 import com.kucoin.sdk.rest.request.MarginOrderCreateRequest;
+import com.kucoin.sdk.rest.request.UserLeverageUpdateRequest;
 import com.kucoin.sdk.rest.response.*;
 
 import java.io.IOException;
@@ -96,5 +97,25 @@ public interface MarginAPI {
      * @return
      */
     MarginAccountResponse getMarginAccounts(String quoteCurrency, String queryType) throws IOException;
+
+    /**
+     * Get Cross Margin Trading Pairs Configuration
+     * <a href="https://www.kucoin.com/docs/rest/margin-trading/margin-trading-v3-/get-cross-margin-trading-pairs-configuration">ApiDoc</a>
+     *
+     * @param symbol Optional. If not provided, all cross margin trading pairs will be queried. If provided, only the specified trading pair will be queried.
+     * @return The configuration of cross margin trading pairs.
+     * @throws IOException IOException
+     */
+    MarginSymbolsResponse getMarginSymbols(String symbol) throws IOException;
+
+    /**
+     * Modify Leverage Multiplier
+     * <a href="https://www.kucoin.com/docs/rest/margin-trading/margin-trading-v3-/modify-leverage-multiplier">ApiDoc</a>
+     *
+     * @param request UserLeverageUpdateRequest
+     * @return Void
+     * @throws IOException IOException
+     */
+    Void updateUserLeverage(UserLeverageUpdateRequest request) throws IOException;
 
 }

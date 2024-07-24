@@ -27,4 +27,6 @@ public class KucoinEvent<T> {
 
     private String subject;
 
+    private String channelType;
+
 }

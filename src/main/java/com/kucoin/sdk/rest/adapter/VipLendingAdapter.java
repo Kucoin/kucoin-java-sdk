@@ -9,7 +9,10 @@ import com.kucoin.sdk.rest.response.OtcLoanLoanResponse;
 import java.io.IOException;
 
 /**
- * Created by colt.han on 2024/07/23.
+ * VipLendingAdapter
+ *
+ * @author Colt Han
+ * @since 2024/7/23
  */
 public class VipLendingAdapter extends AuthRetrofitAPIImpl<VipLendingAPIRetrofit> implements VipLendingAPI {
 

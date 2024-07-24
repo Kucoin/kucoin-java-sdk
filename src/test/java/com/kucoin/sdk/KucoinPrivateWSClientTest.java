@@ -14,7 +14,6 @@ import com.kucoin.sdk.websocket.event.AccountChangeEvent;
 import com.kucoin.sdk.websocket.event.AdvancedOrderEvent;
 import com.kucoin.sdk.websocket.event.OrderActivateEvent;
 import com.kucoin.sdk.websocket.event.OrderChangeEvent;
-import org.hamcrest.core.Is;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -29,7 +28,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -182,7 +181,7 @@ public class KucoinPrivateWSClientTest {
     public void ping() throws Exception {
         String requestId = "1234567890";
         String ping = kucoinPrivateWSClient.ping(requestId);
-        assertThat(ping, Is.is(requestId));
+        assertEquals(requestId, ping);
     }
 
     @Test
@@ -230,7 +229,7 @@ public class KucoinPrivateWSClientTest {
 
     private void innerTransfer2() throws IOException {
         List<AccountBalancesResponse> accountBalancesResponses = kucoinRestClient.accountAPI().listAccounts("USDT", null);
-        assertThat(accountBalancesResponses.size(), Is.is(2));
+        assertEquals(2, accountBalancesResponses.size());
         kucoinRestClient.accountAPI().innerTransfer2(new AccountTransferV2Request(String.valueOf(System.currentTimeMillis()),
                 "USDT", "trade", "main", new BigDecimal("0.000001")));
     }
