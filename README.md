@@ -19,7 +19,7 @@ The detailed document [https://docs.kucoin.com](https://docs.kucoin.com).
 ## Usage
 ### Build Client
 ```java
-KucoinClientBuilder builder = new KucoinClientBuilder().withBaseUrl("https://openapi-v2.kucoin.com").withApiKey("YOUR_API_KEY", "YOUR_SECRET", "YOUR_PASS_PHRASE");
+KucoinClientBuilder builder = new KucoinClientBuilder().withBaseUrl("https://openapi-v2.kucoin.com").withApiKey("YOUR_API_KEY", "YOUR_SECRET", "YOUR_PASSPHRASE");
 KucoinRestClient kucoinRestClient = builder.buildRestClient();
 KucoinPrivateWSClient kucoinPrivateWSClient = builder.buildPrivateWSClient();
 KucoinPublicWSClient kucoinPublicWSClient = builder.buildPublicWSClient();
@@ -111,7 +111,7 @@ kucoinRestClient.currencyAPI().getFiatPrice(base, currencies);
 kucoinRestClient.timeAPI().getServerTimeStamp();
 ```
 ### Websocket Feed
-Use `KucoinClientBuilder` to build an instance of the websocket client. Private channel client need to pass the API Key + Secret + Pass Phreas.
+Use `KucoinClientBuilder` to build an instance of the websocket client. Private channel client need to pass the API Key + Secret + Passphrase.
 
 The Websocket client uses `ChooseServerStrategy` to choose server for connection. If you don't plan to use `builder.withChooseServerStrategy` to set your own strategy, you may use the strategy we provided by random.
 
