@@ -9,6 +9,7 @@ import lombok.Data;
 @Data
 public class HFOrderSyncCreateResponse {
     private String orderId;
+    private String clientOid;
     private String orderTime;
     private String originSize;
     private String dealSize;

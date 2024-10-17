@@ -9,5 +9,6 @@ import lombok.Data;
 @Data
 public class HFOrderMultiCreateResponse {
     private String orderId;
+    private String clientOid;
     private Boolean success;
 }

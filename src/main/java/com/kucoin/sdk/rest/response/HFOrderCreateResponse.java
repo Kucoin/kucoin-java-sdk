@@ -9,4 +9,5 @@ import lombok.Data;
 @Data
 public class HFOrderCreateResponse {
     private String orderId;
+    private String clientOid;
 }
