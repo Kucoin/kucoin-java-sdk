@@ -490,6 +490,9 @@ public class KucoinRestClientTest {
 
         List<SymbolResponse> symbolList = liveKucoinRestClient.symbolAPI().getSymbolList("BTC");
         assertThat(symbolList, notNullValue());
+
+        SymbolResponse symbol = liveKucoinRestClient.symbolAPI().getSymbolDetail("BTC-USDT");
+        assertThat(symbol, notNullValue());
     }
 
     @Test

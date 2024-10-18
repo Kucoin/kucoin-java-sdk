@@ -59,4 +59,12 @@ public interface SymbolAPI {
      * @return The available symbols.
      */
     List<SymbolResponse> getSymbolList(String market) throws IOException;
+
+    /**
+     * Request via this endpoint to get detail currency pairs for trading.
+     * If you want to get the market information of the trading symbol, please use getSymbolList
+     * @param symbol
+     * @return symbol information
+     */
+    SymbolResponse getSymbolDetail(String symbol) throws IOException;
 }

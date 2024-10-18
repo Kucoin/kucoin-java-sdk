@@ -10,6 +10,7 @@ import com.kucoin.sdk.rest.response.SymbolTickResponse;
 import com.kucoin.sdk.rest.response.TickerResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 import java.util.List;
@@ -36,4 +37,7 @@ public interface SymbolAPIRetrofit {
 
     @GET("api/v2/symbols")
     Call<KucoinResponse<List<SymbolResponse>>> getSymbolList(@Query("market") String market);
+
+    @GET("api/v2/symbols/{symbol}")
+    Call<KucoinResponse<SymbolResponse>> getSymbolDetail(@Path("symbol") String symbol);
 }
