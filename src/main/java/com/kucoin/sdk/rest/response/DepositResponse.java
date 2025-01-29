@@ -19,6 +19,8 @@ public class DepositResponse {
 
     private String currency;
 
+    private String chain;
+
     private DepositStatusEnum status;
 
     private String address;

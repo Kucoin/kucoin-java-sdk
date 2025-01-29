@@ -22,6 +22,8 @@ public class WithdrawResponse {
 
     private String currency;
 
+    private String chain;
+
     private WithdrawStatusEnum status;
 
     private String address;
