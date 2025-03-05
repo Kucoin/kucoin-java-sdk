@@ -29,6 +29,11 @@ jobs:
         env:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
 
+      - name: Configure GPG for non-interactive mode
+        run: |
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          gpgconf --kill gpg-agent
+
       - name: Cache Maven Dependencies
         uses: actions/cache@v3
         with:
@@ -40,7 +45,7 @@ jobs:
         run: mvn clean install -DskipTests
 
       - name: Publish to Maven Central
-        run: mvn deploy -P release
+        run: mvn deploy -P release -Dgpg.passphrase="${{ secrets.GPG_PASSPHRASE }}"
         env:
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
