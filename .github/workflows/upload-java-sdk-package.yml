@@ -31,21 +31,16 @@ jobs:
 
       - name: Configure GPG for non-interactive mode
         run: |
+          mkdir -p ~/.gnupg
           echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "use-agent" >> ~/.gnupg/gpg.conf
           gpgconf --kill gpg-agent
 
-      - name: Cache Maven Dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
-          restore-keys: maven-${{ runner.os }}-
-
       - name: Build without Tests
-        run: mvn clean install -DskipTests
+        run: mvn clean install -DskipTests -Dgpg.skip=true
 
       - name: Publish to Maven Central
-        run: mvn deploy -P release -Dgpg.passphrase="${{ secrets.GPG_PASSPHRASE }}"
+        run: mvn deploy -P release -DskipTests -Dgpg.passphrase="${{ secrets.GPG_PASSPHRASE }}"
         env:
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
