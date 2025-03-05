@@ -3,13 +3,14 @@
  */
 package com.kucoin.sdk.rest.interfaces;
 
-import java.io.IOException;
-
 import com.kucoin.sdk.rest.request.WithdrawApplyRequest;
+import com.kucoin.sdk.rest.request.WithdrawApplyV3Request;
 import com.kucoin.sdk.rest.response.Pagination;
 import com.kucoin.sdk.rest.response.WithdrawApplyResponse;
 import com.kucoin.sdk.rest.response.WithdrawQuotaResponse;
 import com.kucoin.sdk.rest.response.WithdrawResponse;
+
+import java.io.IOException;
 
 /**
  * Created by chenshiwei on 2019/1/9.
@@ -31,6 +32,14 @@ public interface WithdrawalAPI {
      * @return A response containing the withdrawal id.
      */
     WithdrawApplyResponse applyWithdraw(WithdrawApplyRequest request) throws IOException;
+
+    /**
+     * apply withdraw(v3)
+     *
+     * @param request
+     * @return A response containing the withdrawal id.
+     */
+    WithdrawApplyResponse applyWithdrawV3(WithdrawApplyV3Request request) throws IOException;
 
     /**
      * Only withdrawals in processing status could be cancelled.

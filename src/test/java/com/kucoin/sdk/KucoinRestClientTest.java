@@ -398,6 +398,15 @@ public class KucoinRestClientTest {
     }
 
     @Test
+    public void withdrawalAPIV3() throws Exception {
+        WithdrawApplyV3Request withdrawApplyRequest = WithdrawApplyV3Request.builder().
+                toAddress("123467").amount(BigDecimal.valueOf(0.00000001)).currency("KCS").
+                isInner(true).remark("").chain("KCC").feeDeductType("INTERNAL").withdrawType("UID").build();
+        String id = liveKucoinRestClient.withdrawalAPI().applyWithdrawV3(withdrawApplyRequest).getWithdrawId();
+        liveKucoinRestClient.withdrawalAPI().cancelWithdraw(id);
+    }
+
+    @Test
     public void depositAPI() throws Exception {
         exception.expect(KucoinApiException.class);
         exception.expectMessage("Sandbox environment cannot get deposit address");
@@ -659,7 +668,7 @@ public class KucoinRestClientTest {
         List<IsolatedMarginCurrencyResponse> isolatedMarginCurrencyResponseList = liveKucoinRestClient.isolatedAPI().getIsolatedCurrencies("NKN-USDT");
         assertThat(isolatedMarginCurrencyResponseList, notNullValue());
 
-        IsolatedAccountV3Response isolatedAccountsV3 = liveKucoinRestClient.isolatedAPI().getIsolatedAccountsV3("NKN-USDT", null , null);
+        IsolatedAccountV3Response isolatedAccountsV3 = liveKucoinRestClient.isolatedAPI().getIsolatedAccountsV3("NKN-USDT", null, null);
         assertThat(isolatedAccountsV3, notNullValue());
 
     }
