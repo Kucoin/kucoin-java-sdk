@@ -6,7 +6,7 @@
 
     <groupId>com.kucoin</groupId>
     <artifactId>kucoin-java-sdk</artifactId>
-    <version>1.0.15</version>
+    <version>1.0.16</version>
 
     <name>kucoin-java-sdk</name>
     <description>kucoin-java-sdk</description>
@@ -190,6 +190,7 @@
                             <gpgArguments>
                                 <arg>--pinentry-mode</arg>
                                 <arg>loopback</arg>
+                                <arg>--no-tty</arg>
                             </gpgArguments>
                         </configuration>
                     </execution>
