@@ -22,6 +22,8 @@ jobs:
           distribution: 'temurin'
           server-id: ossrh
           settings-path: ${{ github.workspace }}
+          server-username: OSSRH_USERNAME
+          server-password: OSSRH_PASSWORD
 
       - name: Import GPG Key
         run: |
@@ -40,7 +42,7 @@ jobs:
         run: mvn clean install -DskipTests -Dgpg.skip=true
 
       - name: Publish to Maven Central
-        run: mvn deploy -P release -DskipTests -Dgpg.passphrase="${{ secrets.GPG_PASSPHRASE }}"
+        run: mvn deploy -DskipTests -Dgpg.passphrase="${{ secrets.GPG_PASSPHRASE }}"
         env:
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
