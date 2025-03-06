@@ -22,8 +22,8 @@ jobs:
           distribution: 'temurin'
           server-id: ossrh
           settings-path: ${{ github.workspace }}
-          server-username: OSSRH_USERNAME
-          server-password: OSSRH_PASSWORD
+          server-username: ${{ secrets.OSSRH_USERNAME }}
+          server-password: ${{ secrets.OSSRH_PASSWORD }}
 
       - name: Import GPG Key
         run: |
