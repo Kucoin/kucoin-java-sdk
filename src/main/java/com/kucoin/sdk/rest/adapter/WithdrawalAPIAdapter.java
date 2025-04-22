@@ -8,10 +8,7 @@ import com.kucoin.sdk.rest.interfaces.WithdrawalAPI;
 import com.kucoin.sdk.rest.interfaces.retrofit.WithdrawalAPIRetrofit;
 import com.kucoin.sdk.rest.request.WithdrawApplyRequest;
 import com.kucoin.sdk.rest.request.WithdrawApplyV3Request;
-import com.kucoin.sdk.rest.response.Pagination;
-import com.kucoin.sdk.rest.response.WithdrawApplyResponse;
-import com.kucoin.sdk.rest.response.WithdrawQuotaResponse;
-import com.kucoin.sdk.rest.response.WithdrawResponse;
+import com.kucoin.sdk.rest.response.*;
 
 import java.io.IOException;
 
@@ -39,7 +36,7 @@ public class WithdrawalAPIAdapter extends AuthRetrofitAPIImpl<WithdrawalAPIRetro
     }
 
     @Override
-    public WithdrawApplyResponse applyWithdrawV3(WithdrawApplyV3Request request) throws IOException {
+    public WithdrawApplyV3Response applyWithdrawV3(WithdrawApplyV3Request request) throws IOException {
         return super.executeSync(getAPIImpl().applyWithdrawV3(request));
     }
 

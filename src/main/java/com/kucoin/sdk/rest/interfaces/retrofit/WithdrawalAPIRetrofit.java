@@ -22,7 +22,7 @@ public interface WithdrawalAPIRetrofit {
     Call<KucoinResponse<WithdrawApplyResponse>> applyWithdraw(@Body WithdrawApplyRequest request);
 
     @POST("api/v3/withdrawals")
-    Call<KucoinResponse<WithdrawApplyResponse>> applyWithdrawV3(@Body WithdrawApplyV3Request request);
+    Call<KucoinResponse<WithdrawApplyV3Response>> applyWithdrawV3(@Body WithdrawApplyV3Request request);
 
     @DELETE("api/v1/withdrawals/{withdrawalId}")
     Call<KucoinResponse<Void>> cancelWithdraw(@Path("withdrawalId") String withdrawalId);
