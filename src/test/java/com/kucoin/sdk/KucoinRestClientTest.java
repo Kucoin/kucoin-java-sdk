@@ -402,7 +402,7 @@ public class KucoinRestClientTest {
         WithdrawApplyV3Request withdrawApplyRequest = WithdrawApplyV3Request.builder().
                 toAddress("123467").amount(BigDecimal.valueOf(0.00000001)).currency("KCS").
                 isInner(true).remark("").chain("KCC").feeDeductType("INTERNAL").withdrawType("UID").build();
-        String id = liveKucoinRestClient.withdrawalAPI().applyWithdrawV3(withdrawApplyRequest).getWithdrawId();
+        String id = liveKucoinRestClient.withdrawalAPI().applyWithdrawV3(withdrawApplyRequest).getWithdrawalId();
         liveKucoinRestClient.withdrawalAPI().cancelWithdraw(id);
     }
 
